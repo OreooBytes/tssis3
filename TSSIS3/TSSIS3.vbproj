@@ -1,0 +1,1542 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{749CF8FC-C775-47E2-A598-4C042C6FA4E6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>TSSIS3.Login</StartupObject>
+    <RootNamespace>TSSIS3</RootNamespace>
+    <AssemblyName>TSSIS3</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>TSSIS3.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>TSSIS3.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.3.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.26.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.26.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="Guna.UI">
+      <HintPath>..\..\..\..\Downloads\Guna.UI-Framework-Lib-master\Guna.UI WinForms\.net 4.0\Guna.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Guna.UI2, Version=2.0.4.7, Culture=neutral, PublicKeyToken=8b9d14aa5142e261, processorArchitecture=MSIL">
+      <HintPath>..\packages\Guna.UI2.WinForms.2.0.4.7\lib\net472\Guna.UI2.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4, Version=1.3.8.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.1.3.8\lib\net462\K4os.Compression.LZ4.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4.Streams, Version=1.3.8.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.Streams.1.3.8\lib\net462\K4os.Compression.LZ4.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Hash.xxHash, Version=1.0.8.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Hash.xxHash.1.0.8\lib\net462\K4os.Hash.xxHash.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1001\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="MySql.Data, Version=9.0.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.9.0.0\lib\net462\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.8.0.0\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="ZstdSharp, Version=0.8.0.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZstdSharp.Port.0.8.0\lib\net462\ZstdSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing, Version=0.16.10.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.10\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.10.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.10\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessPermission.Designer.vb">
+      <DependentUpon>AccessPermission.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AccessPermission.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Audit.Designer.vb">
+      <DependentUpon>Audit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Audit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Category.Designer.vb">
+      <DependentUpon>Category.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Category.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangePassword.Designer.vb">
+      <DependentUpon>ChangePassword.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChangePassword.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dashboard.Designer.vb">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Deliveries.Designer.vb">
+      <DependentUpon>Deliveries.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Deliveries.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeliveryList.Designer.vb">
+      <DependentUpon>DeliveryList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DeliveryList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Discount.Designer.vb">
+      <DependentUpon>Discount.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Discount.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExpirationReports.Designer.vb">
+      <DependentUpon>ExpirationReports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ExpirationReports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HoldTransactions.Designer.vb">
+      <DependentUpon>HoldTransactions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="HoldTransactions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="inventory.Designer.vb">
+      <DependentUpon>inventory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="inventory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogHistory.Designer.vb">
+      <DependentUpon>LogHistory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LogHistory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.vb">
+      <DependentUpon>Login.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoyaltyDiscount.Designer.vb">
+      <DependentUpon>LoyaltyDiscount.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoyaltyDiscount.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Membership.Designer.vb">
+      <DependentUpon>Membership.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Membership.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module1.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="POS.Designer.vb">
+      <DependentUpon>POS.vb</DependentUpon>
+    </Compile>
+    <Compile Include="POS.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Product.Designer.vb">
+      <DependentUpon>Product.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Product.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PullOut.Designer.vb">
+      <DependentUpon>PullOut.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PullOut.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRefund.Designer.vb">
+      <DependentUpon>ViewRefund.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ViewRefund.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="returnitem.Designer.vb">
+      <DependentUpon>returnitem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="returnitem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReturnRefund.Designer.vb">
+      <DependentUpon>ReturnRefund.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ReturnRefund.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sale Report.Designer.vb">
+      <DependentUpon>Sale Report.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sale Report.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectMember.Designer.vb">
+      <DependentUpon>SelectMember.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SelectMember.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectProduct.Designer.vb">
+      <DependentUpon>SelectProduct.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SelectProduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StockReports.Designer.vb">
+      <DependentUpon>StockReports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="StockReports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Superadmin.Designer.vb">
+      <DependentUpon>Superadmin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Superadmin.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Supplier.Designer.vb">
+      <DependentUpon>Supplier.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User.Designer.vb">
+      <DependentUpon>User.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="utils.vb" />
+    <Compile Include="Vat.Designer.vb">
+      <DependentUpon>Vat.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Vat.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewPullout.Designer.vb">
+      <DependentUpon>ViewPullout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ViewPullout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewReturn.Designer.vb">
+      <DependentUpon>ViewReturn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ViewReturn.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AccessPermission.resx">
+      <DependentUpon>AccessPermission.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit.resx">
+      <DependentUpon>Audit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Category.resx">
+      <DependentUpon>Category.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangePassword.resx">
+      <DependentUpon>ChangePassword.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dashboard.resx">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Deliveries.resx">
+      <DependentUpon>Deliveries.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeliveryList.resx">
+      <DependentUpon>DeliveryList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Discount.resx">
+      <DependentUpon>Discount.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExpirationReports.resx">
+      <DependentUpon>ExpirationReports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HoldTransactions.resx">
+      <DependentUpon>HoldTransactions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="inventory.resx">
+      <DependentUpon>inventory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogHistory.resx">
+      <DependentUpon>LogHistory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="loyaltydiscount.resx">
+      <DependentUpon>LoyaltyDiscount.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="membership.resx">
+      <DependentUpon>Membership.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POS.resx">
+      <DependentUpon>POS.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Product.resx">
+      <DependentUpon>Product.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PullOut.resx">
+      <DependentUpon>PullOut.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewPullout.resx">
+      <DependentUpon>ViewPullout.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewRefund.resx">
+      <DependentUpon>ViewRefund.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="returnitem.resx">
+      <DependentUpon>returnitem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReturnRefund.resx">
+      <DependentUpon>ReturnRefund.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sale Report.resx">
+      <DependentUpon>Sale Report.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectMember.resx">
+      <DependentUpon>SelectMember.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectProduct.resx">
+      <DependentUpon>SelectProduct.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StockReports.resx">
+      <DependentUpon>StockReports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Superadmin.resx">
+      <DependentUpon>Superadmin.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Supplier.resx">
+      <DependentUpon>Supplier.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User.resx">
+      <DependentUpon>User.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vat.resx">
+      <DependentUpon>Vat.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewReturn.resx">
+      <DependentUpon>ViewReturn.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+    </None>
+    <None Include="My Project\DataSources\Category.datasource" />
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-users-90.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-discount-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-vat-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pos-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-inventory-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-supplier-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-products-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-users-35 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-sorting-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-sales-90 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-category-89.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-88.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-logout-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-change-password-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-activity-history-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-audit-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-settings-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pie-chart-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Outfit-Black.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-Bold.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-ExtraBold.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-ExtraLight.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-Light.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-SemiBold.ttf" />
+    <EmbeddedResource Include="Resources\Outfit-Thin.ttf" />
+    <None Include="Resources\Pending List.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Reports.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Loghistory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Audit Trail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Discounts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Inventory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\POS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Hold Transactions.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-edit-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Shrikhand-Regular.ttf" />
+    <None Include="Resources\Vat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Disccounts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Inventories.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Suppliers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Products.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Categories.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Add a subheading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Add a subheading %289%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\User accounts1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\User accounts2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\User accounts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-exit-button-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-exit-button-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-button-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-cancel-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-power-off-50 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Untitled design %2812%29 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-test-account.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-user.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Untitled design %285%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Untitled design %284%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ay.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Untitled design %286%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Untitled design %287%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logins %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logins.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\log.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-user-account-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logss.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-test-account %281%29.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-account-male-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Deliveries.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pending List1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pending-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delivery-34.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-warning.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-warning1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-warning-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search-351.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search-352.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Audit Trail1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogHis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Change Password.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Changepass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChangeP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\STORE LOGO BLACK N WHITE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FinalLOGO.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FinalLOGO2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-membership-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1 %281%29.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\holdTransaction.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-cancel-44.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Membership.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectMember.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Loyaltydiscount.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ldiscounts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-loyalty-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProductDetails.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-image-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\addimage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-less-than-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-less-than-301.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-greater-than-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-down-20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-down-20 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-down-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-up-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-left-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-right-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-excel-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pdf-47.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-export-csv-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-export-pdf-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-export-pdf-45.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-export-pdf-451.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-export-csv-45.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-no-image-85.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-no-image-gallery-100.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\noprodcutimage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-edit-34.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-35 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search-bar-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search-bar-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-back-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-back-481.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-scan-barcode-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-scan-barcode-80.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-filter-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-filter-15.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-filter-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-module-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-form-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-form-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mangereturn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mangereturn1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-user-25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-user-251.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-user-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-user-301.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-edit-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lologo.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cashier.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cashier-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand-drawn-people-buying-supermarket-background_23-2148118595.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand-drawn-people-buying-supermarket-background_23-2148118595-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand-drawn-people-buying-supermarket-background_23-2148118595-removebg-preview %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkout-supermarket-man-with-cart-groceries-near-cashier-people-grocery-store-cashier-with-client-customer-market-flat-vector-illustration_1136916-2036.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4946674_2527710-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ay %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ay %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-login-43.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-user-56.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-lock-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-username-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-password-29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-loyalty-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-vat-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-discount-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-cash-register-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-user-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-category-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-inventory-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-supplier-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-inventory-501.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-vat-501.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-tariff-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-tariff-50 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-logout-49.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-logout-26.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-schedule-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-check.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-check-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-close-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-check-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-close-20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-close-19.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-check-30 %283%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-check-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-close-20 %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-close-39.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-dashboard-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-users-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-supplier-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-category-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-products-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-inventory-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pos-terminal-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-discount-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-paycheque-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pie-chart-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-lock-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-logout-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-supplier-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-dashboard-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-users-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-category-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-products-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pos-29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-discount-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-paycheque-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pie-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-logout-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-inventory-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-lock-30 %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-dashboard-301.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\STORE.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\STORE %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %281%29.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %283%29.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %284%29.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %283%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %2812%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %2811%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %2810%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %289%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %288%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %287%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %286%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %285%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %284%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %2813%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-chart-arrow-rise-20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-chart-arrow-rise-28.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-peso-symbol-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-peso-symbol-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-schedule-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-schedule-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-peso-symbol-70.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-customers-70.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-sales-performance-70.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-30 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-alphabetical-sorting-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-sorting-35 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-alphabetical-sorting-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-alphabetical-sorting-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-alphabetical-sorting-normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-30 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-user-groups-60.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-close-window-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Orange Black Online Shopping Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Orange Black Online Shopping Logo %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DB1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-positive-dynamic-25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-negative-dynamic-25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-customers-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-refund-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-sales-75.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-successful-delivery-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delivery-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-less-than-40normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-greater-than-50 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-greater-than-50 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-less-than-50 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-less-than-50 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-csv-30 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-csv-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pdf-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pdf-30 normal1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pdf-30 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-csv-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-pdf-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-invoice-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yellow Orange Illustration Mart Logo %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-print-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-return-product-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\STR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ET.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-edit-main.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-main.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-501.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-751.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconmain11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconmain12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-main12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconmain13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-main13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-main12.1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-edit-mains.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-mains.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logomains.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logomainsBlacknwhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mainlogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logomainsBlacknwhite.1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mainlogo.1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delivery-30 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delivery-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-return-30 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-return-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-return- normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delivery-normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-update-normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-update-hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-admin-normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-admin-hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\R.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-products-65.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-products-651.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-expired-65.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-65.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-651.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-product-652.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-peso-symbol-65.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-username-301.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-password-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-show-password-25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-show-password-251.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-show-password-25 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-hide-password-25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-successful-delivery-30main.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-open-box-40 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-open-box-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-open-box-30 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RR2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\POH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VR2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MR2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-return-product-35 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-return-product-35 normal1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-return-product-35 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-transaction-30 normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-transaction-30 hindi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-cancel-35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-35.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>

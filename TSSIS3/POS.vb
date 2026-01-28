@@ -176,6 +176,13 @@ Public Class POS
         btn1000.FillColor = ColorTranslator.FromHtml("#1D3A70")
 
 
+        '======= btn font size =======
+
+        btn50.Font = New Font(btn50.Font.FontFamily, 6, btn50.Font.Style)
+        btn100.Font = New Font(btn50.Font.FontFamily, 6, btn50.Font.Style)
+        btn500.Font = New Font(btn50.Font.FontFamily, 6, btn50.Font.Style)
+        btn1000.Font = New Font(btn50.Font.FontFamily, 6, btn50.Font.Style)
+
 
         '======= ApplyRounded ========
         ApplyRoundedCorners2()
@@ -1605,44 +1612,52 @@ Public Class POS
 
     ' =================== Pay / Checkout ===================
     Private Sub btnCheckout_Click(sender As Object, e As EventArgs) Handles btnCheckout.Click
-        ' --- 1️⃣ Check if cart is empty ---
+
+        ' ============================
+        ' 1. CHECK CART
+        ' ============================
         If dgvCart.Rows.Count = 0 Then
             MessageBox.Show("Cart is empty!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
 
-        ' --- 1.5️⃣ Check for zero quantity items ---
+        ' Check for invalid quantity
         For Each row As DataGridViewRow In dgvCart.Rows
             If row.IsNewRow Then Continue For
             Dim qty As Integer
             If Not Integer.TryParse(row.Cells("Quantity").Value.ToString(), qty) OrElse qty <= 0 Then
-                MessageBox.Show("One or more items have invalid or zero quantity. Please fix before checkout.", "Invalid Quantity", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                MessageBox.Show("One or more items have invalid or zero quantity.", "Invalid Quantity", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Exit Sub
             End If
         Next
 
-        ' --- 2️⃣ Validate payment ---
+        ' ============================
+        ' 2. PAYMENT VALIDATION
+        ' ============================
         Dim payment As Decimal
-        If Not Decimal.TryParse(txtPayment.Text, payment) OrElse payment <= 0 Then
+        If Not Decimal.TryParse(txtPayment.Text.Replace("₱", "").Replace(",", "").Trim(), payment) OrElse payment <= 0 Then
             MessageBox.Show("Enter a valid payment amount.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
 
-        ' --- 3️⃣ Compute total ---
         Dim totalDue As Decimal
         If Not Decimal.TryParse(lblTotalAmount.Text.Replace("₱", "").Replace(",", "").Trim(), totalDue) Then
             MessageBox.Show("Invalid total amount format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
+
         Dim change As Decimal = payment - totalDue
         If change < 0 Then
             MessageBox.Show("Insufficient payment amount!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
+
         lblChange.Text = "₱ " & change.ToString("N2")
 
-        ' === 4️⃣ Get PriceToGainPoint from database ===
-        Dim priceToGainPoint As Decimal = 10 ' 👈 Declared again here → hides the outer one
+        ' ============================
+        ' 3. GET LOYALTY POINT SETTING
+        ' ============================
+        Dim priceToGainPoint As Decimal = 10
 
         Using connPts As New MySqlConnection(connectionstring)
             connPts.Open()
@@ -1652,153 +1667,165 @@ Public Class POS
             End Using
         End Using
 
-        ' === 5️⃣ Begin database transaction ===
+
+        ' ============================
+        ' 4. START TRANSACTION
+        ' ============================
         Using conn As New MySqlConnection(connectionstring)
             conn.Open()
-            Using trans As MySqlTransaction = conn.BeginTransaction()
+            Using trans = conn.BeginTransaction()
+
                 Try
-                    ' =============================
-                    ' INVENTORY & FIFO DEDUCTION
-                    ' =============================
+                    ' ============================
+                    ' INVENTORY + FIFO DEDUCTION
+                    ' ============================
                     For Each row As DataGridViewRow In dgvCart.Rows
                         If row.IsNewRow Then Continue For
+
                         Dim barcodeID As String = row.Cells("Barcode").Value.ToString()
                         Dim qty As Integer = CInt(row.Cells("Quantity").Value)
 
-                        ' --- Check inventory stock ---
+                        ' Check stock
                         Dim stockQty As Integer = 0
-                        Using checkCmd As New MySqlCommand("SELECT Quantity FROM inventory WHERE BarcodeID = @barcode", conn, trans)
-                            checkCmd.Parameters.AddWithValue("@barcode", barcodeID)
-                            Dim result = checkCmd.ExecuteScalar()
-                            If result Is Nothing OrElse IsDBNull(result) Then
-                                Throw New Exception($"Product with BarcodeID {barcodeID} not found in inventory.")
-                            End If
-                            stockQty = Convert.ToInt32(result)
+                        Using cmdCheck As New MySqlCommand("SELECT Quantity FROM inventory WHERE BarcodeID=@barcode", conn, trans)
+                            cmdCheck.Parameters.AddWithValue("@barcode", barcodeID)
+                            stockQty = Convert.ToInt32(cmdCheck.ExecuteScalar())
                         End Using
+
                         If stockQty < qty Then
-                            Throw New Exception($"Not enough stock for '{row.Cells("ProductName").Value}'. Available: {stockQty}, Needed: {qty}")
+                            Throw New Exception($"Not enough stock for {row.Cells("ProductName").Value}.")
                         End If
 
-                        ' --- FIFO deduction from deliveries ---
+                        ' FIFO deduction
                         Dim qtyToDeduct As Integer = qty
                         Dim fifoList As New List(Of Tuple(Of Integer, Integer))()
-                        Using selectCmd As New MySqlCommand("SELECT id, RemainingQty FROM deliveries WHERE BarcodeID = @barcode AND RemainingQty > 0 ORDER BY ReceiveDate ASC", conn, trans)
+
+                        Using selectCmd As New MySqlCommand("
+                        SELECT id, RemainingQty 
+                        FROM deliveries 
+                        WHERE BarcodeID=@barcode AND RemainingQty>0 
+                        ORDER BY ReceiveDate ASC", conn, trans)
+
                             selectCmd.Parameters.AddWithValue("@barcode", barcodeID)
-                            Using reader As MySqlDataReader = selectCmd.ExecuteReader()
-                                While reader.Read()
-                                    fifoList.Add(Tuple.Create(reader.GetInt32("id"), reader.GetInt32("RemainingQty")))
+                            Using r = selectCmd.ExecuteReader()
+                                While r.Read()
+                                    fifoList.Add(Tuple.Create(r.GetInt32(0), r.GetInt32(1)))
                                 End While
                             End Using
                         End Using
 
-                        ' Deduct from deliveries
                         For Each batch In fifoList
                             If qtyToDeduct <= 0 Then Exit For
-                            Dim deduct As Integer = Math.Min(batch.Item2, qtyToDeduct)
-                            Using updateCmd As New MySqlCommand("UPDATE deliveries SET RemainingQty = RemainingQty - @deduct WHERE id = @did", conn, trans)
-                                updateCmd.Parameters.AddWithValue("@deduct", deduct)
-                                updateCmd.Parameters.AddWithValue("@did", batch.Item1)
+                            Dim deduct = Math.Min(batch.Item2, qtyToDeduct)
+
+                            Using updateCmd As New MySqlCommand("
+                            UPDATE deliveries 
+                            SET RemainingQty = RemainingQty - @d 
+                            WHERE id=@id", conn, trans)
+                                updateCmd.Parameters.AddWithValue("@d", deduct)
+                                updateCmd.Parameters.AddWithValue("@id", batch.Item1)
                                 updateCmd.ExecuteNonQuery()
                             End Using
+
                             qtyToDeduct -= deduct
                         Next
 
                         ' Update inventory
-                        Using updateCmd As New MySqlCommand("UPDATE inventory SET Quantity = Quantity - @qty WHERE BarcodeID = @barcode", conn, trans)
-                            updateCmd.Parameters.AddWithValue("@qty", qty)
-                            updateCmd.Parameters.AddWithValue("@barcode", barcodeID)
-                            updateCmd.ExecuteNonQuery()
-                        End Using
-
-                        ' Fix negative quantity
-                        Using zeroFixCmd As New MySqlCommand("UPDATE inventory SET Quantity = 0 WHERE Quantity < 0 AND BarcodeID = @barcode", conn, trans)
-                            zeroFixCmd.Parameters.AddWithValue("@barcode", barcodeID)
-                            zeroFixCmd.ExecuteNonQuery()
+                        Using updateInv As New MySqlCommand("
+                        UPDATE inventory 
+                        SET Quantity = Quantity - @q 
+                        WHERE BarcodeID=@barcode", conn, trans)
+                            updateInv.Parameters.AddWithValue("@q", qty)
+                            updateInv.Parameters.AddWithValue("@barcode", barcodeID)
+                            updateInv.ExecuteNonQuery()
                         End Using
                     Next
 
-                    ' =============================
-                    ' INSERT SALES & SALES ITEMS
-                    ' =============================
-                    Dim transactionNumber As String = currentTransactionNo
-                    Dim receiptNumber As String = currentInvoiceNo
+
+                    ' ============================
+                    ' SAVE SALES HEADER
+                    ' ============================
+                    Dim transactionNumber = currentTransactionNo
+                    Dim receiptNumber = currentInvoiceNo
                     Dim saleID As Integer
 
-                    Using cmd As New MySqlCommand("INSERT INTO sales (ReceiptNo, TransactionNo, TotalAmount, Payment, ChangeAmount, Discount, VAT, Cashier, SaleDate, LoyaltyDiscount) " &
-                                              "VALUES (@receiptNo, @transactionNo, @total, @payment, @change, @discount, @vat, @cashier, @saleDate, @loyalty); SELECT LAST_INSERT_ID();", conn, trans)
-                        cmd.Parameters.AddWithValue("@receiptNo", receiptNumber)
-                        cmd.Parameters.AddWithValue("@transactionNo", transactionNumber)
+                    Using cmd As New MySqlCommand("
+                    INSERT INTO sales 
+                    (ReceiptNo, TransactionNo, TotalAmount, Payment, ChangeAmount, Discount, VAT, Cashier, SaleDate, LoyaltyDiscount)
+                    VALUES
+                    (@r, @t, @total, @pay, @chg, @disc, @vat, @cash, NOW(), @loyal);
+                    SELECT LAST_INSERT_ID();", conn, trans)
+
+                        cmd.Parameters.AddWithValue("@r", receiptNumber)
+                        cmd.Parameters.AddWithValue("@t", transactionNumber)
                         cmd.Parameters.AddWithValue("@total", totalDue)
-                        cmd.Parameters.AddWithValue("@payment", payment)
-                        cmd.Parameters.AddWithValue("@change", change)
-                        cmd.Parameters.AddWithValue("@discount", CDec(lblDiscount.Text.Replace("₱", "").Replace(",", "").Trim()))
+                        cmd.Parameters.AddWithValue("@pay", payment)
+                        cmd.Parameters.AddWithValue("@chg", change)
+                        cmd.Parameters.AddWithValue("@disc", CDec(lblDiscount.Text.Replace("₱", "").Replace(",", "").Trim()))
                         cmd.Parameters.AddWithValue("@vat", lastVatAmount)
-                        cmd.Parameters.AddWithValue("@cashier", lblCashier.Text)
-                        cmd.Parameters.AddWithValue("@saleDate", DateTime.Now)
-                        cmd.Parameters.AddWithValue("@loyalty", loyaltyDiscountAmount)
+                        cmd.Parameters.AddWithValue("@cash", lblCashier.Text)
+                        cmd.Parameters.AddWithValue("@loyal", loyaltyDiscountAmount)
+
                         saleID = Convert.ToInt32(cmd.ExecuteScalar())
                     End Using
 
-                    ' Insert sales items
+
+                    ' ============================
+                    ' SAVE SALES ITEMS
+                    ' ============================
                     For Each row As DataGridViewRow In dgvCart.Rows
                         If row.IsNewRow Then Continue For
+
                         Dim qty As Integer = CInt(row.Cells("Quantity").Value)
                         Dim saleType As String = If(qty >= 50, "Wholesale", "Retail")
-                        Using itemCmd As New MySqlCommand("INSERT INTO sales_items (SaleID, BarcodeID, ProductName, Quantity, UnitPrice, TotalPrice, SaleType) " &
-                                                     "VALUES (@saleID, @barcode, @pname, @qty, @unitPrice, @totalPrice, @saleType)", conn, trans)
-                            itemCmd.Parameters.AddWithValue("@saleID", saleID)
-                            itemCmd.Parameters.AddWithValue("@barcode", row.Cells("Barcode").Value.ToString())
-                            itemCmd.Parameters.AddWithValue("@pname", row.Cells("ProductName").Value.ToString())
-                            itemCmd.Parameters.AddWithValue("@qty", qty)
-                            itemCmd.Parameters.AddWithValue("@unitPrice", CDec(row.Cells("UnitPrice").Value))
-                            itemCmd.Parameters.AddWithValue("@totalPrice", CDec(row.Cells("Total").Value))
-                            itemCmd.Parameters.AddWithValue("@saleType", saleType)
-                            itemCmd.ExecuteNonQuery()
+
+                        Using cmd As New MySqlCommand("
+                        INSERT INTO sales_items
+                        (SaleID, BarcodeID, ProductName, Quantity, UnitPrice, TotalPrice, SaleType)
+                        VALUES
+                        (@sid, @b, @p, @q, @u, @t, @type)", conn, trans)
+
+                            cmd.Parameters.AddWithValue("@sid", saleID)
+                            cmd.Parameters.AddWithValue("@b", row.Cells("Barcode").Value.ToString())
+                            cmd.Parameters.AddWithValue("@p", row.Cells("ProductName").Value.ToString())
+                            cmd.Parameters.AddWithValue("@q", qty)
+                            cmd.Parameters.AddWithValue("@u", CDec(row.Cells("UnitPrice").Value))
+                            cmd.Parameters.AddWithValue("@t", CDec(row.Cells("Total").Value))
+                            cmd.Parameters.AddWithValue("@type", saleType)
+
+                            cmd.ExecuteNonQuery()
                         End Using
                     Next
 
-                    ' Deduct redeemable points if applied
-                    If isLoyaltyApplied AndAlso redeemablePointsRequired > 0 AndAlso Not String.IsNullOrEmpty(memberBarcode) Then
-                        Using cmd As New MySqlCommand("UPDATE membership SET Points = Points - @redeemPoints WHERE Barcode = @barcode", conn, trans)
-                            cmd.Parameters.AddWithValue("@redeemPoints", redeemablePointsRequired)
-                            cmd.Parameters.AddWithValue("@barcode", memberBarcode)
-                            cmd.ExecuteNonQuery()
-                        End Using
-                    End If
 
-                    ' --- ✅ Commit transaction ---
-                    trans.Commit()
-
-                    If isMemberSelected AndAlso Not String.IsNullOrEmpty(memberBarcode) Then
-                        ' fetch PriceToGainPoint from loyaltydiscount table
-                        Dim priceToGainPointLocal As Decimal = 10
-                        Using connPts As New MySqlConnection(connectionstring)
-                            connPts.Open()
-                            Using cmdPts As New MySqlCommand("SELECT PriceToGainPoint FROM loyaltydiscount ORDER BY id DESC LIMIT 1", connPts)
-                                Dim result = cmdPts.ExecuteScalar()
-                                If result IsNot Nothing Then priceToGainPoint = CDec(result)
-                            End Using
-                        End Using
-
-                        ' ✅ Award loyalty point if totalDue meets requirement
+                    ' ============================
+                    ' LOYALTY POINTS (EARN)
+                    ' ============================
+                    If isMemberSelected AndAlso memberBarcode <> "" Then
                         If totalDue >= priceToGainPoint Then
-                            Using conn2 As New MySqlConnection(connectionstring)
-                                conn2.Open()
-                                Using cmd As New MySqlCommand("UPDATE membership SET Points = Points + 1 WHERE Barcode = @barcode", conn2)
-                                    cmd.Parameters.AddWithValue("@barcode", memberBarcode)
+                            Using addPointConn As New MySqlConnection(connectionstring)
+                                addPointConn.Open()
+                                Using cmd As New MySqlCommand("
+                                UPDATE membership 
+                                SET Points = Points + 1 
+                                WHERE Barcode=@b", addPointConn)
+                                    cmd.Parameters.AddWithValue("@b", memberBarcode)
                                     cmd.ExecuteNonQuery()
                                 End Using
                             End Using
-                            MessageBox.Show("Member earned 1 loyalty point!", "Loyalty Points", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         End If
                     End If
 
 
-                    ' =============================
-                    ' SUCCESS ACTIONS
-                    ' =============================
+                    ' ============================
+                    ' COMMIT
+                    ' ============================
+                    trans.Commit()
+
+                    ' Print receipt
                     GenerateReceipt(payment, change, receiptNumber, transactionNumber)
 
+                    ' ========== RESET UI ==========
                     dgvCart.Rows.Clear()
                     lblTotalAmount.Text = "₱ 0.00"
                     lblDiscount.Text = "₱ 0.00"
@@ -1807,36 +1834,37 @@ Public Class POS
                     lblChange.Text = "₱ 0.00"
                     lblWholesale.Text = "₱ 0.00"
                     lblloyaltydiscount.Text = "₱ 0.00"
-                    cmbDiscount.SelectedIndex = -1
+                    lblSubtotal.Text = "₱ 0.00"
+
                     txtPayment.Clear()
                     txtBarcode.Clear()
                     txtBarcode.Focus()
+
                     Checkoutshadowpanel.Visible = False
                     Guna2Panel3.Visible = False
 
-                    ' Reset member & loyalty tracking
+                    cmbDiscount.SelectedIndex = -1
+
+                    ' Loyalty reset
                     isMemberSelected = False
-                    memberBarcode = ""
                     isLoyaltyApplied = False
                     loyaltyDiscountAmount = 0D
                     loyaltyDiscountPercent = 0D
                     redeemablePointsRequired = 0
+                    memberBarcode = ""
+
                     txtBarcodeCustomer.Clear()
                     lblCustomerName.Text = ""
                     lblCustomerPoints.Text = ""
                     picbarcode.Image = Nothing
+
                     btnredeempoints.Visible = False
                     btnCancel.Visible = False
-                    Guna2Panel3.Visible = False
 
-                    ' Audit log
-                    Try
-                        LogAuditTrail(SessionData.role, SessionData.fullName, $"Checkout Transaction: {transactionNumber}")
-                    Catch logEx As Exception
-                        Console.WriteLine("Audit log failed: " & logEx.Message)
-                    End Try
+                    ' Audit
+                    LogAuditTrail(SessionData.role, SessionData.fullName, $"Checkout Transaction: {transactionNumber}")
 
-                    ' Prepare next transaction
+                    ' Prepare new transaction
                     GenerateNewNumbers()
                     SetupProductListGrid()
 
@@ -1846,9 +1874,12 @@ Public Class POS
                     trans.Rollback()
                     MessageBox.Show("Checkout failed: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End Try
+
             End Using
         End Using
+
     End Sub
+
 
     Private Sub btnPay_Click(sender As Object, e As EventArgs) Handles btnPay.Click
         ' === Check if cart is empty (no valid rows) ===
@@ -2248,16 +2279,20 @@ Public Class POS
                                      Next
 
                                      ' === TOTALS ===
-                                     Dim subTotal As Decimal = dgvCart.Rows.Cast(Of DataGridViewRow)().Sum(Function(r) CDec(r.Cells("Total").Value))
-                                     Dim discount As Decimal = 0D
-                                     Decimal.TryParse(lblDiscount.Text.Replace("₱", "").Trim(), discount)
-                                     Dim loyaltyDiscount As Decimal = 0D
-                                     Decimal.TryParse(lblloyaltydiscount.Text.Replace("₱", "").Trim(), loyaltyDiscount)
-                                     Dim wholesaleDiscount As Decimal = 0D
-                                     Decimal.TryParse(lblWholesale.Text.Replace("₱", "").Trim().Replace("-", ""), wholesaleDiscount)
+                                     Dim subTotal As Decimal = 0D
+                                     For Each r As DataGridViewRow In dgvCart.Rows
+                                         If Not r.IsNewRow Then
+                                             subTotal += ToDecimalSafe(r.Cells("Total").Value)
+                                         End If
+                                     Next
+
+                                     Dim discount As Decimal = ToDecimalSafe(lblDiscount.Text)
+                                     Dim loyaltyDiscount As Decimal = ToDecimalSafe(lblloyaltydiscount.Text)
+                                     Dim wholesaleDiscount As Decimal = ToDecimalSafe(lblWholesale.Text)
                                      Dim vat As Decimal = lastVatAmount
-                                     Dim total As Decimal = CDec(lblTotalAmount.Text)
+                                     Dim total As Decimal = ToDecimalSafe(lblTotalAmount.Text)
                                      Dim vatableSales As Decimal = subTotal
+
 
                                      Dim totalLines As New Dictionary(Of String, Decimal) From {
                                      {"SUBTOTAL", subTotal},
@@ -2346,6 +2381,7 @@ Public Class POS
                                      e.HasMorePages = False
                                  End Sub
 
+
         ' === PRINT PREVIEW ===
         Dim preview As New PrintPreviewDialog() With {.Document = pd, .Width = 600, .Height = 800}
         preview.PrintPreviewControl.Zoom = 2.0
@@ -2355,6 +2391,22 @@ Public Class POS
         txtBarcode.Text = ""
         txtBarcode.Focus()
     End Sub
+
+    Private Function ToDecimalSafe(value As Object) As Decimal
+        If value Is Nothing Then Return 0D
+
+        Dim s As String = value.ToString()
+
+        ' Remove Peso sign & commas
+        s = s.Replace("₱", "").Replace(",", "").Replace("-", "").Trim()
+
+        Dim d As Decimal = 0D
+        Decimal.TryParse(s, d)
+
+        Return d
+    End Function
+
+
 
 
     ' =================== Hold Transaction ===================
@@ -2445,6 +2497,7 @@ Public Class POS
             lblVatableSales.Text = "₱0.00"
             lblVAT.Text = "₱0.00"
             lblTotalAmount.Text = "₱0.00"
+            lblSubtotal.Text = "₱ 0.00"
 
             ' ✅ Generate new numbers for the next transaction
             GenerateNewNumbers()
@@ -2672,29 +2725,33 @@ Public Class POS
     End Sub
 
     ' === HELPER FUNCTION ===
-    Private Sub SetPaymentAmount(value As String)
-        txtPayment.Text = value
-        UpdateChange()
+    Private Sub SetPaymentAmount(amount As Decimal)
+        Dim currentAmount As Decimal = 0
+        Decimal.TryParse(txtPayment.Text, currentAmount)
+
+        txtPayment.Text = (currentAmount + amount).ToString("0")
     End Sub
+
     Private Sub btn50_Click(sender As Object, e As EventArgs) Handles btn50.Click
-        SetPaymentAmount("50")
+        SetPaymentAmount(50)
         UpdateChange()
     End Sub
 
     Private Sub btn100_Click(sender As Object, e As EventArgs) Handles btn100.Click
-        SetPaymentAmount("100")
+        SetPaymentAmount(100)
         UpdateChange()
     End Sub
 
     Private Sub btn500_Click(sender As Object, e As EventArgs) Handles btn500.Click
-        SetPaymentAmount("500")
+        SetPaymentAmount(500)
         UpdateChange()
     End Sub
 
     Private Sub btn1000_Click(sender As Object, e As EventArgs) Handles btn1000.Click
-        SetPaymentAmount("1000")
+        SetPaymentAmount(1000)
         UpdateChange()
     End Sub
+
 
     ' === NUMBER BUTTONS ===
     Private Sub AppendToPayment(value As String)

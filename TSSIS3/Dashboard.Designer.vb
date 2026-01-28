@@ -24,12 +24,12 @@ Partial Class Dashboard
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Dashboard))
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend4 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.lblFileMaintenance = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.lblUtilities = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.Guna2ShadowPanel1 = New Guna.UI2.WinForms.Guna2ShadowPanel()
@@ -38,7 +38,6 @@ Partial Class Dashboard
         Me.btnDashboard = New Guna.UI2.WinForms.Guna2Button()
         Me.btnLogout = New Guna.UI2.WinForms.Guna2Button()
         Me.btnUsers = New Guna.UI2.WinForms.Guna2Button()
-        Me.btnDiscounts = New Guna.UI2.WinForms.Guna2Button()
         Me.btnPOS = New Guna.UI2.WinForms.Guna2Button()
         Me.btnCategory = New Guna.UI2.WinForms.Guna2Button()
         Me.btnSupplier = New Guna.UI2.WinForms.Guna2Button()
@@ -47,6 +46,7 @@ Partial Class Dashboard
         Me.btnReports = New Guna.UI2.WinForms.Guna2Button()
         Me.btnVat = New Guna.UI2.WinForms.Guna2Button()
         Me.PictureBox11 = New System.Windows.Forms.PictureBox()
+        Me.btnDiscounts = New Guna.UI2.WinForms.Guna2Button()
         Me.Guna2ShadowPanel2 = New Guna.UI2.WinForms.Guna2ShadowPanel()
         Me.lblName = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.userpbcircle = New Guna.UI2.WinForms.Guna2CirclePictureBox()
@@ -113,6 +113,7 @@ Partial Class Dashboard
         Me.LogHistoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AuditTrailToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ChangePasswordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Guna2HtmlLabel2 = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.Guna2ShadowPanel1.SuspendLayout()
         CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel2.SuspendLayout()
@@ -158,17 +159,18 @@ Partial Class Dashboard
         'lblUtilities
         '
         Me.lblUtilities.BackColor = System.Drawing.Color.Transparent
-        Me.lblUtilities.Font = New System.Drawing.Font("Outfit", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblUtilities.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblUtilities.ForeColor = System.Drawing.Color.DarkGray
-        Me.lblUtilities.Location = New System.Drawing.Point(5, 600)
+        Me.lblUtilities.Location = New System.Drawing.Point(5, 621)
         Me.lblUtilities.Name = "lblUtilities"
-        Me.lblUtilities.Size = New System.Drawing.Size(43, 16)
+        Me.lblUtilities.Size = New System.Drawing.Size(47, 15)
         Me.lblUtilities.TabIndex = 11
         Me.lblUtilities.Text = "Reports"
         '
         'Guna2ShadowPanel1
         '
         Me.Guna2ShadowPanel1.BackColor = System.Drawing.Color.Transparent
+        Me.Guna2ShadowPanel1.Controls.Add(Me.Guna2HtmlLabel2)
         Me.Guna2ShadowPanel1.Controls.Add(Me.Guna2HtmlLabel1)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnUtilities)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnDashboard)
@@ -176,7 +178,6 @@ Partial Class Dashboard
         Me.Guna2ShadowPanel1.Controls.Add(Me.lblFileMaintenance)
         Me.Guna2ShadowPanel1.Controls.Add(Me.lblUtilities)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnUsers)
-        Me.Guna2ShadowPanel1.Controls.Add(Me.btnDiscounts)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnPOS)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnCategory)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnSupplier)
@@ -185,6 +186,7 @@ Partial Class Dashboard
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnReports)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnVat)
         Me.Guna2ShadowPanel1.Controls.Add(Me.PictureBox11)
+        Me.Guna2ShadowPanel1.Controls.Add(Me.btnDiscounts)
         Me.Guna2ShadowPanel1.FillColor = System.Drawing.Color.Gainsboro
         Me.Guna2ShadowPanel1.ForeColor = System.Drawing.Color.Black
         Me.Guna2ShadowPanel1.Location = New System.Drawing.Point(12, 12)
@@ -200,7 +202,7 @@ Partial Class Dashboard
         Me.Guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent
         Me.Guna2HtmlLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.Guna2HtmlLabel1.ForeColor = System.Drawing.Color.DarkGray
-        Me.Guna2HtmlLabel1.Location = New System.Drawing.Point(5, 537)
+        Me.Guna2HtmlLabel1.Location = New System.Drawing.Point(5, 560)
         Me.Guna2HtmlLabel1.Name = "Guna2HtmlLabel1"
         Me.Guna2HtmlLabel1.Size = New System.Drawing.Size(83, 15)
         Me.Guna2HtmlLabel1.TabIndex = 17
@@ -218,7 +220,7 @@ Partial Class Dashboard
         Me.btnUtilities.ForeColor = System.Drawing.Color.Black
         Me.btnUtilities.Image = Global.TSSIS3.My.Resources.Resources.iconmain13
         Me.btnUtilities.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnUtilities.Location = New System.Drawing.Point(11, 558)
+        Me.btnUtilities.Location = New System.Drawing.Point(11, 581)
         Me.btnUtilities.Name = "btnUtilities"
         Me.btnUtilities.Size = New System.Drawing.Size(205, 36)
         Me.btnUtilities.TabIndex = 9
@@ -278,24 +280,6 @@ Partial Class Dashboard
         Me.btnUsers.TabIndex = 1
         Me.btnUsers.Text = "Users"
         '
-        'btnDiscounts
-        '
-        Me.btnDiscounts.BorderRadius = 5
-        Me.btnDiscounts.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnDiscounts.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnDiscounts.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnDiscounts.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnDiscounts.FillColor = System.Drawing.Color.Transparent
-        Me.btnDiscounts.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnDiscounts.ForeColor = System.Drawing.Color.Black
-        Me.btnDiscounts.Image = Global.TSSIS3.My.Resources.Resources.iconmain8
-        Me.btnDiscounts.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnDiscounts.Location = New System.Drawing.Point(11, 455)
-        Me.btnDiscounts.Name = "btnDiscounts"
-        Me.btnDiscounts.Size = New System.Drawing.Size(205, 36)
-        Me.btnDiscounts.TabIndex = 7
-        Me.btnDiscounts.Text = "Discounts"
-        '
         'btnPOS
         '
         Me.btnPOS.BorderRadius = 5
@@ -308,7 +292,7 @@ Partial Class Dashboard
         Me.btnPOS.ForeColor = System.Drawing.Color.Black
         Me.btnPOS.Image = Global.TSSIS3.My.Resources.Resources.iconmain7
         Me.btnPOS.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnPOS.Location = New System.Drawing.Point(11, 413)
+        Me.btnPOS.Location = New System.Drawing.Point(11, 518)
         Me.btnPOS.Name = "btnPOS"
         Me.btnPOS.Size = New System.Drawing.Size(205, 36)
         Me.btnPOS.TabIndex = 6
@@ -380,7 +364,7 @@ Partial Class Dashboard
         Me.btnInventory.ForeColor = System.Drawing.Color.Black
         Me.btnInventory.Image = Global.TSSIS3.My.Resources.Resources.iconmain6
         Me.btnInventory.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnInventory.Location = New System.Drawing.Point(11, 371)
+        Me.btnInventory.Location = New System.Drawing.Point(11, 455)
         Me.btnInventory.Name = "btnInventory"
         Me.btnInventory.Size = New System.Drawing.Size(205, 36)
         Me.btnInventory.TabIndex = 5
@@ -398,7 +382,7 @@ Partial Class Dashboard
         Me.btnReports.ForeColor = System.Drawing.Color.Black
         Me.btnReports.Image = Global.TSSIS3.My.Resources.Resources.iconmain10
         Me.btnReports.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnReports.Location = New System.Drawing.Point(11, 621)
+        Me.btnReports.Location = New System.Drawing.Point(11, 642)
         Me.btnReports.Name = "btnReports"
         Me.btnReports.Size = New System.Drawing.Size(205, 36)
         Me.btnReports.TabIndex = 10
@@ -416,7 +400,7 @@ Partial Class Dashboard
         Me.btnVat.ForeColor = System.Drawing.Color.Black
         Me.btnVat.Image = Global.TSSIS3.My.Resources.Resources.iconmain9
         Me.btnVat.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnVat.Location = New System.Drawing.Point(11, 497)
+        Me.btnVat.Location = New System.Drawing.Point(11, 413)
         Me.btnVat.Name = "btnVat"
         Me.btnVat.Size = New System.Drawing.Size(205, 36)
         Me.btnVat.TabIndex = 8
@@ -431,6 +415,24 @@ Partial Class Dashboard
         Me.PictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox11.TabIndex = 4
         Me.PictureBox11.TabStop = False
+        '
+        'btnDiscounts
+        '
+        Me.btnDiscounts.BorderRadius = 5
+        Me.btnDiscounts.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnDiscounts.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnDiscounts.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnDiscounts.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnDiscounts.FillColor = System.Drawing.Color.Transparent
+        Me.btnDiscounts.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnDiscounts.ForeColor = System.Drawing.Color.Black
+        Me.btnDiscounts.Image = Global.TSSIS3.My.Resources.Resources.iconmain8
+        Me.btnDiscounts.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnDiscounts.Location = New System.Drawing.Point(11, 371)
+        Me.btnDiscounts.Name = "btnDiscounts"
+        Me.btnDiscounts.Size = New System.Drawing.Size(205, 36)
+        Me.btnDiscounts.TabIndex = 7
+        Me.btnDiscounts.Text = "Discounts"
         '
         'Guna2ShadowPanel2
         '
@@ -556,16 +558,16 @@ Partial Class Dashboard
         '
         'Chart1
         '
-        ChartArea1.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea1)
-        Legend1.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend1)
+        ChartArea3.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea3)
+        Legend3.Name = "Legend1"
+        Me.Chart1.Legends.Add(Legend3)
         Me.Chart1.Location = New System.Drawing.Point(17, 18)
         Me.Chart1.Name = "Chart1"
-        Series1.ChartArea = "ChartArea1"
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Me.Chart1.Series.Add(Series1)
+        Series3.ChartArea = "ChartArea1"
+        Series3.Legend = "Legend1"
+        Series3.Name = "Series1"
+        Me.Chart1.Series.Add(Series3)
         Me.Chart1.Size = New System.Drawing.Size(644, 372)
         Me.Chart1.TabIndex = 1
         Me.Chart1.Text = "Chart1"
@@ -673,16 +675,16 @@ Partial Class Dashboard
         '
         'Chart2
         '
-        ChartArea2.Name = "ChartArea1"
-        Me.Chart2.ChartAreas.Add(ChartArea2)
-        Legend2.Name = "Legend1"
-        Me.Chart2.Legends.Add(Legend2)
+        ChartArea4.Name = "ChartArea1"
+        Me.Chart2.ChartAreas.Add(ChartArea4)
+        Legend4.Name = "Legend1"
+        Me.Chart2.Legends.Add(Legend4)
         Me.Chart2.Location = New System.Drawing.Point(28, 18)
         Me.Chart2.Name = "Chart2"
-        Series2.ChartArea = "ChartArea1"
-        Series2.Legend = "Legend1"
-        Series2.Name = "Series1"
-        Me.Chart2.Series.Add(Series2)
+        Series4.ChartArea = "ChartArea1"
+        Series4.Legend = "Legend1"
+        Series4.Name = "Series1"
+        Me.Chart2.Series.Add(Series4)
         Me.Chart2.Size = New System.Drawing.Size(336, 230)
         Me.Chart2.TabIndex = 0
         Me.Chart2.Text = "Chart2"
@@ -712,11 +714,11 @@ Partial Class Dashboard
         'lblSalesSummary
         '
         Me.lblSalesSummary.BackColor = System.Drawing.Color.Transparent
-        Me.lblSalesSummary.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSalesSummary.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSalesSummary.ForeColor = System.Drawing.Color.White
         Me.lblSalesSummary.Location = New System.Drawing.Point(149, 9)
         Me.lblSalesSummary.Name = "lblSalesSummary"
-        Me.lblSalesSummary.Size = New System.Drawing.Size(95, 18)
+        Me.lblSalesSummary.Size = New System.Drawing.Size(111, 18)
         Me.lblSalesSummary.TabIndex = 14
         Me.lblSalesSummary.Text = "Sales Summary"
         '
@@ -733,33 +735,33 @@ Partial Class Dashboard
         'lblTotalSalesToday
         '
         Me.lblTotalSalesToday.BackColor = System.Drawing.Color.Transparent
-        Me.lblTotalSalesToday.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotalSalesToday.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotalSalesToday.ForeColor = System.Drawing.Color.Black
         Me.lblTotalSalesToday.Location = New System.Drawing.Point(21, 62)
         Me.lblTotalSalesToday.Name = "lblTotalSalesToday"
-        Me.lblTotalSalesToday.Size = New System.Drawing.Size(68, 18)
+        Me.lblTotalSalesToday.Size = New System.Drawing.Size(83, 18)
         Me.lblTotalSalesToday.TabIndex = 12
         Me.lblTotalSalesToday.Text = "Total Sales"
         '
         'lblTotalSalesThismonth
         '
         Me.lblTotalSalesThismonth.BackColor = System.Drawing.Color.Transparent
-        Me.lblTotalSalesThismonth.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotalSalesThismonth.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotalSalesThismonth.ForeColor = System.Drawing.Color.Black
         Me.lblTotalSalesThismonth.Location = New System.Drawing.Point(263, 62)
         Me.lblTotalSalesThismonth.Name = "lblTotalSalesThismonth"
-        Me.lblTotalSalesThismonth.Size = New System.Drawing.Size(68, 18)
+        Me.lblTotalSalesThismonth.Size = New System.Drawing.Size(83, 18)
         Me.lblTotalSalesThismonth.TabIndex = 11
         Me.lblTotalSalesThismonth.Text = "Total Sales"
         '
         'lblTotalSales2
         '
         Me.lblTotalSales2.BackColor = System.Drawing.Color.Transparent
-        Me.lblTotalSales2.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotalSales2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotalSales2.ForeColor = System.Drawing.Color.Black
         Me.lblTotalSales2.Location = New System.Drawing.Point(130, 62)
         Me.lblTotalSales2.Name = "lblTotalSales2"
-        Me.lblTotalSales2.Size = New System.Drawing.Size(68, 18)
+        Me.lblTotalSales2.Size = New System.Drawing.Size(83, 18)
         Me.lblTotalSales2.TabIndex = 10
         Me.lblTotalSales2.Text = "Total Sales"
         '
@@ -785,33 +787,33 @@ Partial Class Dashboard
         'lblTotalSales
         '
         Me.lblTotalSales.BackColor = System.Drawing.Color.Transparent
-        Me.lblTotalSales.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotalSales.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotalSales.ForeColor = System.Drawing.Color.Black
         Me.lblTotalSales.Location = New System.Drawing.Point(130, 33)
         Me.lblTotalSales.Name = "lblTotalSales"
-        Me.lblTotalSales.Size = New System.Drawing.Size(100, 18)
+        Me.lblTotalSales.Size = New System.Drawing.Size(118, 18)
         Me.lblTotalSales.TabIndex = 8
         Me.lblTotalSales.Text = "Yesterday Sales"
         '
         'lblThismonths
         '
         Me.lblThismonths.BackColor = System.Drawing.Color.Transparent
-        Me.lblThismonths.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblThismonths.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblThismonths.ForeColor = System.Drawing.Color.Black
         Me.lblThismonths.Location = New System.Drawing.Point(263, 33)
         Me.lblThismonths.Name = "lblThismonths"
-        Me.lblThismonths.Size = New System.Drawing.Size(100, 18)
+        Me.lblThismonths.Size = New System.Drawing.Size(122, 18)
         Me.lblThismonths.TabIndex = 9
         Me.lblThismonths.Text = "This Month Sales"
         '
         'lblToday
         '
         Me.lblToday.BackColor = System.Drawing.Color.Transparent
-        Me.lblToday.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblToday.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblToday.ForeColor = System.Drawing.Color.Black
         Me.lblToday.Location = New System.Drawing.Point(19, 33)
         Me.lblToday.Name = "lblToday"
-        Me.lblToday.Size = New System.Drawing.Size(75, 18)
+        Me.lblToday.Size = New System.Drawing.Size(92, 18)
         Me.lblToday.TabIndex = 0
         Me.lblToday.Text = "Today Sales"
         '
@@ -1144,6 +1146,17 @@ Partial Class Dashboard
         Me.ChangePasswordToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.ChangePasswordToolStripMenuItem.Text = "Change Password"
         '
+        'Guna2HtmlLabel2
+        '
+        Me.Guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent
+        Me.Guna2HtmlLabel2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.Guna2HtmlLabel2.ForeColor = System.Drawing.Color.DarkGray
+        Me.Guna2HtmlLabel2.Location = New System.Drawing.Point(5, 497)
+        Me.Guna2HtmlLabel2.Name = "Guna2HtmlLabel2"
+        Me.Guna2HtmlLabel2.Size = New System.Drawing.Size(76, 15)
+        Me.Guna2HtmlLabel2.TabIndex = 18
+        Me.Guna2HtmlLabel2.Text = "Transactions"
+        '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1283,4 +1296,5 @@ Partial Class Dashboard
     Friend WithEvents LogHistoryToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AuditTrailToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ChangePasswordToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Guna2HtmlLabel2 As Guna.UI2.WinForms.Guna2HtmlLabel
 End Class

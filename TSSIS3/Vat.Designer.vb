@@ -39,22 +39,24 @@ Partial Class Vat
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(98, 100)
+        Me.Label1.Location = New System.Drawing.Point(131, 123)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(86, 16)
+        Me.Label1.Size = New System.Drawing.Size(124, 20)
         Me.Label1.TabIndex = 32
         Me.Label1.Text = "Update Vat %"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Outfit", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label3.Location = New System.Drawing.Point(98, 38)
+        Me.Label3.Location = New System.Drawing.Point(131, 47)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(39, 16)
+        Me.Label3.Size = New System.Drawing.Size(59, 20)
         Me.Label3.TabIndex = 31
         Me.Label3.Text = "Vat %"
         '
@@ -72,12 +74,13 @@ Partial Class Vat
         Me.update.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.update.ForeColor = System.Drawing.Color.Black
         Me.update.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.update.Location = New System.Drawing.Point(101, 123)
+        Me.update.Location = New System.Drawing.Point(135, 151)
+        Me.update.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.update.Name = "update"
         Me.update.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.update.PlaceholderText = "Enter New Vat Value"
         Me.update.SelectedText = ""
-        Me.update.Size = New System.Drawing.Size(235, 36)
+        Me.update.Size = New System.Drawing.Size(313, 44)
         Me.update.TabIndex = 2
         '
         'updatebtn
@@ -93,9 +96,10 @@ Partial Class Vat
         Me.updatebtn.ForeColor = System.Drawing.Color.White
         Me.updatebtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
         Me.updatebtn.ImageSize = New System.Drawing.Size(30, 30)
-        Me.updatebtn.Location = New System.Drawing.Point(221, 170)
+        Me.updatebtn.Location = New System.Drawing.Point(55, 204)
+        Me.updatebtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.updatebtn.Name = "updatebtn"
-        Me.updatebtn.Size = New System.Drawing.Size(115, 35)
+        Me.updatebtn.Size = New System.Drawing.Size(153, 43)
         Me.updatebtn.TabIndex = 3
         Me.updatebtn.Text = "Update"
         '
@@ -114,12 +118,13 @@ Partial Class Vat
         Me.currvat.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.currvat.ForeColor = System.Drawing.Color.Black
         Me.currvat.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.currvat.Location = New System.Drawing.Point(101, 61)
+        Me.currvat.Location = New System.Drawing.Point(135, 75)
+        Me.currvat.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.currvat.Name = "currvat"
         Me.currvat.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.currvat.PlaceholderText = "Vat%"
         Me.currvat.SelectedText = ""
-        Me.currvat.Size = New System.Drawing.Size(235, 36)
+        Me.currvat.Size = New System.Drawing.Size(313, 44)
         Me.currvat.TabIndex = 1
         '
         'Guna2ShadowPanel1
@@ -128,21 +133,23 @@ Partial Class Vat
         Me.Guna2ShadowPanel1.Controls.Add(Me.Label2)
         Me.Guna2ShadowPanel1.Controls.Add(Me.Guna2Panel1)
         Me.Guna2ShadowPanel1.FillColor = System.Drawing.Color.White
-        Me.Guna2ShadowPanel1.Location = New System.Drawing.Point(319, 160)
+        Me.Guna2ShadowPanel1.Location = New System.Drawing.Point(425, 197)
+        Me.Guna2ShadowPanel1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Guna2ShadowPanel1.Name = "Guna2ShadowPanel1"
         Me.Guna2ShadowPanel1.Radius = 2
         Me.Guna2ShadowPanel1.ShadowColor = System.Drawing.Color.Black
-        Me.Guna2ShadowPanel1.Size = New System.Drawing.Size(486, 318)
+        Me.Guna2ShadowPanel1.Size = New System.Drawing.Size(648, 391)
         Me.Guna2ShadowPanel1.TabIndex = 34
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Outfit", 11.75!, System.Drawing.FontStyle.Bold)
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.75!, System.Drawing.FontStyle.Bold)
         Me.Label2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label2.Location = New System.Drawing.Point(17, 24)
+        Me.Label2.Location = New System.Drawing.Point(23, 30)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(94, 20)
+        Me.Label2.Size = New System.Drawing.Size(120, 25)
         Me.Label2.TabIndex = 33
         Me.Label2.Text = "Update Vat"
         '
@@ -153,9 +160,10 @@ Partial Class Vat
         Me.Guna2Panel1.Controls.Add(Me.updatebtn)
         Me.Guna2Panel1.Controls.Add(Me.Label3)
         Me.Guna2Panel1.Controls.Add(Me.Label1)
-        Me.Guna2Panel1.Location = New System.Drawing.Point(22, 57)
+        Me.Guna2Panel1.Location = New System.Drawing.Point(29, 70)
+        Me.Guna2Panel1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Guna2Panel1.Name = "Guna2Panel1"
-        Me.Guna2Panel1.Size = New System.Drawing.Size(437, 238)
+        Me.Guna2Panel1.Size = New System.Drawing.Size(583, 293)
         Me.Guna2Panel1.TabIndex = 35
         '
         'PictureBoxexit
@@ -163,21 +171,23 @@ Partial Class Vat
         Me.PictureBoxexit.BackColor = System.Drawing.Color.Transparent
         Me.PictureBoxexit.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBoxexit.Image = Global.TSSIS3.My.Resources.Resources.icons8_close_window_50
-        Me.PictureBoxexit.Location = New System.Drawing.Point(1056, 1)
+        Me.PictureBoxexit.Location = New System.Drawing.Point(1408, 1)
+        Me.PictureBoxexit.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.PictureBoxexit.Name = "PictureBoxexit"
-        Me.PictureBoxexit.Size = New System.Drawing.Size(47, 49)
+        Me.PictureBoxexit.Size = New System.Drawing.Size(63, 60)
         Me.PictureBoxexit.TabIndex = 52
         Me.PictureBoxexit.TabStop = False
         '
         'Vat
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.ClientSize = New System.Drawing.Size(1108, 683)
+        Me.ClientSize = New System.Drawing.Size(1477, 841)
         Me.Controls.Add(Me.PictureBoxexit)
         Me.Controls.Add(Me.Guna2ShadowPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "Vat"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Vat"

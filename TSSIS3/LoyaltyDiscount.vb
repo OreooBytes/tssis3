@@ -56,9 +56,18 @@ Public Class LoyaltyDiscount
             Dim hasRedeem As Boolean = Integer.TryParse(txtredeemablepoints.Text, newRedeem)
             Dim hasPrice As Boolean = Double.TryParse(Guna2TextBox2.Text, newPrice)
 
+            ' Validate parsed values
             If Not (hasDisc AndAlso hasRedeem AndAlso hasPrice) Then
                 MessageBox.Show("Invalid input values.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Exit Sub
+            End If
+
+            ' Enforce discount constraints: must be >= 0 and less than 100%
+            If hasDisc Then
+                If newDisc < 0 OrElse newDisc >= 100 Then
+                    MessageBox.Show("Discount must be greater than or equal to 0 and less than 100%.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Exit Sub
+                End If
             End If
 
             Using conn As MySqlConnection = Module1.Openconnection()
@@ -116,6 +125,11 @@ Public Class LoyaltyDiscount
                     End If
 
                     If Math.Round(newDisc, 2) <> Math.Round(currentDisc, 2) Then
+                        ' extra safety: double-check not 100 or more
+                        If newDisc >= 100 Then
+                            MessageBox.Show("Discount must be less than 100%. Update aborted.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            Exit Sub
+                        End If
                         updateFields.Add("Currentloyaltydiscount=@disc")
                         updatedFields.Add($"Loyalty Discount changed from {currentDisc:0.00}% to {newDisc:0.00}%")
                     End If
@@ -144,6 +158,12 @@ Public Class LoyaltyDiscount
 
                 Else
                     ' === IF NOT EXISTS → INSERT ===
+                    ' Enforce discount constraint on insert as well
+                    If hasDisc AndAlso newDisc >= 100 Then
+                        MessageBox.Show("Discount must be less than 100%. Insert aborted.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Exit Sub
+                    End If
+
                     Using insertCmd As New MySqlCommand(
                     "INSERT INTO loyaltydiscount 
                      (id, RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount)
@@ -177,8 +197,6 @@ Public Class LoyaltyDiscount
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-
-
 
 
 

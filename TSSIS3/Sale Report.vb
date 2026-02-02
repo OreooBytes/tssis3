@@ -359,8 +359,13 @@ Public Class SaleReport
 
     ' ===== CLOSE FORM =====
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
-        If Me.Owner IsNot Nothing Then CType(Me.Owner, Dashboard).PanelMain.SendToBack()
-        Me.Close()
+        Dim result As DialogResult = MessageBox.Show("Are you sure you want to close this form?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If result = DialogResult.Yes Then
+            If Me.Owner IsNot Nothing Then
+                CType(Me.Owner, Dashboard).PanelMain.SendToBack()
+            End If
+            Me.Close()
+        End If
     End Sub
 
     ' ===== EXPORT TO PDF =====

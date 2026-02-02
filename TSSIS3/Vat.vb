@@ -88,8 +88,15 @@ Public Class Vat
             Dim currentVat As Double
             Double.TryParse(currvat.Text.Replace("%", "").Trim(), currentVat)
 
+            ' Validate VAT: must be >= 0 and less than 100 (do not allow 100% or more)
+            If newVat < 0 OrElse newVat >= 100 Then
+                MessageBox.Show("VAT must be a non-negative number and less than 100%.", "Invalid VAT", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                update.Focus()
+                Return
+            End If
+
             ' Only proceed if there's an actual change
-            If newVat <> currentVat Then
+            If Math.Round(newVat, 4) <> Math.Round(currentVat, 4) Then
                 ' Update the VAT value in the database
                 UpdateVatInDatabase(newVat)
 

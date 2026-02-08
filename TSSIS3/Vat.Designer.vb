@@ -96,8 +96,8 @@ Partial Class Vat
         Me.updatebtn.ForeColor = System.Drawing.Color.White
         Me.updatebtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
         Me.updatebtn.ImageSize = New System.Drawing.Size(30, 30)
-        Me.updatebtn.Location = New System.Drawing.Point(55, 204)
-        Me.updatebtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.updatebtn.Location = New System.Drawing.Point(383, 224)
+        Me.updatebtn.Margin = New System.Windows.Forms.Padding(4)
         Me.updatebtn.Name = "updatebtn"
         Me.updatebtn.Size = New System.Drawing.Size(153, 43)
         Me.updatebtn.TabIndex = 3
@@ -134,7 +134,7 @@ Partial Class Vat
         Me.Guna2ShadowPanel1.Controls.Add(Me.Guna2Panel1)
         Me.Guna2ShadowPanel1.FillColor = System.Drawing.Color.White
         Me.Guna2ShadowPanel1.Location = New System.Drawing.Point(425, 197)
-        Me.Guna2ShadowPanel1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Guna2ShadowPanel1.Margin = New System.Windows.Forms.Padding(4)
         Me.Guna2ShadowPanel1.Name = "Guna2ShadowPanel1"
         Me.Guna2ShadowPanel1.Radius = 2
         Me.Guna2ShadowPanel1.ShadowColor = System.Drawing.Color.Black
@@ -161,7 +161,7 @@ Partial Class Vat
         Me.Guna2Panel1.Controls.Add(Me.Label3)
         Me.Guna2Panel1.Controls.Add(Me.Label1)
         Me.Guna2Panel1.Location = New System.Drawing.Point(29, 70)
-        Me.Guna2Panel1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Guna2Panel1.Margin = New System.Windows.Forms.Padding(4)
         Me.Guna2Panel1.Name = "Guna2Panel1"
         Me.Guna2Panel1.Size = New System.Drawing.Size(583, 293)
         Me.Guna2Panel1.TabIndex = 35
@@ -172,7 +172,7 @@ Partial Class Vat
         Me.PictureBoxexit.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBoxexit.Image = Global.TSSIS3.My.Resources.Resources.icons8_close_window_50
         Me.PictureBoxexit.Location = New System.Drawing.Point(1408, 1)
-        Me.PictureBoxexit.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBoxexit.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBoxexit.Name = "PictureBoxexit"
         Me.PictureBoxexit.Size = New System.Drawing.Size(63, 60)
         Me.PictureBoxexit.TabIndex = 52
@@ -187,7 +187,7 @@ Partial Class Vat
         Me.Controls.Add(Me.PictureBoxexit)
         Me.Controls.Add(Me.Guna2ShadowPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Vat"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Vat"

@@ -8,6 +8,70 @@ Public Class LoyaltyDiscount
 
     Private priceToGainPoint As Decimal = 0 ' 👈 Declared here
 
+    ' Place near top of class (e.g., after latestId)
+    Private suppressPercentHandler As Boolean = False
+
+    ' Called when the discount TextBox changes — ensures only digits/one dot and appends "%"
+    Private Sub UpdatedLoyaltyDiscount_TextChanged(sender As Object, e As EventArgs)
+        If suppressPercentHandler Then Return
+        Try
+            Dim controlText As String = ""
+            Dim isGuna As Boolean = False
+
+            If TypeOf sender Is Guna.UI2.WinForms.Guna2TextBox Then
+                controlText = CType(sender, Guna.UI2.WinForms.Guna2TextBox).Text
+                isGuna = True
+            ElseIf TypeOf sender Is TextBox Then
+                controlText = CType(sender, TextBox).Text
+            Else
+                Return
+            End If
+
+            ' remove existing percent sign and spaces
+            Dim raw As String = controlText.Replace("%"c, "").Trim()
+
+            ' keep only digits and at most one dot
+            Dim cleaned As New System.Text.StringBuilder()
+            Dim dotSeen As Boolean = False
+            For Each ch As Char In raw
+                If Char.IsDigit(ch) Then
+                    cleaned.Append(ch)
+                ElseIf ch = "."c AndAlso Not dotSeen Then
+                    dotSeen = True
+                    cleaned.Append(ch)
+                End If
+            Next
+
+            Dim newRaw As String = cleaned.ToString()
+
+            ' If empty, keep empty (no "%")
+            Dim display As String = If(String.IsNullOrEmpty(newRaw), "", newRaw & "%")
+
+            suppressPercentHandler = True
+            If isGuna Then
+                Dim tb = CType(sender, Guna.UI2.WinForms.Guna2TextBox)
+                tb.Text = display
+                ' place caret before the '%' so user continues editing number
+                If String.IsNullOrEmpty(display) Then
+                    tb.SelectionStart = 0
+                Else
+                    tb.SelectionStart = Math.Max(0, display.Length - 1)
+                End If
+            Else
+                Dim tb = CType(sender, TextBox)
+                tb.Text = display
+                If String.IsNullOrEmpty(display) Then
+                    tb.SelectionStart = 0
+                Else
+                    tb.SelectionStart = Math.Max(0, display.Length - 1)
+                End If
+            End If
+        Catch
+            ' non-fatal
+        Finally
+            suppressPercentHandler = False
+        End Try
+    End Sub
 
     ' === ROUND CORNERS ===
     Private Sub ApplyRoundedCorners()
@@ -51,18 +115,31 @@ Public Class LoyaltyDiscount
     ' === UPDATE BUTTON CLICK ===
     Private Sub updatebtn_Click(sender As Object, e As EventArgs) Handles updatebtn.Click
         Try
-            Dim newDisc As Double, newRedeem As Integer, newPrice As Double
-            Dim hasDisc As Boolean = Double.TryParse(updatedlyltydcsnt.Text, newDisc)
-            Dim hasRedeem As Boolean = Integer.TryParse(txtredeemablepoints.Text, newRedeem)
-            Dim hasPrice As Boolean = Double.TryParse(Guna2TextBox2.Text, newPrice)
+            Dim newDisc As Double = 0
+            Dim newRedeem As Integer = 0
+            Dim newPrice As Double = 0
 
-            ' Validate parsed values
-            If Not (hasDisc AndAlso hasRedeem AndAlso hasPrice) Then
-                MessageBox.Show("Invalid input values.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            ' Read raw inputs (strip trailing % for disc/price)
+            Dim discInput As String = If(updatedlyltydcsnt.Text IsNot Nothing, updatedlyltydcsnt.Text.Replace("%"c, "").Trim(), "")
+            Dim priceInput As String = If(Guna2TextBox2.Text IsNot Nothing, Guna2TextBox2.Text.Replace("%"c, "").Trim(), "")
+            Dim redeemInput As String = If(txtredeemablepoints.Text IsNot Nothing, txtredeemablepoints.Text.Trim(), "")
+
+            ' Only attempt parse if user provided something — empty means "no change"
+            Dim hasDisc As Boolean = False
+            Dim hasPrice As Boolean = False
+            Dim hasRedeem As Boolean = False
+
+            If discInput <> "" Then hasDisc = Double.TryParse(discInput, newDisc)
+            If priceInput <> "" Then hasPrice = Double.TryParse(priceInput, newPrice)
+            If redeemInput <> "" Then hasRedeem = Integer.TryParse(redeemInput, newRedeem)
+
+            ' If nothing provided, inform user and exit
+            If Not (hasDisc Or hasPrice Or hasRedeem) Then
+                MessageBox.Show("Please enter at least one value to update (Discount, Redeemable Points or Price to Gain Point).", "No Input", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Sub
             End If
 
-            ' Enforce discount constraints: must be >= 0 and less than 100%
+            ' Validate discount constraint early if provided
             If hasDisc Then
                 If newDisc < 0 OrElse newDisc >= 100 Then
                     MessageBox.Show("Discount must be greater than or equal to 0 and less than 100%.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -71,37 +148,23 @@ Public Class LoyaltyDiscount
             End If
 
             Using conn As MySqlConnection = Module1.Openconnection()
-
                 ' === Check if record exists ===
                 Dim recordExists As Boolean = False
-
-                Using checkCmd As New MySqlCommand(
-                "SELECT RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount 
-                 FROM loyaltydiscount WHERE id=@id", conn)
-
+                Using checkCmd As New MySqlCommand("SELECT RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount FROM loyaltydiscount WHERE id=@id", conn)
                     checkCmd.Parameters.AddWithValue("@id", latestId)
-
                     Using rdr As MySqlDataReader = checkCmd.ExecuteReader()
-                        If rdr.Read() Then
-                            recordExists = True
-                        End If
+                        If rdr.Read() Then recordExists = True
                     End Using
                 End Using
 
-                ' === IF EXISTS → RUN YOUR ORIGINAL UPDATE CODE ===
                 If recordExists Then
-
                     ' Get current values for comparison
                     Dim currentDisc As Double = 0
                     Dim currentRedeem As Integer = 0
                     Dim currentPrice As Double = 0
 
-                    Using getCmd As New MySqlCommand(
-                    "SELECT RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount 
-                     FROM loyaltydiscount WHERE id=@id", conn)
-
+                    Using getCmd As New MySqlCommand("SELECT RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount FROM loyaltydiscount WHERE id=@id", conn)
                         getCmd.Parameters.AddWithValue("@id", latestId)
-
                         Using rdr As MySqlDataReader = getCmd.ExecuteReader()
                             If rdr.Read() Then
                                 currentRedeem = Convert.ToInt32(rdr("RedeemablePoints"))
@@ -114,34 +177,28 @@ Public Class LoyaltyDiscount
                     Dim updatedFields As New List(Of String)
                     Dim updateFields As New List(Of String)
 
-                    If newRedeem <> currentRedeem Then
+                    ' Compare only fields provided by user
+                    If hasRedeem AndAlso newRedeem <> currentRedeem Then
                         updateFields.Add("RedeemablePoints=@redeem")
                         updatedFields.Add($"Redeemable Points changed from {currentRedeem} to {newRedeem}")
                     End If
 
-                    If Math.Round(newPrice, 2) <> Math.Round(currentPrice, 2) Then
+                    If hasPrice AndAlso Math.Round(newPrice, 2) <> Math.Round(currentPrice, 2) Then
                         updateFields.Add("PriceToGainPoint=@price")
                         updatedFields.Add($"Price To Gain Point changed from {currentPrice:0.00} to {newPrice:0.00}")
                     End If
 
-                    If Math.Round(newDisc, 2) <> Math.Round(currentDisc, 2) Then
-                        ' extra safety: double-check not 100 or more
-                        If newDisc >= 100 Then
-                            MessageBox.Show("Discount must be less than 100%. Update aborted.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            Exit Sub
-                        End If
+                    If hasDisc AndAlso Math.Round(newDisc, 2) <> Math.Round(currentDisc, 2) Then
                         updateFields.Add("Currentloyaltydiscount=@disc")
                         updatedFields.Add($"Loyalty Discount changed from {currentDisc:0.00}% to {newDisc:0.00}%")
                     End If
 
                     If updateFields.Count = 0 Then
-                        MessageBox.Show("No changes detected.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        MessageBox.Show("No changes detected for the fields you provided.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
                         Exit Sub
                     End If
 
-                    Dim sql As String =
-                    "UPDATE loyaltydiscount SET " & String.Join(", ", updateFields) & " WHERE id=@id"
-
+                    Dim sql As String = "UPDATE loyaltydiscount SET " & String.Join(", ", updateFields) & " WHERE id=@id"
                     Using cmd As New MySqlCommand(sql, conn)
                         If updateFields.Contains("RedeemablePoints=@redeem") Then cmd.Parameters.AddWithValue("@redeem", newRedeem)
                         If updateFields.Contains("PriceToGainPoint=@price") Then cmd.Parameters.AddWithValue("@price", newPrice)
@@ -150,51 +207,41 @@ Public Class LoyaltyDiscount
                         cmd.ExecuteNonQuery()
                     End Using
 
-                    LogAuditTrail(
-                    SessionData.role,
-                    SessionData.fullName,
-                    "Updated Loyalty Settings:" & vbCrLf & String.Join(vbCrLf, updatedFields)
-                )
-
+                    LogAuditTrail(SessionData.role, SessionData.fullName, "Updated Loyalty Settings:" & vbCrLf & String.Join(vbCrLf, updatedFields))
                 Else
-                    ' === IF NOT EXISTS → INSERT ===
-                    ' Enforce discount constraint on insert as well
-                    If hasDisc AndAlso newDisc >= 100 Then
+                    ' If no record exists and user provided some fields, insert a new record using provided values or defaults
+                    ' Determine values to insert: prefer provided, otherwise fallback to safe defaults (0)
+                    Dim insertRedeem As Integer = If(hasRedeem, newRedeem, 0)
+                    Dim insertPrice As Double = If(hasPrice, newPrice, 0)
+                    Dim insertDisc As Double = If(hasDisc, newDisc, 0)
+
+                    If hasDisc AndAlso insertDisc >= 100 Then
                         MessageBox.Show("Discount must be less than 100%. Insert aborted.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         Exit Sub
                     End If
 
-                    Using insertCmd As New MySqlCommand(
-                    "INSERT INTO loyaltydiscount 
-                     (id, RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount)
-                     VALUES (@id, @redeem, @price, @disc)", conn)
-
+                    Using insertCmd As New MySqlCommand("INSERT INTO loyaltydiscount (id, RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount) VALUES (@id, @redeem, @price, @disc)", conn)
                         insertCmd.Parameters.AddWithValue("@id", latestId)
-                        insertCmd.Parameters.AddWithValue("@redeem", newRedeem)
-                        insertCmd.Parameters.AddWithValue("@price", newPrice)
-                        insertCmd.Parameters.AddWithValue("@disc", newDisc)
+                        insertCmd.Parameters.AddWithValue("@redeem", insertRedeem)
+                        insertCmd.Parameters.AddWithValue("@price", insertPrice)
+                        insertCmd.Parameters.AddWithValue("@disc", insertDisc)
                         insertCmd.ExecuteNonQuery()
                     End Using
 
-                    LogAuditTrail(
-                    SessionData.role,
-                    SessionData.fullName,
-                    "Created new Loyalty Settings."
-                )
+                    LogAuditTrail(SessionData.role, SessionData.fullName, "Created new Loyalty Settings.")
                 End If
             End Using
 
-            MessageBox.Show("Loyalty settings saved successfully!", "Success",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Loyalty settings saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
+            ' Refresh UI with saved data and clear only the fields the user expects
             LoadData()
-            updatedlyltydcsnt.Clear()
-            txtredeemablepoints.Clear()
-            Guna2TextBox2.Clear()
-
+            ' Do not force user to re-type everything — clear only the inputs they used
+            If hasDisc Then updatedlyltydcsnt.Clear()
+            If hasRedeem Then txtredeemablepoints.Clear()
+            If hasPrice Then Guna2TextBox2.Clear()
         Catch ex As Exception
-            MessageBox.Show("Error updating loyalty data: " & ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error updating loyalty data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -208,6 +255,9 @@ Public Class LoyaltyDiscount
         BackColor = ColorTranslator.FromHtml("#0B2447")
         Guna2Panel2.BackColor = Color.Gainsboro
         ApplyRoundedCorners()
+
+        ' === NEW: wire numeric-only input handlers (non-destructive) ===
+        AddNumericInputHandlers()
     End Sub
 
     Private Sub PictureBoxexit_Click(sender As Object, e As EventArgs) Handles PictureBoxexit.Click
@@ -237,6 +287,48 @@ Public Class LoyaltyDiscount
         End Try
     End Sub
 
+    ' --- Add these helpers inside the LoyaltyDiscount class (class scope) ---
 
+    Private Sub AddNumericInputHandlers()
+        ' Decimal inputs: discount and price
+        Try
+            AddHandler updatedlyltydcsnt.KeyPress, AddressOf DecimalKeyPress
+            AddHandler updatedlyltydcsnt.TextChanged, AddressOf UpdatedLoyaltyDiscount_TextChanged
+        Catch : End Try
+        Try
+            AddHandler Guna2TextBox2.KeyPress, AddressOf DecimalKeyPress
+        Catch : End Try
 
+        ' Integer input: redeemable points
+        Try
+            AddHandler txtredeemablepoints.KeyPress, AddressOf IntegerKeyPress
+        Catch : End Try
+    End Sub
+
+    Private Sub DecimalKeyPress(sender As Object, e As KeyPressEventArgs)
+        ' Allow control keys, digits and one decimal point only
+        If Not (Char.IsControl(e.KeyChar) OrElse Char.IsDigit(e.KeyChar) OrElse e.KeyChar = "."c) Then
+            e.Handled = True
+            Return
+        End If
+
+        ' Prevent multiple decimal points
+        Dim currentText As String = String.Empty
+        If TypeOf sender Is System.Windows.Forms.TextBox Then
+            currentText = CType(sender, System.Windows.Forms.TextBox).Text
+        ElseIf TypeOf sender Is Guna.UI2.WinForms.Guna2TextBox Then
+            currentText = CType(sender, Guna.UI2.WinForms.Guna2TextBox).Text
+        End If
+
+        If e.KeyChar = "."c AndAlso currentText.Contains(".") Then
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub IntegerKeyPress(sender As Object, e As KeyPressEventArgs)
+        ' Allow control keys and digits only (no decimal point)
+        If Not (Char.IsControl(e.KeyChar) OrElse Char.IsDigit(e.KeyChar)) Then
+            e.Handled = True
+        End If
+    End Sub
 End Class

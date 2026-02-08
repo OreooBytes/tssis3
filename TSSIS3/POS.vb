@@ -514,7 +514,7 @@ Public Class POS
     End Sub
 
 
-    ' ================ ADD ITEM IN CART ==================
+    '================ ADD ITEM IN CART ==================
     'Private Sub AddItemToCartDynamic(barcode As String)
     '    Try
     '        Using conn As New MySqlConnection(connectionstring)
@@ -589,7 +589,7 @@ Public Class POS
     '                            existingPLRow.Cells("EditQuantity").Value = totalInCart
     '                            existingPLRow.Cells("AvailableQuantity").Value = stockQty
     '                        Else
-    '                            Dim newPLRowIndex As Integer = dgvProductList.Rows.Add(productName, totalInCart, stockQty)
+    '                            Dim newPLRowIndex : Integer = dgvProductList.Rows.Add(productName, totalInCart, stockQty)
     '                            Dim plRow = dgvProductList.Rows(newPLRowIndex)
     '                            With plRow.Cells("EditQuantity").Style
     '                                .BackColor = Color.LightGreen
@@ -619,12 +619,16 @@ Public Class POS
             Using conn As New MySqlConnection(connectionstring)
                 conn.Open()
 
-                ' === Get Product Info + Retail Price + Wholesale Price + Stock Quantity ===
+                ' === Get Product Info + Description + Prices + Stock ===
                 Dim sql As String = "
-            SELECT p.ProductName, p.RetailPrice, p.WholesalePrice, i.Quantity
-            FROM product p
-            LEFT JOIN inventory i ON p.BarcodeID = i.BarcodeID
-            WHERE p.BarcodeID = @barcode
+                SELECT p.ProductName,
+                       p.Description,
+                       p.RetailPrice,
+                       p.WholesalePrice,
+                       i.Quantity
+                FROM product p
+                LEFT JOIN inventory i ON p.BarcodeID = i.BarcodeID
+                WHERE p.BarcodeID = @barcode
             "
 
                 Using cmd As New MySqlCommand(sql, conn)
@@ -632,35 +636,55 @@ Public Class POS
 
                     Using reader = cmd.ExecuteReader()
                         If reader.Read() Then
-                            Dim productName As String = reader("ProductName").ToString()
+
+                            Dim baseProductName As String = reader("ProductName").ToString()
+                            Dim description As String = If(IsDBNull(reader("Description")), "", reader("Description").ToString())
+
+                            ' === DISPLAY ONLY (ProductName + Description) ===
+                            Dim productName As String =
+                            If(String.IsNullOrWhiteSpace(description),
+                               baseProductName,
+                               baseProductName & " (" & description & ")")
+
                             Dim stockQty As Integer = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
                             Dim retailPrice As Decimal = If(IsDBNull(reader("RetailPrice")), 0D, Convert.ToDecimal(reader("RetailPrice")))
                             Dim wholesalePrice As Decimal = If(IsDBNull(reader("WholesalePrice")), 0D, Convert.ToDecimal(reader("WholesalePrice")))
 
                             If stockQty < 1 Then
-                                MessageBox.Show($"Product '{productName}' is out of stock!", "Stock Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                MessageBox.Show($"Product '{baseProductName}' is out of stock!",
+                                            "Stock Alert",
+                                            MessageBoxButtons.OK,
+                                            MessageBoxIcon.Warning)
                                 Return
                             End If
+
                             reader.Close()
 
                             ' === UPDATE CART ===
                             Dim existingCartRow = dgvCart.Rows.Cast(Of DataGridViewRow)().
-                                FirstOrDefault(Function(r) r.Cells("Barcode").Value.ToString() = barcode)
+                            FirstOrDefault(Function(r) r.Cells("Barcode").Value.ToString() = barcode)
 
                             Dim cartRow As DataGridViewRow
 
                             If existingCartRow IsNot Nothing Then
                                 Dim currentQty As Integer = Convert.ToInt32(existingCartRow.Cells("Quantity").Value)
+
                                 If currentQty < stockQty Then
                                     currentQty += 1
                                     existingCartRow.Cells("Quantity").Value = currentQty
                                     existingCartRow.Cells("UnitPrice").Value = retailPrice
                                     existingCartRow.Cells("Total").Value = currentQty * retailPrice
-                                    ' Set PriceType
                                     existingCartRow.Cells("PriceType").Value = If(currentQty > 50, "Wholesale", "Retail")
+
+                                    ' update display name only
+                                    existingCartRow.Cells("ProductName").Value = productName
                                 Else
-                                    MessageBox.Show($"Maximum stock reached for '{productName}'.", "Stock Limit", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                    MessageBox.Show($"Maximum stock reached for '{baseProductName}'.",
+                                                "Stock Limit",
+                                                MessageBoxButtons.OK,
+                                                MessageBoxIcon.Information)
                                 End If
+
                                 cartRow = existingCartRow
                             Else
                                 dgvCart.Rows.Add(barcode, productName, 1, retailPrice, retailPrice, "Retail")
@@ -675,7 +699,7 @@ Public Class POS
 
                             ' === UPDATE PRODUCT LIST ===
                             Dim existingPLRow = dgvProductList.Rows.Cast(Of DataGridViewRow)().
-                            FirstOrDefault(Function(r) r.Cells("ProductName").Value.ToString() = productName)
+                            FirstOrDefault(Function(r) r.Cells("ProductName").Value.ToString() = baseProductName)
 
                             Dim totalInCart As Integer = dgvCart.Rows.Cast(Of DataGridViewRow)().
                             Where(Function(r) r.Cells("Barcode").Value.ToString() = barcode).
@@ -685,8 +709,9 @@ Public Class POS
                                 existingPLRow.Cells("EditQuantity").Value = totalInCart
                                 existingPLRow.Cells("AvailableQuantity").Value = stockQty
                             Else
-                                Dim newPLRowIndex As Integer = dgvProductList.Rows.Add(productName, totalInCart, stockQty)
+                                Dim newPLRowIndex As Integer = dgvProductList.Rows.Add(baseProductName, totalInCart, stockQty)
                                 Dim plRow = dgvProductList.Rows(newPLRowIndex)
+
                                 With plRow.Cells("EditQuantity").Style
                                     .BackColor = Color.LightGreen
                                     .SelectionBackColor = Color.LightGreen
@@ -696,18 +721,24 @@ Public Class POS
                             End If
 
                         Else
-                            MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            MessageBox.Show("Product not found.",
+                                        "Error",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Warning)
                         End If
                     End Using
                 End Using
             End Using
+
         Catch ex As Exception
             MessageBox.Show("Error loading product data: " & ex.Message)
+
         Finally
             txtBarcode.Clear()
             txtBarcode.Focus()
         End Try
     End Sub
+
 
 
 
@@ -743,7 +774,7 @@ Public Class POS
 
         Using conn As New MySqlConnection(connectionstring)
             conn.Open()
-            Dim sql As String = "SELECT PriceToGainPoint FROM loyaltydiscount WHERE id = 1 LIMIT 1"
+            Dim sql As String = "SELECT PriceToGainPoint FROM loyaltydiscount ORDER BY id DESC LIMIT 1"
             Using cmd As New MySqlCommand(sql, conn)
                 Dim result = cmd.ExecuteScalar()
                 If result IsNot Nothing Then priceToGainPoint = CDec(result)
@@ -757,8 +788,6 @@ Public Class POS
             pointsEarned = 0
         End If
 
-
-
         ' Discount logic: apply only for retail
         Dim discountPercent As Decimal = 0
         If rbRetail.Checked Then
@@ -769,10 +798,20 @@ Public Class POS
         Dim discountAmount As Decimal = subtotal * (discountPercent / 100D)
         Dim totalAfterDiscount As Decimal = subtotal - discountAmount
 
+        ' ===== VAT calculation (assume prices are VAT-inclusive) =====
+        Dim vatAmount As Decimal = 0D
+        Dim vatableSales As Decimal = 0D
 
-        ' VAT (info only)
-        Dim vatableSales As Decimal = subtotal ' instead of totalAfterDiscount
-        Dim vatAmount As Decimal = totalAfterDiscount / 1.12D * 0.12D
+        If totalAfterDiscount > 0D Then
+            ' vatAmount = portion of totalAfterDiscount that is VAT
+            vatAmount = Math.Round(totalAfterDiscount * (0.12D / 1.12D), 2)
+            ' vatableSales is the price excluding VAT
+            vatableSales = Math.Round(totalAfterDiscount - vatAmount, 2)
+        Else
+            vatAmount = 0D
+            vatableSales = 0D
+        End If
+
         lastVatAmount = vatAmount
 
         ' === Update Labels ===
@@ -1104,12 +1143,7 @@ Public Class POS
             ' === Selected Row Styling ===
             .DefaultCellStyle.SelectionBackColor = Color.White
             .DefaultCellStyle.SelectionForeColor = Color.Black
-
-
         End With
-
-
-
     End Sub
 
 
@@ -1227,7 +1261,9 @@ Public Class POS
             ' === Ensure ProductName column exists ===
             If Not dgvProductList.Columns.Contains("ProductName") Then Exit Sub
             Dim productNameCell = currentRow.Cells("ProductName")
-            If productNameCell.Value Is Nothing Then Exit Sub
+            If productNameCell Is Nothing Then Exit Sub
+
+
             Dim productName As String = productNameCell.Value.ToString()
 
             Dim qtyText As String = tb.Text.Trim()
@@ -1397,16 +1433,26 @@ Public Class POS
     Public Sub AddProductFromSelect(barcode As String, productName As String, price As Decimal, qty As Integer)
         Dim foundInCart As Boolean = False
         Dim availableQty As Integer = 0
+        Dim description As String = ""
 
-        ' === 1️⃣ Get available stock from database ===
+        ' === 1️⃣ Get available stock + description from database ===
         Try
             Using conn As New MySqlConnection(connectionstring)
                 conn.Open()
-                Dim sql As String = "SELECT Quantity FROM inventory WHERE BarcodeID = @barcode"
+                Dim sql As String = "
+                SELECT i.Quantity, p.Description
+                FROM inventory i
+                LEFT JOIN product p ON p.BarcodeID = i.BarcodeID
+                WHERE i.BarcodeID = @barcode
+            "
                 Using cmd As New MySqlCommand(sql, conn)
                     cmd.Parameters.AddWithValue("@barcode", barcode)
-                    Dim result = cmd.ExecuteScalar()
-                    If result IsNot Nothing Then availableQty = Convert.ToInt32(result)
+                    Using reader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            availableQty = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
+                            description = If(IsDBNull(reader("Description")), "", reader("Description").ToString())
+                        End If
+                    End Using
                 End Using
             End Using
         Catch ex As Exception
@@ -1414,22 +1460,32 @@ Public Class POS
             Exit Sub
         End Try
 
+        ' === DISPLAY-ONLY ProductName ===
+        Dim displayProductName As String =
+        If(String.IsNullOrWhiteSpace(description),
+           productName,
+           productName & " (" & description & ")")
+
         ' === 2️⃣ Check if qty exceeds available stock ===
         If qty > availableQty Then
             MessageBox.Show($"Cannot add {qty} pcs. Only {availableQty} left in stock.",
-                    "Stock Limit", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        "Stock Limit",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning)
             Exit Sub
         End If
 
-        ' === 3️⃣ Update OR Add to Cart without adding old qty ===
+        ' === 3️⃣ Update OR Add to Cart ===
         For Each row As DataGridViewRow In dgvCart.Rows
             If row.Cells("Barcode").Value.ToString() = barcode Then
-                ' If the product already exists in the cart, add the new quantity to the existing quantity
-                Dim currentQty As Integer = Convert.ToInt32(row.Cells("Quantity").Value)
-                row.Cells("Quantity").Value = currentQty + qty ' Add to the existing quantity
-                row.Cells("Total").Value = (currentQty + qty) * price ' Recalculate the total price
 
-                ' Update PriceType based on updated quantity
+                Dim currentQty As Integer = Convert.ToInt32(row.Cells("Quantity").Value)
+                row.Cells("Quantity").Value = currentQty + qty
+                row.Cells("Total").Value = (currentQty + qty) * price
+
+                ' display only
+                row.Cells("ProductName").Value = displayProductName
+
                 If dgvCart.Columns.Contains("PriceType") Then
                     row.Cells("PriceType").Value = If(currentQty + qty >= 50, "Wholesale", "Retail")
                 End If
@@ -1441,24 +1497,24 @@ Public Class POS
 
         ' === Add new row if item not in cart ===
         If Not foundInCart Then
-            Dim newRowIndex As Integer = dgvCart.Rows.Add(barcode, productName, qty, price, qty * price)
+            Dim newRowIndex As Integer =
+            dgvCart.Rows.Add(barcode, displayProductName, qty, price, qty * price)
+
             Dim newRow As DataGridViewRow = dgvCart.Rows(newRowIndex)
             If dgvCart.Columns.Contains("PriceType") Then
                 newRow.Cells("PriceType").Value = If(qty >= 50, "Wholesale", "Retail")
             End If
         End If
 
-        ' === 4️⃣ Update ProductList DGV ===
+        ' === 4️⃣ Update ProductList DGV (BASE product name only) ===
         Dim existingPLRow = dgvProductList.Rows.Cast(Of DataGridViewRow)().
-    FirstOrDefault(Function(r) r.Cells("ProductName").Value.ToString() = productName)
+        FirstOrDefault(Function(r) r.Cells("ProductName").Value.ToString() = productName)
 
         If existingPLRow IsNot Nothing Then
-            ' If the product already exists in the ProductList, add the new quantity to the existing quantity
             Dim currentQtyInPL As Integer = Convert.ToInt32(existingPLRow.Cells("EditQuantity").Value)
-            existingPLRow.Cells("EditQuantity").Value = currentQtyInPL + qty ' Add to the existing quantity
+            existingPLRow.Cells("EditQuantity").Value = currentQtyInPL + qty
             existingPLRow.Cells("AvailableQuantity").Value = availableQty
         Else
-            ' If product is not found in ProductList, add new row
             Dim newRowIndex As Integer = dgvProductList.Rows.Add(productName, qty, availableQty)
             Dim newRow As DataGridViewRow = dgvProductList.Rows(newRowIndex)
             With newRow.Cells("EditQuantity").Style
@@ -1472,12 +1528,13 @@ Public Class POS
         ' === 5️⃣ Update total display ===
         Try
             totalamount.Text = "₱ " & dgvCart.Rows.Cast(Of DataGridViewRow)().
-        Sum(Function(r) Convert.ToDecimal(r.Cells("Total").Value)).ToString("N2")
+            Sum(Function(r) Convert.ToDecimal(r.Cells("Total").Value)).ToString("N2")
         Catch
         End Try
 
         ComputeCartTotal()
     End Sub
+
 
 
 
@@ -1761,7 +1818,7 @@ Public Class POS
                         cmd.Parameters.AddWithValue("@total", totalDue)
                         cmd.Parameters.AddWithValue("@pay", payment)
                         cmd.Parameters.AddWithValue("@chg", change)
-                        cmd.Parameters.AddWithValue("@disc", CDec(lblDiscount.Text.Replace("₱", "").Replace(",", "").Trim()))
+                        cmd.Parameters.AddWithValue("@disc", CDec(lblDiscount.Text.Replace("₱", "").Trim()))
                         cmd.Parameters.AddWithValue("@vat", lastVatAmount)
                         cmd.Parameters.AddWithValue("@cash", lblCashier.Text)
                         cmd.Parameters.AddWithValue("@loyal", loyaltyDiscountAmount)
@@ -1882,6 +1939,7 @@ Public Class POS
 
 
     Private Sub btnPay_Click(sender As Object, e As EventArgs) Handles btnPay.Click
+
         ' === Check if cart is empty (no valid rows) ===
         If dgvCart.Rows.Count = 0 OrElse dgvCart.Rows.Cast(Of DataGridViewRow).All(Function(r) r.IsNewRow) Then
             MessageBox.Show("Cart is empty! Cannot proceed to payment.",
@@ -1889,7 +1947,7 @@ Public Class POS
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning)
 
-            ' Return focus to barcode input
+            ' Return focus to the barcode input
             txtBarcode.Focus()
             Exit Sub
         End If
@@ -1958,6 +2016,7 @@ Public Class POS
 
         MessageBox.Show("Member selection has been cancelled", "Cancelled", MessageBoxButtons.OK, MessageBoxIcon.Information)
         btnCancel.Visible = False
+        cmbDiscount.Enabled = True
         ComputeCartTotal()
         UpdateChange()
     End Sub
@@ -2029,35 +2088,48 @@ Public Class POS
                 picbarcode.Image = Nothing
             End If
 
-            ' --- Database: Get points and redeem threshold ---
             Try
-                Using conn As MySqlConnection = Module1.Openconnection
-                    If conn.State <> ConnectionState.Open Then conn.Open()
+                Using conn As MySqlConnection = Module1.Openconnection()
+                    ' NOTE: Module1.Openconnection() returns an open connection — do NOT call conn.Open() here.
 
-                    ' Member points
-                    Dim getPoints As New MySqlCommand("SELECT Points FROM membership WHERE Barcode=@barcode", conn)
-                    getPoints.Parameters.AddWithValue("@barcode", frm.SelectedMemberBarcode)
-                    Dim pointsResult = getPoints.ExecuteScalar()
-                    Dim memberPoints As Integer = If(pointsResult IsNot Nothing, Convert.ToInt32(pointsResult), 0)
-                    lblCustomerPoints.Text = memberPoints.ToString()
+                    ' --- Prefer SelectMember's provided points (keeps POS consistent with SelectMember)
+                    Dim memberPoints As Integer = 0
+                    Dim rawPoints As String = If(frm.SelectedMemberPoints, "").Trim()
+                    Integer.TryParse(rawPoints, memberPoints)
 
-                    ' Redeemable points threshold
-                    Dim cmdRedeem As New MySqlCommand("SELECT RedeemablePoints FROM loyaltydiscount ORDER BY id DESC LIMIT 1", conn)
-                    Dim redeemResult = cmdRedeem.ExecuteScalar()
-                    Dim redeemablePoints As Integer = If(redeemResult IsNot Nothing, Convert.ToInt32(redeemResult), 0)
+                    ' Fallback: read from DB by barcode if SelectMember did not return a valid number
+                    If memberPoints = 0 AndAlso Not String.IsNullOrEmpty(frm.SelectedMemberBarcode) Then
+                        Using getPoints As New MySqlCommand("SELECT Points FROM membership WHERE Barcode=@barcode LIMIT 1", conn)
+                            getPoints.Parameters.AddWithValue("@barcode", frm.SelectedMemberBarcode)
+                            Dim pointsResult = getPoints.ExecuteScalar()
+                            If pointsResult IsNot Nothing Then Integer.TryParse(pointsResult.ToString(), memberPoints)
+                        End Using
+                    End If
 
-                    ' === CONTROL BUTTON VISIBILITY BASED ON MEMBER & DISCOUNT ===
-                    Dim hasDiscount As Boolean = (cmbDiscount.Items.Count > 0 AndAlso cmbDiscount.SelectedIndex <> -1)
-                    Dim canRedeem As Boolean = isMemberSelected AndAlso memberPoints >= redeemablePoints AndAlso hasDiscount
+                    ' Display points consistently in POS
+                    lblCustomerPoints.Text = "" & memberPoints.ToString()
+
+                    ' --- Read redeemable threshold from loyaltydiscount (DB authoritative)
+                    Dim redeemablePoints As Integer = 0
+                    Using cmdRedeem As New MySqlCommand("SELECT RedeemablePoints FROM loyaltydiscount ORDER BY id DESC LIMIT 1", conn)
+                        Dim redeemResult = cmdRedeem.ExecuteScalar()
+                        If redeemResult IsNot Nothing Then Integer.TryParse(redeemResult.ToString(), redeemablePoints)
+                    End Using
+
+                    ' --- Show Redeem button only when memberPoints is GREATER than redeemablePoints
+                    '     (if redeemablePoints = 10 and member has 10 -> button will NOT show;
+                    '      if member has 11+ -> button shows)
+                    Dim canRedeem As Boolean = isMemberSelected AndAlso (memberPoints > redeemablePoints)
 
                     btnredeempoints.Visible = canRedeem
                     btnredeempoints.Enabled = canRedeem
                     btnCancel.Visible = canRedeem
 
-                    btnLoyal.Enabled = True ' Always enable the loyal button
+                    ' keep other UI state
+                    btnLoyal.Enabled = True
                     Guna2Panel3.Visible = isMemberSelected
-                    btnCancel.Visible = True
 
+                    Module1.ConnectionClose(conn)
                 End Using
             Catch ex As Exception
                 MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -2086,6 +2158,8 @@ Public Class POS
         End If
 
         txtBarcode.Focus()
+
+
     End Sub
 
 
@@ -2126,9 +2200,9 @@ Public Class POS
 
         ' --- Apply discount ---
         loyaltyDiscountAmount = subtotal * (loyaltyDiscountPercent / 100D)
-        lblloyaltydiscount.Text = "₱" & loyaltyDiscountAmount.ToString("N2")
-        lblTotalAmount.Text = "₱" & (subtotal - loyaltyDiscountAmount).ToString("N2")
-        totalamount.Text = "₱" & (subtotal - loyaltyDiscountAmount).ToString("N2")
+        lblloyaltydiscount.Text = "₱ " & loyaltyDiscountAmount.ToString("N2")
+        lblTotalAmount.Text = "₱ " & (subtotal - loyaltyDiscountAmount).ToString("N2")
+        totalamount.Text = "₱ " & (subtotal - loyaltyDiscountAmount).ToString("N2")
         memberBarcode = txtBarcodeCustomer.Text.Trim()
         isLoyaltyApplied = True
 
@@ -2140,14 +2214,7 @@ Public Class POS
                     Dim sql As String = "UPDATE membership SET Points = Points + 1 WHERE Barcode = @barcode"
                     Using cmd As New MySqlCommand(sql, conn2)
                         cmd.Parameters.AddWithValue("@barcode", memberBarcode)
-                        Dim rows As Integer = cmd.ExecuteNonQuery()
-
-                        If rows > 0 Then
-                            MessageBox.Show("Loyalty discount of " & loyaltyDiscountPercent & "% applied! Member earned 1 loyalty point!",
-                                        "Loyalty Discount", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                        Else
-                            MessageBox.Show("Member not found. Unable to add loyalty point.", "Loyalty Points", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        End If
+                        cmd.ExecuteNonQuery()
                     End Using
                 End Using
             Catch ex As Exception
@@ -2158,6 +2225,7 @@ Public Class POS
         End If
 
         UpdateChange()
+        cmbDiscount.Enabled = False
     End Sub
 
 
@@ -2630,11 +2698,8 @@ Public Class POS
                     End With
                 Else
                     ' Add new row
-                    Dim newRowIndex As Integer = dgvProductList.Rows.Add()
+                    Dim newRowIndex As Integer = dgvProductList.Rows.Add(productName, quantity, availableQty)
                     Dim newRow As DataGridViewRow = dgvProductList.Rows(newRowIndex)
-                    If dgvProductList.Columns.Contains("ProductName") Then newRow.Cells("ProductName").Value = productName
-                    If dgvProductList.Columns.Contains("EditQuantity") Then newRow.Cells("EditQuantity").Value = quantity
-                    If dgvProductList.Columns.Contains("AvailableQuantity") Then newRow.Cells("AvailableQuantity").Value = availableQty
                     With newRow.Cells("EditQuantity").Style
                         .BackColor = Color.LightGreen
                         .SelectionBackColor = Color.LightGreen
@@ -2688,6 +2753,7 @@ Public Class POS
         btnredeempoints.Visible = False
 
         cmbDiscount.SelectedIndex = -1
+
         txtBarcodeCustomer.Clear()
         lblCustomerName.Text = " "
         lblCustomerPoints.Text = " "

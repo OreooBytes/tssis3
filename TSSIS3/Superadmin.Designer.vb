@@ -59,9 +59,10 @@ Partial Class Superadmin
         Me.Guna2Panel1.Controls.Add(Me.Label2)
         Me.Guna2Panel1.Controls.Add(Me.Mainpanel)
         Me.Guna2Panel1.Controls.Add(Me.PictureBox1)
-        Me.Guna2Panel1.Location = New System.Drawing.Point(12, 12)
+        Me.Guna2Panel1.Location = New System.Drawing.Point(16, 15)
+        Me.Guna2Panel1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Guna2Panel1.Name = "Guna2Panel1"
-        Me.Guna2Panel1.Size = New System.Drawing.Size(678, 464)
+        Me.Guna2Panel1.Size = New System.Drawing.Size(904, 571)
         Me.Guna2Panel1.TabIndex = 0
         '
         'Label2
@@ -70,9 +71,10 @@ Partial Class Superadmin
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label2.Location = New System.Drawing.Point(14, 19)
+        Me.Label2.Location = New System.Drawing.Point(19, 23)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(168, 15)
+        Me.Label2.Size = New System.Drawing.Size(197, 18)
         Me.Label2.TabIndex = 31
         Me.Label2.Text = "Edit Superadmin Account"
         '
@@ -81,11 +83,12 @@ Partial Class Superadmin
         Me.Mainpanel.BackColor = System.Drawing.Color.Transparent
         Me.Mainpanel.Controls.Add(Me.Guna2Panel2)
         Me.Mainpanel.FillColor = System.Drawing.Color.White
-        Me.Mainpanel.Location = New System.Drawing.Point(17, 49)
+        Me.Mainpanel.Location = New System.Drawing.Point(23, 60)
+        Me.Mainpanel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Mainpanel.Name = "Mainpanel"
         Me.Mainpanel.Radius = 2
         Me.Mainpanel.ShadowColor = System.Drawing.Color.Black
-        Me.Mainpanel.Size = New System.Drawing.Size(648, 404)
+        Me.Mainpanel.Size = New System.Drawing.Size(864, 497)
         Me.Mainpanel.TabIndex = 52
         '
         'Guna2Panel2
@@ -93,6 +96,8 @@ Partial Class Superadmin
         Me.Guna2Panel2.BackColor = System.Drawing.Color.Transparent
         Me.Guna2Panel2.BorderColor = System.Drawing.Color.LightGray
         Me.Guna2Panel2.BorderRadius = 10
+        Me.Guna2Panel2.Controls.Add(Me.clearbtn)
+        Me.Guna2Panel2.Controls.Add(Me.updatebtn)
         Me.Guna2Panel2.Controls.Add(Me.CheckBox1)
         Me.Guna2Panel2.Controls.Add(Me.PictureBox3)
         Me.Guna2Panel2.Controls.Add(Me.fname)
@@ -108,36 +113,38 @@ Partial Class Superadmin
         Me.Guna2Panel2.Controls.Add(Me.Label5)
         Me.Guna2Panel2.Controls.Add(Me.Label6)
         Me.Guna2Panel2.Controls.Add(Me.Label7)
-        Me.Guna2Panel2.Controls.Add(Me.clearbtn)
         Me.Guna2Panel2.Controls.Add(Me.Label10)
         Me.Guna2Panel2.Controls.Add(Me.Label9)
         Me.Guna2Panel2.Controls.Add(Me.Label1)
-        Me.Guna2Panel2.Controls.Add(Me.updatebtn)
         Me.Guna2Panel2.FillColor = System.Drawing.Color.Transparent
-        Me.Guna2Panel2.Location = New System.Drawing.Point(19, 24)
+        Me.Guna2Panel2.Location = New System.Drawing.Point(25, 30)
+        Me.Guna2Panel2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Guna2Panel2.Name = "Guna2Panel2"
-        Me.Guna2Panel2.Size = New System.Drawing.Size(609, 361)
+        Me.Guna2Panel2.Size = New System.Drawing.Size(812, 444)
         Me.Guna2Panel2.TabIndex = 31
         '
         'CheckBox1
         '
         Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Font = New System.Drawing.Font("Outfit", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBox1.ForeColor = System.Drawing.Color.Black
-        Me.CheckBox1.Location = New System.Drawing.Point(316, 280)
+        Me.CheckBox1.Location = New System.Drawing.Point(421, 345)
+        Me.CheckBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(110, 19)
+        Me.CheckBox1.Size = New System.Drawing.Size(139, 22)
         Me.CheckBox1.TabIndex = 53
         Me.CheckBox1.Text = "Show Password"
         Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.CheckBox1.Visible = False
         '
         'PictureBox3
         '
         Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox3.Image = Global.TSSIS3.My.Resources.Resources.icons8_cancel_48
-        Me.PictureBox3.Location = New System.Drawing.Point(278, -52)
+        Me.PictureBox3.Location = New System.Drawing.Point(371, -64)
+        Me.PictureBox3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(45, 45)
+        Me.PictureBox3.Size = New System.Drawing.Size(60, 55)
         Me.PictureBox3.TabIndex = 30
         Me.PictureBox3.TabStop = False
         '
@@ -155,13 +162,13 @@ Partial Class Superadmin
         Me.fname.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.fname.ForeColor = System.Drawing.Color.Black
         Me.fname.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.fname.Location = New System.Drawing.Point(32, 36)
-        Me.fname.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.fname.Location = New System.Drawing.Point(43, 44)
+        Me.fname.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.fname.Name = "fname"
         Me.fname.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.fname.PlaceholderText = "Enter Firstname" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         Me.fname.SelectedText = ""
-        Me.fname.Size = New System.Drawing.Size(268, 36)
+        Me.fname.Size = New System.Drawing.Size(357, 44)
         Me.fname.TabIndex = 3
         '
         'minitial
@@ -178,13 +185,13 @@ Partial Class Superadmin
         Me.minitial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.minitial.ForeColor = System.Drawing.Color.Black
         Me.minitial.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.minitial.Location = New System.Drawing.Point(32, 95)
-        Me.minitial.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.minitial.Location = New System.Drawing.Point(43, 117)
+        Me.minitial.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.minitial.Name = "minitial"
         Me.minitial.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.minitial.PlaceholderText = "Enter M.I"
         Me.minitial.SelectedText = ""
-        Me.minitial.Size = New System.Drawing.Size(268, 36)
+        Me.minitial.Size = New System.Drawing.Size(357, 44)
         Me.minitial.TabIndex = 5
         '
         'pword
@@ -201,14 +208,14 @@ Partial Class Superadmin
         Me.pword.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pword.ForeColor = System.Drawing.Color.Black
         Me.pword.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.pword.Location = New System.Drawing.Point(307, 213)
-        Me.pword.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.pword.Location = New System.Drawing.Point(409, 262)
+        Me.pword.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.pword.Name = "pword"
         Me.pword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.pword.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.pword.PlaceholderText = "Enter Password"
         Me.pword.SelectedText = ""
-        Me.pword.Size = New System.Drawing.Size(268, 36)
+        Me.pword.Size = New System.Drawing.Size(357, 44)
         Me.pword.TabIndex = 9
         '
         'lname
@@ -225,13 +232,13 @@ Partial Class Superadmin
         Me.lname.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lname.ForeColor = System.Drawing.Color.Black
         Me.lname.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.lname.Location = New System.Drawing.Point(307, 35)
-        Me.lname.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.lname.Location = New System.Drawing.Point(409, 43)
+        Me.lname.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.lname.Name = "lname"
         Me.lname.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.lname.PlaceholderText = "Enter Lastname"
         Me.lname.SelectedText = ""
-        Me.lname.Size = New System.Drawing.Size(268, 36)
+        Me.lname.Size = New System.Drawing.Size(357, 44)
         Me.lname.TabIndex = 4
         '
         'cno
@@ -248,13 +255,13 @@ Partial Class Superadmin
         Me.cno.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cno.ForeColor = System.Drawing.Color.Black
         Me.cno.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.cno.Location = New System.Drawing.Point(307, 94)
-        Me.cno.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.cno.Location = New System.Drawing.Point(409, 116)
+        Me.cno.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.cno.Name = "cno"
         Me.cno.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.cno.PlaceholderText = "Enter Contact Number"
         Me.cno.SelectedText = ""
-        Me.cno.Size = New System.Drawing.Size(268, 36)
+        Me.cno.Size = New System.Drawing.Size(357, 44)
         Me.cno.TabIndex = 6
         '
         'Label3
@@ -263,9 +270,10 @@ Partial Class Superadmin
         Me.Label3.BackColor = System.Drawing.Color.White
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label3.Location = New System.Drawing.Point(29, 16)
+        Me.Label3.Location = New System.Drawing.Point(39, 20)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(71, 15)
+        Me.Label3.Size = New System.Drawing.Size(83, 18)
         Me.Label3.TabIndex = 19
         Me.Label3.Text = "Firstname"
         '
@@ -283,13 +291,13 @@ Partial Class Superadmin
         Me.txtAddress.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAddress.ForeColor = System.Drawing.Color.Black
         Me.txtAddress.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.txtAddress.Location = New System.Drawing.Point(32, 154)
-        Me.txtAddress.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.txtAddress.Location = New System.Drawing.Point(43, 190)
+        Me.txtAddress.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.txtAddress.Name = "txtAddress"
         Me.txtAddress.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.txtAddress.PlaceholderText = "Enter Address"
         Me.txtAddress.SelectedText = ""
-        Me.txtAddress.Size = New System.Drawing.Size(544, 36)
+        Me.txtAddress.Size = New System.Drawing.Size(725, 44)
         Me.txtAddress.TabIndex = 7
         '
         'uname
@@ -306,13 +314,13 @@ Partial Class Superadmin
         Me.uname.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.uname.ForeColor = System.Drawing.Color.Black
         Me.uname.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.uname.Location = New System.Drawing.Point(32, 213)
-        Me.uname.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.uname.Location = New System.Drawing.Point(43, 262)
+        Me.uname.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.uname.Name = "uname"
         Me.uname.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.uname.PlaceholderText = "Enter Username"
         Me.uname.SelectedText = ""
-        Me.uname.Size = New System.Drawing.Size(268, 36)
+        Me.uname.Size = New System.Drawing.Size(357, 44)
         Me.uname.TabIndex = 8
         '
         'Label4
@@ -321,9 +329,10 @@ Partial Class Superadmin
         Me.Label4.BackColor = System.Drawing.Color.White
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label4.Location = New System.Drawing.Point(304, 16)
+        Me.Label4.Location = New System.Drawing.Point(405, 20)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(70, 15)
+        Me.Label4.Size = New System.Drawing.Size(81, 18)
         Me.Label4.TabIndex = 20
         Me.Label4.Text = "Lastname"
         '
@@ -341,14 +350,14 @@ Partial Class Superadmin
         Me.cpword.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cpword.ForeColor = System.Drawing.Color.Black
         Me.cpword.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.cpword.Location = New System.Drawing.Point(32, 272)
-        Me.cpword.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.cpword.Location = New System.Drawing.Point(43, 335)
+        Me.cpword.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.cpword.Name = "cpword"
         Me.cpword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.cpword.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
         Me.cpword.PlaceholderText = "Enter Confirm Password"
         Me.cpword.SelectedText = ""
-        Me.cpword.Size = New System.Drawing.Size(268, 36)
+        Me.cpword.Size = New System.Drawing.Size(357, 44)
         Me.cpword.TabIndex = 10
         '
         'Label5
@@ -357,9 +366,10 @@ Partial Class Superadmin
         Me.Label5.BackColor = System.Drawing.Color.White
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label5.Location = New System.Drawing.Point(31, 75)
+        Me.Label5.Location = New System.Drawing.Point(41, 92)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(27, 15)
+        Me.Label5.Size = New System.Drawing.Size(31, 18)
         Me.Label5.TabIndex = 21
         Me.Label5.Text = "M.I"
         '
@@ -368,9 +378,10 @@ Partial Class Superadmin
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label6.Location = New System.Drawing.Point(304, 75)
+        Me.Label6.Location = New System.Drawing.Point(405, 92)
+        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(110, 15)
+        Me.Label6.Size = New System.Drawing.Size(131, 18)
         Me.Label6.TabIndex = 22
         Me.Label6.Text = "Contact Number"
         '
@@ -380,9 +391,10 @@ Partial Class Superadmin
         Me.Label7.BackColor = System.Drawing.Color.White
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label7.Location = New System.Drawing.Point(29, 134)
+        Me.Label7.Location = New System.Drawing.Point(39, 165)
+        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(58, 15)
+        Me.Label7.Size = New System.Drawing.Size(69, 18)
         Me.Label7.TabIndex = 23
         Me.Label7.Text = "Address"
         '
@@ -400,9 +412,10 @@ Partial Class Superadmin
         Me.clearbtn.ForeColor = System.Drawing.Color.White
         Me.clearbtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
         Me.clearbtn.ImageSize = New System.Drawing.Size(30, 30)
-        Me.clearbtn.Location = New System.Drawing.Point(476, 318)
+        Me.clearbtn.Location = New System.Drawing.Point(613, 335)
+        Me.clearbtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.clearbtn.Name = "clearbtn"
-        Me.clearbtn.Size = New System.Drawing.Size(115, 35)
+        Me.clearbtn.Size = New System.Drawing.Size(153, 43)
         Me.clearbtn.TabIndex = 13
         Me.clearbtn.Text = "Clear"
         '
@@ -412,9 +425,10 @@ Partial Class Superadmin
         Me.Label10.BackColor = System.Drawing.Color.White
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label10.Location = New System.Drawing.Point(29, 193)
+        Me.Label10.Location = New System.Drawing.Point(39, 238)
+        Me.Label10.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(73, 15)
+        Me.Label10.Size = New System.Drawing.Size(85, 18)
         Me.Label10.TabIndex = 27
         Me.Label10.Text = "Username"
         '
@@ -424,9 +438,10 @@ Partial Class Superadmin
         Me.Label9.BackColor = System.Drawing.Color.White
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label9.Location = New System.Drawing.Point(304, 193)
+        Me.Label9.Location = New System.Drawing.Point(405, 238)
+        Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(69, 15)
+        Me.Label9.Size = New System.Drawing.Size(83, 18)
         Me.Label9.TabIndex = 26
         Me.Label9.Text = "Password"
         '
@@ -436,9 +451,10 @@ Partial Class Superadmin
         Me.Label1.BackColor = System.Drawing.Color.White
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(29, 252)
+        Me.Label1.Location = New System.Drawing.Point(39, 310)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(123, 15)
+        Me.Label1.Size = New System.Drawing.Size(148, 18)
         Me.Label1.TabIndex = 25
         Me.Label1.Text = "Confirm Password"
         '
@@ -457,9 +473,10 @@ Partial Class Superadmin
         Me.updatebtn.ForeColor = System.Drawing.Color.White
         Me.updatebtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
         Me.updatebtn.ImageSize = New System.Drawing.Size(30, 30)
-        Me.updatebtn.Location = New System.Drawing.Point(355, 318)
+        Me.updatebtn.Location = New System.Drawing.Point(451, 335)
+        Me.updatebtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.updatebtn.Name = "updatebtn"
-        Me.updatebtn.Size = New System.Drawing.Size(115, 35)
+        Me.updatebtn.Size = New System.Drawing.Size(153, 43)
         Me.updatebtn.TabIndex = 14
         Me.updatebtn.Text = "Update"
         '
@@ -468,19 +485,21 @@ Partial Class Superadmin
         Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox1.Image = Global.TSSIS3.My.Resources.Resources.icons8_close_39
-        Me.PictureBox1.Location = New System.Drawing.Point(636, 4)
+        Me.PictureBox1.Location = New System.Drawing.Point(848, 5)
+        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(39, 39)
+        Me.PictureBox1.Size = New System.Drawing.Size(52, 48)
         Me.PictureBox1.TabIndex = 49
         Me.PictureBox1.TabStop = False
         '
         'Superadmin
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(702, 488)
+        Me.ClientSize = New System.Drawing.Size(936, 601)
         Me.Controls.Add(Me.Guna2Panel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "Superadmin"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Superadmin"

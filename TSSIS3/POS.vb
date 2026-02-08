@@ -862,25 +862,48 @@ Public Class POS
     Private highlightedRowIndex As Integer = -1
     Private WithEvents unhighlightTimer As Timer
 
+    ' Helper: extract base product name from display "ProductName (Description)" or "ProductName - Description"
+    Private Function BaseNameFromDisplay(displayName As String) As String
+        If String.IsNullOrWhiteSpace(displayName) Then Return String.Empty
+        Dim txt As String = displayName.Trim()
+        Dim idx As Integer = txt.IndexOf(" (", StringComparison.Ordinal)
+        If idx = -1 Then idx = txt.IndexOf(" - ", StringComparison.Ordinal)
+        If idx >= 0 Then
+            Return txt.Substring(0, idx).Trim()
+        End If
+        Return txt
+    End Function
+
+
     Private Sub dgvCart_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvCart.CellContentClick
         If e.RowIndex < 0 Then Exit Sub
 
-        ' ✅ Check kung Edit column ang na-click
+        ' Check if Edit column clicked
         If dgvCart.Columns(e.ColumnIndex).Name = "Edit" Then
-            Dim selectedProduct As String = dgvCart.Rows(e.RowIndex).Cells("ProductName").Value.ToString()
+            ' Safely read ProductName cell (avoid malformed null-coalescing syntax)
+            Dim cellObj As Object = dgvCart.Rows(e.RowIndex).Cells("ProductName").Value
+            Dim selectedDisplay As String = If(cellObj Is Nothing, String.Empty, cellObj.ToString()).Trim()
 
-            ' 🔍 Hanapin matching row sa dgvProductList
+            ' Extract base product name (strip " (description)" or " - description" if present)
+            Dim selectedBase As String = selectedDisplay
+            Dim idx As Integer = selectedBase.IndexOf(" (", StringComparison.Ordinal)
+            If idx = -1 Then idx = selectedBase.IndexOf(" - ", StringComparison.Ordinal)
+            If idx >= 0 Then selectedBase = selectedBase.Substring(0, idx).Trim()
+
+            ' Match case-insensitive against dgvProductList ProductName
             Dim foundIndex As Integer = -1
             For Each row As DataGridViewRow In dgvProductList.Rows
-                If row.Cells("ProductName").Value.ToString() = selectedProduct Then
-                    foundIndex = row.Index
-                    Exit For
+                If row.Cells("ProductName").Value IsNot Nothing Then
+                    Dim plName As String = row.Cells("ProductName").Value.ToString().Trim()
+                    If String.Compare(plName, selectedBase, StringComparison.OrdinalIgnoreCase) = 0 Then
+                        foundIndex = row.Index
+                        Exit For
+                    End If
                 End If
             Next
 
-            ' ✅ Kung nakita ang row
             If foundIndex >= 0 Then
-                ' 🧹 Clear previous highlight kung meron
+                ' Clear previous highlight if any
                 If highlightedRowIndex >= 0 AndAlso highlightedRowIndex < dgvProductList.Rows.Count Then
                     Dim prevRow = dgvProductList.Rows(highlightedRowIndex)
                     Dim prevCell = prevRow.Cells("EditQuantity")
@@ -890,7 +913,7 @@ Public Class POS
                     prevCell.Style.SelectionForeColor = Color.Black
                 End If
 
-                ' 🎨 Highlight lang yung EditQuantity cell ng bagong row
+                ' Highlight target EditQuantity cell and begin edit
                 Dim targetRow = dgvProductList.Rows(foundIndex)
                 Dim editCell = targetRow.Cells("EditQuantity")
                 editCell.Style.BackColor = Color.LightCoral
@@ -901,11 +924,8 @@ Public Class POS
 
                 highlightedRowIndex = foundIndex
 
-                ' 🎯 Focus sa EditQuantity cell
                 dgvProductList.CurrentCell = editCell
                 dgvProductList.BeginEdit(True)
-
-                ' 🔽 Auto-scroll sa highlighted row
                 dgvProductList.FirstDisplayedScrollingRowIndex = foundIndex
             End If
         End If
@@ -983,68 +1003,87 @@ Public Class POS
     Private Sub dgvCart_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvCart.CellValueChanged
         Try
             If e.RowIndex < 0 OrElse e.ColumnIndex < 0 Then Exit Sub
-
-            ' --- Trigger only if PriceType changed ---
             If dgvCart.Columns(e.ColumnIndex).Name <> "PriceType" Then Exit Sub
 
             Dim row As DataGridViewRow = dgvCart.Rows(e.RowIndex)
             Dim priceType As String = row.Cells("PriceType").Value?.ToString()
             If String.IsNullOrEmpty(priceType) Then Exit Sub
 
-            Dim productName As String = row.Cells("ProductName").Value?.ToString()
-            If String.IsNullOrEmpty(productName) Then Exit Sub
+            ' Prefer barcode for DB lookups (most robust)
+            Dim barcode As String = If(row.Cells("Barcode").Value, "").ToString().Trim()
+            Dim retailPrice As Decimal = 0D
+            Dim wholesalePrice As Decimal = 0D
 
-            Using conn As New MySqlConnection(connectionstring)
-                conn.Open()
-
-                ' ✅ Fetch product data
-                Dim sql As String = "SELECT RetailPrice, WholesalePrice, MinimumWholesaleQuantity FROM product WHERE ProductName = @productName"
-                Using cmd As New MySqlCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("@productName", productName)
-
-                    Using rdr As MySqlDataReader = cmd.ExecuteReader()
-                        If rdr.Read() Then
-                            Dim retailPrice As Decimal = rdr("RetailPrice")
-                            Dim wholesalePrice As Decimal = rdr("WholesalePrice")
-                            Dim minQty As Integer = rdr("MinimumWholesaleQuantity")
-
-                            Select Case priceType
-                                Case "Wholesale"
-                                    ' ✅ Switch to wholesale
-                                    row.Cells("UnitPrice").Value = wholesalePrice.ToString("0.00")
-
-
-                                Case "Retail"
-                                    ' ✅ Switch back to original retail price & quantity = 1
-                                    row.Cells("UnitPrice").Value = retailPrice.ToString("0.00")
-                                    row.Cells("Quantity").Value = 1
-                            End Select
-
-                            ' === Update total ===
-                            Dim qty As Integer = 0
-                            Integer.TryParse(row.Cells("Quantity").Value?.ToString(), qty)
-                            Dim total As Decimal = qty * CDec(row.Cells("UnitPrice").Value)
-                            row.Cells("Total").Value = total.ToString("0.00")
-
-                            ' ✅ Sync to dgvProductList (EditQuantity column)
-                            For Each prodRow As DataGridViewRow In dgvProductList.Rows
-                                If prodRow.Cells("ProductName").Value?.ToString() = productName Then
-                                    prodRow.Cells("EditQuantity").Value = qty
-                                    Exit For
-                                End If
-                            Next
-                        End If
+            If Not String.IsNullOrEmpty(barcode) Then
+                Using conn As New MySqlConnection(connectionstring)
+                    conn.Open()
+                    Dim sql As String = "SELECT RetailPrice, WholesalePrice FROM product WHERE BarcodeID = @barcode LIMIT 1"
+                    Using cmd As New MySqlCommand(sql, conn)
+                        cmd.Parameters.AddWithValue("@barcode", barcode)
+                        Using rdr As MySqlDataReader = cmd.ExecuteReader()
+                            If rdr.Read() Then
+                                Decimal.TryParse(rdr("RetailPrice").ToString(), retailPrice)
+                                Decimal.TryParse(rdr("WholesalePrice").ToString(), wholesalePrice)
+                            End If
+                        End Using
                     End Using
                 End Using
-            End Using
+            Else
+                ' Fallback: derive base product name and query by ProductName
+                Dim displayName As String = If(row.Cells("ProductName").Value, "").ToString()
+                Dim baseName As String = BaseNameFromDisplay(displayName)
+                If Not String.IsNullOrEmpty(baseName) Then
+                    Using conn As New MySqlConnection(connectionstring)
+                        conn.Open()
+                        Dim sql As String = "SELECT RetailPrice, WholesalePrice FROM product WHERE ProductName = @productName LIMIT 1"
+                        Using cmd As New MySqlCommand(sql, conn)
+                            cmd.Parameters.AddWithValue("@productName", baseName)
+                            Using rdr As MySqlDataReader = cmd.ExecuteReader()
+                                If rdr.Read() Then
+                                    Decimal.TryParse(rdr("RetailPrice").ToString(), retailPrice)
+                                    Decimal.TryParse(rdr("WholesalePrice").ToString(), wholesalePrice)
+                                End If
+                            End Using
+                        End Using
+                    End Using
+                End If
+            End If
+
+            Select Case priceType
+                Case "Wholesale"
+                    If wholesalePrice > 0D Then row.Cells("UnitPrice").Value = wholesalePrice.ToString("0.00")
+                Case "Retail"
+                    If retailPrice > 0D Then
+                        row.Cells("UnitPrice").Value = retailPrice.ToString("0.00")
+                        row.Cells("Quantity").Value = 1
+                    End If
+            End Select
+
+            ' Update total
+            Dim qty As Integer = 0
+            Integer.TryParse(row.Cells("Quantity").Value?.ToString(), qty)
+            Dim unitPrice As Decimal = 0
+            Decimal.TryParse(row.Cells("UnitPrice").Value?.ToString(), unitPrice)
+            row.Cells("Total").Value = (qty * unitPrice).ToString("0.00")
+
+            ' Sync edit quantity in product list: match by base name
+            Dim baseForSync As String = BaseNameFromDisplay(row.Cells("ProductName").Value?.ToString())
+            If Not String.IsNullOrEmpty(baseForSync) Then
+                For Each prodRow As DataGridViewRow In dgvProductList.Rows
+                    If prodRow.Cells("ProductName").Value IsNot Nothing AndAlso
+                   String.Compare(prodRow.Cells("ProductName").Value.ToString().Trim(), baseForSync, StringComparison.OrdinalIgnoreCase) = 0 Then
+                        prodRow.Cells("EditQuantity").Value = qty
+                        Exit For
+                    End If
+                Next
+            End If
 
         Catch ex As Exception
             MessageBox.Show("Error updating PriceType: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            ComputeCartTotal()
+            txtBarcode.Focus()
         End Try
-
-        ' ✅ Always compute after PriceType change
-        ComputeCartTotal()
-        txtBarcode.Focus()
     End Sub
 
 
@@ -1151,21 +1190,20 @@ Public Class POS
     Private Sub dgvProductList_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvProductList.CellContentClick
         If e.RowIndex < 0 Then Exit Sub
 
-        ' DELETE BUTTON
         If dgvProductList.Columns(e.ColumnIndex).Name = "Delete" Then
             Dim currentRow As DataGridViewRow = dgvProductList.Rows(e.RowIndex)
-            Dim productName As String = currentRow.Cells("ProductName").Value.ToString()
+            Dim productName As String = If(currentRow.Cells("ProductName").Value, "").ToString().Trim()
 
             If MessageBox.Show("Are you sure you want to delete " & productName & "?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                ' Delete sa dgvCart
                 For i As Integer = dgvCart.Rows.Count - 1 To 0 Step -1
-                    If dgvCart.Rows(i).Cells("ProductName").Value.ToString() = productName Then
+                    Dim cartDisplay As String = If(dgvCart.Rows(i).Cells("ProductName").Value, "").ToString()
+                    Dim cartBase As String = BaseNameFromDisplay(cartDisplay)
+                    If String.Compare(cartBase, productName, StringComparison.OrdinalIgnoreCase) = 0 Then
                         dgvCart.Rows.RemoveAt(i)
                     End If
                 Next
 
                 ComputeCartTotal()
-                ' Delete din sa dgvProductList
                 dgvProductList.Rows.RemoveAt(currentRow.Index)
             End If
         End If
@@ -1208,45 +1246,30 @@ Public Class POS
 
     ' Function to update the quantity in dgvCart based on changes in dgvProductList
     Private Sub UpdateCartQuantity(rowIndex As Integer)
-        ' Get the product name and new quantity from dgvProductList
         Dim productName As String = dgvProductList.Rows(rowIndex).Cells("ProductName").Value.ToString()
         Dim newQty As Integer = Convert.ToInt32(dgvProductList.Rows(rowIndex).Cells("EditQuantity").Value)
 
-        ' Update dgvCart if product is found
-        If dgvCart IsNot Nothing AndAlso dgvCart.Rows.Count > 0 Then
-            For Each cartRow As DataGridViewRow In dgvCart.Rows
-                If cartRow.IsNewRow Then Continue For
+        If dgvCart Is Nothing OrElse dgvCart.Rows.Count = 0 Then Return
 
-                ' Match by ProductName
-                If dgvCart.Columns.Contains("ProductName") AndAlso
-                cartRow.Cells("ProductName").Value IsNot Nothing AndAlso
-                cartRow.Cells("ProductName").Value.ToString() = productName Then
+        For Each cartRow As DataGridViewRow In dgvCart.Rows
+            If cartRow.IsNewRow Then Continue For
+            Dim cartDisplay As String = If(cartRow.Cells("ProductName").Value, "").ToString()
+            Dim cartBase As String = BaseNameFromDisplay(cartDisplay)
 
-                    ' Update Quantity and Total in the Cart
-                    cartRow.Cells("Quantity").Value = newQty
-
-                    ' Recompute the total
-                    If dgvCart.Columns.Contains("UnitPrice") AndAlso dgvCart.Columns.Contains("Total") Then
-                        Dim unitPrice As Decimal = 0
-                        Decimal.TryParse(cartRow.Cells("UnitPrice").Value?.ToString(), unitPrice)
-                        cartRow.Cells("Total").Value = (unitPrice * newQty).ToString("N2")
-                    End If
-
-                    ' Adjust PriceType if needed
-                    If dgvCart.Columns.Contains("PriceType") Then
-                        If newQty >= 50 Then
-                            cartRow.Cells("PriceType").Value = "Wholesale"
-                        Else
-                            cartRow.Cells("PriceType").Value = "Retail"
-                        End If
-                    End If
-
-                    Exit For
+            If String.Compare(cartBase, productName, StringComparison.OrdinalIgnoreCase) = 0 Then
+                cartRow.Cells("Quantity").Value = newQty
+                If dgvCart.Columns.Contains("UnitPrice") AndAlso dgvCart.Columns.Contains("Total") Then
+                    Dim unitPrice As Decimal = 0
+                    Decimal.TryParse(cartRow.Cells("UnitPrice").Value?.ToString(), unitPrice)
+                    cartRow.Cells("Total").Value = (unitPrice * newQty).ToString("N2")
                 End If
-            Next
-        End If
+                If dgvCart.Columns.Contains("PriceType") Then
+                    cartRow.Cells("PriceType").Value = If(newQty >= 50, "Wholesale", "Retail")
+                End If
+                Exit For
+            End If
+        Next
     End Sub
-
     Private Sub EditQuantity_TextChanged(sender As Object, e As EventArgs)
         Try
             ' Ensure dgvProductList and the current row are valid

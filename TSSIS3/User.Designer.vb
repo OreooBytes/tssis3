@@ -887,6 +887,7 @@ Partial Class User
         Me.btnSuperadmin.Size = New System.Drawing.Size(214, 36)
         Me.btnSuperadmin.TabIndex = 58
         Me.btnSuperadmin.Text = "     Super Admin Account"
+        Me.btnSuperadmin.Visible = False
         '
         'User
         '

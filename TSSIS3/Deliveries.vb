@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing.Drawing2D
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports Guna.UI2.WinForms
 Imports MySql.Data.MySqlClient
 
@@ -44,8 +45,12 @@ Public Class Deliveries
         txtrecievedby.Enabled = False
 
         ' --- Configure inputs ---
-        txtProductname.ReadOnly = True
+        txtProductname.Enabled = False
         txtBarcodeID.Enabled = True
+        txtUnitPrice.Enabled = False
+        txtWholesaleprice.Enabled = False
+
+
 
 
 
@@ -322,51 +327,74 @@ Public Class Deliveries
         UpdateTotalCostLabel()
     End Sub
     ' --- Add this at the form level ---
-    Private WithEvents costTimer As New Timer With {.Interval = 2000} ' 3 seconds
+    Private WithEvents costTimer As New Timer With {.Interval = 2000} ' 2 seconds
 
     ' --- TextChanged event ---
+    ' === COST PRICE TEXTCHANGED ===
     Private Sub txtCostprice_TextChanged(sender As Object, e As EventArgs) Handles txtCostprice.TextChanged
-        ' Restart the timer every time the user types
+        ' Restart timer every time user types
         costTimer.Stop()
         costTimer.Start()
+
+        ' Allow typing (empty or incomplete decimal)
+        If txtCostprice.Text = "" OrElse txtCostprice.Text.EndsWith(".") Then Exit Sub
 
         Dim cost As Decimal
         Dim unit As Decimal
 
-        ' Validate cost <= unit if both are decimals
-        If Decimal.TryParse(txtCostprice.Text, cost) AndAlso Decimal.TryParse(txtUnitPrice.Text, unit) Then
+        ' Validate only when both are valid decimals
+        If Decimal.TryParse(txtCostprice.Text, cost) AndAlso
+       Decimal.TryParse(txtUnitPrice.Text, unit) Then
+
+            ' Cost must not exceed Unit Price
             If cost > unit Then
-                txtCostprice.Text = ""
-                MessageBox.Show("Cost Price cannot be higher than Unit Price.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                MessageBox.Show("Cost Price cannot be higher than Unit Price.",
+                            "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+
+                txtCostprice.Text = unit.ToString("F2")
+                txtCostprice.SelectionStart = txtCostprice.Text.Length
+                Exit Sub
             End If
         End If
+
+        ' 👉 Recompute total cost kapag valid na ang input
+        UpdateTotalCostLabel()
     End Sub
 
-    '' --- Timer Tick event ---
+    '' === TIMER TICK (FORMAT ONLY) ===
     'Private Sub costTimer_Tick(sender As Object, e As EventArgs) Handles costTimer.Tick
-    '    costTimer.Stop() ' Stop the timer
+    '    costTimer.Stop()
 
     '    Dim cost As Decimal
     '    If Decimal.TryParse(txtCostprice.Text, cost) Then
-    '        txtCostprice.Text = cost.ToString("F2") ' Format to 2 decimals
+    '        txtCostprice.Text = cost.ToString("F2")
+    '        txtCostprice.SelectionStart = txtCostprice.Text.Length
     '    End If
     'End Sub
 
 
-
-
-
+    ' === UPDATE TOTAL COST LABEL ===
     Private Sub UpdateTotalCostLabel()
         Dim qty As Decimal = 0D
         Dim costPrice As Decimal = 0D
 
-        ' Safe parsing
-        Decimal.TryParse(numQuantity.Text, qty)
+        ' Ignore incomplete input
+        If txtCostprice.Text = "" OrElse txtCostprice.Text = "." Then
+            lblTotalCost.Text = "Total Cost: ₱0.00"
+            Exit Sub
+        End If
+
+        ' NumericUpDown value is already safe
+        qty = numQuantity.Value
+
         Decimal.TryParse(txtCostprice.Text, costPrice)
 
         Dim totalCost As Decimal = qty * costPrice
+
         lblTotalCost.Text = "Total Cost: ₱" & totalCost.ToString("N2")
     End Sub
+
+
 
 
     ' ===============================
@@ -473,7 +501,25 @@ Public Class Deliveries
         txtrecievedby.Text = currentReceivedBy
 
         ' Reset total cost label
+
+        txtTransactionNo.Text = String.Empty
+        cmbSupplierName.SelectedIndex = -1
         lblTotalCost.Text = "Total Cost: ₱0.00"
+        txtBarcodeID.Text = String.Empty
+        txtProductname.Text = String.Empty
+        txtCostprice.Text = String.Empty
+        txtUnitPrice.Text = String.Empty
+        txtWholesaleprice.Text = String.Empty
+
+        ' Reset label
+        lblTotalCost.Text = "Total Cost: ₱0.00"
+
+        txtBarcodeID.Enabled = True
+        txtBarcodeID.Focus()
+
+        ' Reset numeric and date controls
+        numQuantity.Value = 0  ' or 1, depending on your default quantity
+        dtpExpirationDate.Value = Date.Today  ' resets to today's date
     End Sub
 
 
@@ -850,6 +896,8 @@ Public Class Deliveries
         ' --- Reset position ---
         panel4.Location = New Point(384, 86)
 
+        txtTransactionNo.Text = String.Empty
+        cmbSupplierName.SelectedIndex = -1
 
 
         ' --- Stop animation timer ---
@@ -870,17 +918,55 @@ Public Class Deliveries
             Me.Close()
         End If
 
+        txtTransactionNo.Text = String.Empty
+        cmbSupplierName.SelectedIndex = -1
+
+        txtBarcodeID.Text = String.Empty
+        txtProductname.Text = String.Empty
+        txtCostprice.Text = String.Empty
+        txtUnitPrice.Text = String.Empty
+        txtWholesaleprice.Text = String.Empty
+
+        ' Reset label
+        lblTotalCost.Text = "Total Cost: ₱0.00"
+
+        txtBarcodeID.Enabled = True
+        txtBarcodeID.Focus()
+
+        ' Reset numeric and date controls
+        numQuantity.Value = 0  ' or 1, depending on your default quantity
+        dtpExpirationDate.Value = Date.Today  ' resets to today's date
+
     End Sub
 
     ' === Allow only whole numbers ===
     Private Sub NumericTextBox_KeyPress(sender As Object, e As KeyPressEventArgs) _
-    Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
+Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
 
-        ' Allow only digits and backspace
-        If Not Char.IsDigit(e.KeyChar) AndAlso e.KeyChar <> ChrW(Keys.Back) Then
+        ' Allow digits, backspace, and decimal point
+        If Not Char.IsDigit(e.KeyChar) AndAlso
+       e.KeyChar <> ChrW(Keys.Back) AndAlso
+       e.KeyChar <> "."c Then
+            e.Handled = True
+            Exit Sub
+        End If
+
+        ' GUNA2TEXTBOX ang gamit
+        Dim tb As Guna.UI2.WinForms.Guna2TextBox =
+        CType(sender, Guna.UI2.WinForms.Guna2TextBox)
+
+        ' Barcode = walang decimal
+        If tb.Name = "txtBarcodeID" AndAlso e.KeyChar = "."c Then
+            e.Handled = True
+            Exit Sub
+        End If
+
+        ' Allow only ONE decimal point
+        If e.KeyChar = "."c AndAlso tb.Text.Contains(".") Then
             e.Handled = True
         End If
     End Sub
+
 
     ' === For Barcode (numbers only, no dot) ===
     Private Sub BarcodeTextBox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtBarcodeID.KeyPress
@@ -990,20 +1076,6 @@ Public Class Deliveries
         End If
     End Sub
 
-    'Private Sub txtCostprice_TextChanged(sender As Object, e As EventArgs) Handles txtCostprice.TextChanged
-    '    'Dim cost As Decimal
-    '    'Dim unit As Decimal
-
-    '    '' Try parse both values
-    '    'If Decimal.TryParse(txtCostprice.Text, cost) AndAlso Decimal.TryParse(txtUnitPrice.Text, unit) Then
-    '    '    ' If Cost > UnitPrice, reset to UnitPrice
-    '    '    If cost > unit Then
-    '    '        txtCostprice.Text = unit.ToString()
-    '    '        txtCostprice.SelectionStart = txtCostprice.Text.Length ' keep cursor at end
-    '    '        MessageBox.Show("Cost Price cannot be higher than Unit Price.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '    '    End If
-    '    'End If
-    'End Sub
 
     '' === Declare sa taas ng form ===
     'Private scanTimer As New Timer()
@@ -1158,6 +1230,9 @@ Public Class Deliveries
                 btnAddtopending.Visible = False
                 panel4.Location = New Point(103, 86)
 
+                panel4.Location = New Point(176, 113)
+
+
             Case "Delete"
                 If MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     dgvPendingList.Rows.RemoveAt(e.RowIndex)
@@ -1244,13 +1319,18 @@ Public Class Deliveries
 
     Private Sub clearbtn_Click(sender As Object, e As EventArgs) Handles clearbtn.Click
         ' Clear textboxes
-        txtBarcodeID.Clear()
-        txtProductname.Clear()
-        txtCostprice.Clear()
-        txtUnitPrice.Clear()
+
+        ''txtTransactionNo.Text = String.Empty
+        ''cmbSupplierName.SelectedIndex = -1
+
+        txtBarcodeID.Text = String.Empty
+        txtProductname.Text = String.Empty
+        txtCostprice.Text = String.Empty
+        txtUnitPrice.Text = String.Empty
+        txtWholesaleprice.Text = String.Empty
 
         ' Reset label
-        lblTotalCost.Text = "₱0.00"
+        lblTotalCost.Text = "Total Cost: ₱0.00"
 
         txtBarcodeID.Enabled = True
         txtBarcodeID.Focus()

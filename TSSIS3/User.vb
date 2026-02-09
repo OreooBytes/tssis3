@@ -170,6 +170,8 @@ Public Class User
         cpword.MaxLength = 150
 
         LoadUserRole()
+        CheckSuperAdmin()
+        'btnSuperadmin.Visible = False
 
     End Sub
     ' === Load All Data ===
@@ -247,6 +249,29 @@ Public Class User
             End If
         End Using
     End Sub
+
+    Private Sub CheckSuperAdmin()
+        Try
+            Using conn As MySqlConnection = Module1.Openconnection()
+                Dim query As String = "SELECT COUNT(*) FROM users WHERE Usertype = 'Superadmin'"
+
+                Using cmd As New MySqlCommand(query, conn)
+                    Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+
+                    ' 👉 Visible lang kapag MAY superadmin na
+                    If count >= 1 Then
+                        btnSuperadmin.Visible = True
+                    Else
+                        btnSuperadmin.Visible = False
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Error checking superadmin: " & ex.Message)
+        End Try
+    End Sub
+
+
 
     Private Sub LoadUserRole()
         ' Clear existing items in ComboBox

@@ -121,6 +121,7 @@ Public Class Dashboard
         btnPOS.ForeColor = ColorTranslator.FromHtml("#FFFFFF")
         btnDiscounts.ForeColor = ColorTranslator.FromHtml("#FFFFFF")
         btnVat.ForeColor = ColorTranslator.FromHtml("#FFFFFF")
+        btnmembership.ForeColor = ColorTranslator.FromHtml("#FFFFFF")
         btnReports.ForeColor = ColorTranslator.FromHtml("#FFFFFF")
         btnUtilities.ForeColor = ColorTranslator.FromHtml("#FFFFFF")
         btnLogout.ForeColor = ColorTranslator.FromHtml("#FFFFFF")
@@ -136,6 +137,7 @@ Public Class Dashboard
         btnPOS.FillColor = ColorTranslator.FromHtml("#0B2447")
         btnDiscounts.FillColor = ColorTranslator.FromHtml("#0B2447")
         btnVat.FillColor = ColorTranslator.FromHtml("#0B2447")
+        btnmembership.FillColor = ColorTranslator.FromHtml("#0B2447")
         btnReports.FillColor = ColorTranslator.FromHtml("#0B2447")
         btnUtilities.FillColor = ColorTranslator.FromHtml("#0B2447")
         btnLogout.FillColor = ColorTranslator.FromHtml("#0B2447")
@@ -151,6 +153,7 @@ Public Class Dashboard
         btnPOS.Font = New Font("Outfit", 8, FontStyle.Bold)
         btnDiscounts.Font = New Font("Outfit", 8, FontStyle.Bold)
         btnVat.Font = New Font("Outfit", 8, FontStyle.Bold)
+        btnmembership.Font = New Font("Outfit", 8, FontStyle.Bold)
         btnReports.Font = New Font("Outfit", 8, FontStyle.Bold)
         btnUtilities.Font = New Font("Outfit", 8, FontStyle.Bold)
         btnLogout.Font = New Font("Outfit", 8, FontStyle.Bold)
@@ -353,8 +356,10 @@ Public Class Dashboard
         btnPOS.Enabled = superAdminExists
         btnVat.Enabled = superAdminExists
         btnDiscounts.Enabled = superAdminExists
+        btnmembership.Enabled = superAdminExists
         btnUtilities.Enabled = superAdminExists
         btnReports.Enabled = superAdminExists
+
         btnLogout.Enabled = True
     End Sub
 
@@ -401,6 +406,7 @@ Public Class Dashboard
             Case "btnVat" : selectedBtn.Image = My.Resources.icons8_main9
             Case "btnReports" : selectedBtn.Image = My.Resources.icons8_main10
             Case "btnUtilities" : selectedBtn.Image = My.Resources.icons8_main13
+            Case "btnmembership" : selectedBtn.Image = My.Resources.iconsmain_14
 
         End Select
 
@@ -430,8 +436,10 @@ Public Class Dashboard
             Case "btnPOS" : btn.Image = My.Resources.iconmain7
             Case "btnDiscounts" : btn.Image = My.Resources.iconmain8
             Case "btnVat" : btn.Image = My.Resources.iconmain9
+            Case "btnmembership" : btn.Image = My.Resources.iconmain14
             Case "btnReports" : btn.Image = My.Resources.iconmain10
             Case "btnUtilities" : btn.Image = My.Resources.iconmain13
+
 
         End Select
     End Sub
@@ -616,6 +624,25 @@ Public Class Dashboard
         pbAll.Location = New Point(-19, -27)
 
     End Sub
+
+    Private Sub btnmembership_Click(sender As Object, e As EventArgs) Handles btnmembership.Click
+        SetActiveButton(btnmembership)
+
+        OpenChildForm(Of Membership)()
+
+        '=== Panel Size
+
+        PanelMain.BringToFront()
+
+
+        '--- I-set ang image ---
+        pbAll.Image = My.Resources.MS
+
+        ' --- I-set ang location ---
+        pbAll.Location = New Point(-19, -27)
+
+    End Sub
+
     Private Sub btnUtilities_Click(sender As Object, e As EventArgs) Handles btnUtilities.Click
         SetActiveButton(btnUtilities)
 
@@ -1378,7 +1405,17 @@ Public Class Dashboard
         Return MyBase.ProcessCmdKey(msg, keyData)
     End Function
 
+    Private Sub Guna2HtmlLabel1_Click(sender As Object, e As EventArgs) Handles Guna2HtmlLabel1.Click
 
+    End Sub
+
+    Private Sub lblUtilities_Click(sender As Object, e As EventArgs) Handles lblUtilities.Click
+
+    End Sub
+
+    Private Sub Guna2HtmlLabel2_Click(sender As Object, e As EventArgs) Handles Guna2HtmlLabel2.Click
+
+    End Sub
 End Class
 
 

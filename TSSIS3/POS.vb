@@ -3138,7 +3138,5 @@ Public Class POS
         TriggerButton(btn)
     End Sub
 
-
-
 End Class
 

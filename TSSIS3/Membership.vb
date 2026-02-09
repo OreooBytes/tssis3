@@ -17,7 +17,7 @@ Public Class Membership
         pbBarcode.SizeMode = PictureBoxSizeMode.StretchImage
         LoadMembershipsFromDatabase()
 
-        BackColor = ColorTranslator.FromHtml("#0B2447")
+        'BackColor = ColorTranslator.FromHtml("#0B2447")
 
         ' Clear fields
         nametxt.Clear()
@@ -195,20 +195,25 @@ Public Class Membership
                     Using reader As MySqlDataReader = cmd.ExecuteReader()
                         While reader.Read()
                             Guna2DataGridView1.Rows.Add(
-                                reader("ID").ToString(),
-                                reader("Name").ToString(),
-                                reader("ContactNo").ToString(),
-                                reader("Points").ToString(),
-                                reader("Barcode").ToString()
-                            )
+                            reader("ID").ToString(),
+                            reader("Name").ToString(),
+                            reader("ContactNo").ToString(),
+                            reader("Points").ToString(),
+                            reader("Barcode").ToString()
+                        )
                         End While
                     End Using
                 End Using
             End Using
+
+            ' ✅ REAL-TIME TOTAL MEMBERS
+            lblTotalMember.Text = Guna2DataGridView1.Rows.Count.ToString()
+
         Catch ex As Exception
             MessageBox.Show("Error loading membership data:  " & ex.Message)
         End Try
     End Sub
+
 
     '========================
     ' GENERATE BARCODE

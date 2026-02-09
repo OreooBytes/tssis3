@@ -1542,5 +1542,11 @@
   <ItemGroup>
     <None Include="Resources\icons8-add-35.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconmain14.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\iconsmain_14.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

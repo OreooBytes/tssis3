@@ -23,13 +23,13 @@ Partial Class POS
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(POS))
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.lblCustomerPoints = New System.Windows.Forms.Label()
@@ -154,10 +154,9 @@ Partial Class POS
         Me.Label10.BackColor = System.Drawing.Color.Transparent
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.ForeColor = System.Drawing.Color.Black
-        Me.Label10.Location = New System.Drawing.Point(28, 48)
-        Me.Label10.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label10.Location = New System.Drawing.Point(21, 39)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(64, 15)
+        Me.Label10.Size = New System.Drawing.Size(50, 12)
         Me.Label10.TabIndex = 65
         Me.Label10.Text = "Barcode:"
         '
@@ -167,10 +166,9 @@ Partial Class POS
         Me.Label4.BackColor = System.Drawing.Color.Transparent
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.Black
-        Me.Label4.Location = New System.Drawing.Point(25, 18)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(19, 15)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(115, 18)
+        Me.Label4.Size = New System.Drawing.Size(96, 15)
         Me.Label4.TabIndex = 67
         Me.Label4.Text = "Customer Info"
         '
@@ -180,10 +178,9 @@ Partial Class POS
         Me.lblCustomerPoints.BackColor = System.Drawing.Color.Transparent
         Me.lblCustomerPoints.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCustomerPoints.ForeColor = System.Drawing.Color.Black
-        Me.lblCustomerPoints.Location = New System.Drawing.Point(205, 208)
-        Me.lblCustomerPoints.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCustomerPoints.Location = New System.Drawing.Point(154, 169)
         Me.lblCustomerPoints.Name = "lblCustomerPoints"
-        Me.lblCustomerPoints.Size = New System.Drawing.Size(0, 15)
+        Me.lblCustomerPoints.Size = New System.Drawing.Size(0, 12)
         Me.lblCustomerPoints.TabIndex = 63
         '
         'lblCustomerName
@@ -192,10 +189,9 @@ Partial Class POS
         Me.lblCustomerName.BackColor = System.Drawing.Color.Transparent
         Me.lblCustomerName.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCustomerName.ForeColor = System.Drawing.Color.Black
-        Me.lblCustomerName.Location = New System.Drawing.Point(205, 186)
-        Me.lblCustomerName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCustomerName.Location = New System.Drawing.Point(154, 151)
         Me.lblCustomerName.Name = "lblCustomerName"
-        Me.lblCustomerName.Size = New System.Drawing.Size(0, 15)
+        Me.lblCustomerName.Size = New System.Drawing.Size(0, 12)
         Me.lblCustomerName.TabIndex = 64
         '
         'Label7
@@ -204,20 +200,18 @@ Partial Class POS
         Me.Label7.BackColor = System.Drawing.Color.Transparent
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.Black
-        Me.Label7.Location = New System.Drawing.Point(20, 78)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Location = New System.Drawing.Point(15, 63)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(116, 18)
+        Me.Label7.Size = New System.Drawing.Size(97, 15)
         Me.Label7.TabIndex = 71
         Me.Label7.Text = "Discount Type"
         '
         'Guna2Panel6
         '
         Me.Guna2Panel6.BackColor = System.Drawing.Color.Gainsboro
-        Me.Guna2Panel6.Location = New System.Drawing.Point(332, 14)
-        Me.Guna2Panel6.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel6.Location = New System.Drawing.Point(249, 11)
         Me.Guna2Panel6.Name = "Guna2Panel6"
-        Me.Guna2Panel6.Size = New System.Drawing.Size(164, 57)
+        Me.Guna2Panel6.Size = New System.Drawing.Size(123, 46)
         Me.Guna2Panel6.TabIndex = 33
         Me.Guna2Panel6.Visible = False
         '
@@ -226,10 +220,9 @@ Partial Class POS
         Me.lblPayment.AutoSize = True
         Me.lblPayment.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPayment.ForeColor = System.Drawing.SystemColors.Control
-        Me.lblPayment.Location = New System.Drawing.Point(24, 22)
-        Me.lblPayment.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPayment.Location = New System.Drawing.Point(18, 18)
         Me.lblPayment.Name = "lblPayment"
-        Me.lblPayment.Size = New System.Drawing.Size(113, 29)
+        Me.lblPayment.Size = New System.Drawing.Size(90, 24)
         Me.lblPayment.TabIndex = 21
         Me.lblPayment.Text = "Payment"
         '
@@ -238,10 +231,9 @@ Partial Class POS
         Me.totalamount.AutoSize = True
         Me.totalamount.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.totalamount.ForeColor = System.Drawing.Color.Red
-        Me.totalamount.Location = New System.Drawing.Point(679, 580)
-        Me.totalamount.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.totalamount.Location = New System.Drawing.Point(509, 471)
         Me.totalamount.Name = "totalamount"
-        Me.totalamount.Size = New System.Drawing.Size(56, 18)
+        Me.totalamount.Size = New System.Drawing.Size(48, 15)
         Me.totalamount.TabIndex = 36
         Me.totalamount.Text = "₱ 0.00"
         '
@@ -254,10 +246,9 @@ Partial Class POS
         Me.rbRetail.CheckedState.InnerColor = System.Drawing.Color.White
         Me.rbRetail.CheckedState.InnerOffset = -4
         Me.rbRetail.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbRetail.Location = New System.Drawing.Point(504, 28)
-        Me.rbRetail.Margin = New System.Windows.Forms.Padding(4)
+        Me.rbRetail.Location = New System.Drawing.Point(378, 23)
         Me.rbRetail.Name = "rbRetail"
-        Me.rbRetail.Size = New System.Drawing.Size(77, 22)
+        Me.rbRetail.Size = New System.Drawing.Size(67, 19)
         Me.rbRetail.TabIndex = 1
         Me.rbRetail.Text = "Retail "
         Me.rbRetail.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
@@ -270,10 +261,9 @@ Partial Class POS
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(417, 580)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.Location = New System.Drawing.Point(313, 471)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(108, 18)
+        Me.Label5.Size = New System.Drawing.Size(91, 15)
         Me.Label5.TabIndex = 35
         Me.Label5.Text = "Total Amount"
         '
@@ -288,10 +278,9 @@ Partial Class POS
         Me.cmbDiscount.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbDiscount.ForeColor = System.Drawing.Color.FromArgb(CType(CType(68, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(112, Byte), Integer))
         Me.cmbDiscount.ItemHeight = 30
-        Me.cmbDiscount.Location = New System.Drawing.Point(20, 100)
-        Me.cmbDiscount.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmbDiscount.Location = New System.Drawing.Point(15, 81)
         Me.cmbDiscount.Name = "cmbDiscount"
-        Me.cmbDiscount.Size = New System.Drawing.Size(376, 36)
+        Me.cmbDiscount.Size = New System.Drawing.Size(283, 36)
         Me.cmbDiscount.TabIndex = 10
         '
         'txtPayment
@@ -306,23 +295,22 @@ Partial Class POS
         Me.txtPayment.FocusedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.txtPayment.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPayment.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.txtPayment.Location = New System.Drawing.Point(21, 172)
-        Me.txtPayment.Margin = New System.Windows.Forms.Padding(5)
+        Me.txtPayment.Location = New System.Drawing.Point(16, 140)
+        Me.txtPayment.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPayment.Name = "txtPayment"
         Me.txtPayment.PlaceholderForeColor = System.Drawing.Color.LightGray
         Me.txtPayment.PlaceholderText = "Enter Total Amount"
         Me.txtPayment.SelectedText = ""
-        Me.txtPayment.Size = New System.Drawing.Size(376, 76)
+        Me.txtPayment.Size = New System.Drawing.Size(282, 62)
         Me.txtPayment.TabIndex = 11
         '
         'lblChanges
         '
         Me.lblChanges.AutoSize = True
         Me.lblChanges.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblChanges.Location = New System.Drawing.Point(419, 604)
-        Me.lblChanges.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblChanges.Location = New System.Drawing.Point(314, 491)
         Me.lblChanges.Name = "lblChanges"
-        Me.lblChanges.Size = New System.Drawing.Size(70, 18)
+        Me.lblChanges.Size = New System.Drawing.Size(60, 15)
         Me.lblChanges.TabIndex = 6
         Me.lblChanges.Text = "Change "
         '
@@ -335,10 +323,9 @@ Partial Class POS
         Me.rbWholesale.CheckedState.InnerColor = System.Drawing.Color.White
         Me.rbWholesale.CheckedState.InnerOffset = -4
         Me.rbWholesale.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbWholesale.Location = New System.Drawing.Point(603, 28)
-        Me.rbWholesale.Margin = New System.Windows.Forms.Padding(4)
+        Me.rbWholesale.Location = New System.Drawing.Point(452, 23)
         Me.rbWholesale.Name = "rbWholesale"
-        Me.rbWholesale.Size = New System.Drawing.Size(108, 22)
+        Me.rbWholesale.Size = New System.Drawing.Size(92, 19)
         Me.rbWholesale.TabIndex = 2
         Me.rbWholesale.Text = "Wholesale" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         Me.rbWholesale.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
@@ -359,12 +346,12 @@ Partial Class POS
         Me.txtBarcodeCustomer.FocusedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.txtBarcodeCustomer.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.txtBarcodeCustomer.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.txtBarcodeCustomer.Location = New System.Drawing.Point(631, 92)
-        Me.txtBarcodeCustomer.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.txtBarcodeCustomer.Location = New System.Drawing.Point(473, 75)
+        Me.txtBarcodeCustomer.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.txtBarcodeCustomer.Name = "txtBarcodeCustomer"
         Me.txtBarcodeCustomer.PlaceholderText = ""
         Me.txtBarcodeCustomer.SelectedText = ""
-        Me.txtBarcodeCustomer.Size = New System.Drawing.Size(197, 44)
+        Me.txtBarcodeCustomer.Size = New System.Drawing.Size(148, 36)
         Me.txtBarcodeCustomer.TabIndex = 61
         Me.txtBarcodeCustomer.Visible = False
         '
@@ -373,10 +360,9 @@ Partial Class POS
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Black
-        Me.Label1.Location = New System.Drawing.Point(87, 16)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(65, 13)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(73, 17)
+        Me.Label1.Size = New System.Drawing.Size(57, 13)
         Me.Label1.TabIndex = 19
         Me.Label1.Text = "Cashier :"
         '
@@ -385,10 +371,9 @@ Partial Class POS
         Me.lblVAT.AutoSize = True
         Me.lblVAT.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblVAT.ForeColor = System.Drawing.Color.Gray
-        Me.lblVAT.Location = New System.Drawing.Point(433, 526)
-        Me.lblVAT.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblVAT.Location = New System.Drawing.Point(325, 427)
         Me.lblVAT.Name = "lblVAT"
-        Me.lblVAT.Size = New System.Drawing.Size(42, 18)
+        Me.lblVAT.Size = New System.Drawing.Size(35, 15)
         Me.lblVAT.TabIndex = 14
         Me.lblVAT.Text = "Vat :"
         '
@@ -397,10 +382,9 @@ Partial Class POS
         Me.lblDiscount.AutoSize = True
         Me.lblDiscount.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDiscount.ForeColor = System.Drawing.Color.Gray
-        Me.lblDiscount.Location = New System.Drawing.Point(433, 453)
-        Me.lblDiscount.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDiscount.Location = New System.Drawing.Point(325, 368)
         Me.lblDiscount.Name = "lblDiscount"
-        Me.lblDiscount.Size = New System.Drawing.Size(85, 18)
+        Me.lblDiscount.Size = New System.Drawing.Size(71, 15)
         Me.lblDiscount.TabIndex = 13
         Me.lblDiscount.Text = "Discount :"
         '
@@ -409,10 +393,9 @@ Partial Class POS
         Me.lblVatableSales.AutoSize = True
         Me.lblVatableSales.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblVatableSales.ForeColor = System.Drawing.Color.Gray
-        Me.lblVatableSales.Location = New System.Drawing.Point(433, 501)
-        Me.lblVatableSales.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblVatableSales.Location = New System.Drawing.Point(325, 407)
         Me.lblVatableSales.Name = "lblVatableSales"
-        Me.lblVatableSales.Size = New System.Drawing.Size(120, 18)
+        Me.lblVatableSales.Size = New System.Drawing.Size(103, 15)
         Me.lblVatableSales.TabIndex = 18
         Me.lblVatableSales.Text = "Vatable Sales :"
         '
@@ -421,10 +404,9 @@ Partial Class POS
         Me.lblCashier.AutoSize = True
         Me.lblCashier.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCashier.ForeColor = System.Drawing.Color.Black
-        Me.lblCashier.Location = New System.Drawing.Point(159, 16)
-        Me.lblCashier.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCashier.Location = New System.Drawing.Point(119, 13)
         Me.lblCashier.Name = "lblCashier"
-        Me.lblCashier.Size = New System.Drawing.Size(57, 17)
+        Me.lblCashier.Size = New System.Drawing.Size(45, 13)
         Me.lblCashier.TabIndex = 7
         Me.lblCashier.Text = "Label1"
         '
@@ -464,10 +446,9 @@ Partial Class POS
         Me.lblRevenue.Controls.Add(Me.Label18)
         Me.lblRevenue.Controls.Add(Me.lblWholesale)
         Me.lblRevenue.CustomBorderColor = System.Drawing.Color.LightGray
-        Me.lblRevenue.Location = New System.Drawing.Point(849, 15)
-        Me.lblRevenue.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblRevenue.Location = New System.Drawing.Point(637, 12)
         Me.lblRevenue.Name = "lblRevenue"
-        Me.lblRevenue.Size = New System.Drawing.Size(640, 799)
+        Me.lblRevenue.Size = New System.Drawing.Size(480, 649)
         Me.lblRevenue.TabIndex = 42
         '
         'lblSubtotal
@@ -475,10 +456,9 @@ Partial Class POS
         Me.lblSubtotal.AutoSize = True
         Me.lblSubtotal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSubtotal.ForeColor = System.Drawing.Color.Gray
-        Me.lblSubtotal.Location = New System.Drawing.Point(433, 428)
-        Me.lblSubtotal.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblSubtotal.Location = New System.Drawing.Point(325, 348)
         Me.lblSubtotal.Name = "lblSubtotal"
-        Me.lblSubtotal.Size = New System.Drawing.Size(80, 18)
+        Me.lblSubtotal.Size = New System.Drawing.Size(68, 15)
         Me.lblSubtotal.TabIndex = 78
         Me.lblSubtotal.Text = "Subtotal :"
         '
@@ -486,10 +466,9 @@ Partial Class POS
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(17, 428)
-        Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label9.Location = New System.Drawing.Point(13, 348)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(80, 18)
+        Me.Label9.Size = New System.Drawing.Size(68, 15)
         Me.Label9.TabIndex = 77
         Me.Label9.Text = "Subtotal :"
         '
@@ -502,10 +481,9 @@ Partial Class POS
         Me.btnReturnrefund.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnReturnrefund.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnReturnrefund.ForeColor = System.Drawing.Color.White
-        Me.btnReturnrefund.Location = New System.Drawing.Point(324, 610)
-        Me.btnReturnrefund.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnReturnrefund.Location = New System.Drawing.Point(243, 496)
         Me.btnReturnrefund.Name = "btnReturnrefund"
-        Me.btnReturnrefund.Size = New System.Drawing.Size(291, 55)
+        Me.btnReturnrefund.Size = New System.Drawing.Size(218, 45)
         Me.btnReturnrefund.TabIndex = 76
         Me.btnReturnrefund.Text = "[ R ] Return / Refund"
         '
@@ -513,10 +491,9 @@ Partial Class POS
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(201, 428)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(151, 348)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(161, 18)
+        Me.Label2.Size = New System.Drawing.Size(136, 15)
         Me.Label2.TabIndex = 74
         Me.Label2.Text = "WholeSale Discount"
         Me.Label2.Visible = False
@@ -530,10 +507,9 @@ Partial Class POS
         Me.btnNewTransaction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnNewTransaction.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnNewTransaction.ForeColor = System.Drawing.Color.White
-        Me.btnNewTransaction.Location = New System.Drawing.Point(323, 673)
-        Me.btnNewTransaction.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnNewTransaction.Location = New System.Drawing.Point(242, 547)
         Me.btnNewTransaction.Name = "btnNewTransaction"
-        Me.btnNewTransaction.Size = New System.Drawing.Size(291, 55)
+        Me.btnNewTransaction.Size = New System.Drawing.Size(218, 45)
         Me.btnNewTransaction.TabIndex = 9
         Me.btnNewTransaction.Text = "[ N ] New Transaction"
         '
@@ -546,10 +522,9 @@ Partial Class POS
         Me.btnReturn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnReturn.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnReturn.ForeColor = System.Drawing.Color.White
-        Me.btnReturn.Location = New System.Drawing.Point(323, 673)
-        Me.btnReturn.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnReturn.Location = New System.Drawing.Point(242, 547)
         Me.btnReturn.Name = "btnReturn"
-        Me.btnReturn.Size = New System.Drawing.Size(291, 55)
+        Me.btnReturn.Size = New System.Drawing.Size(218, 45)
         Me.btnReturn.TabIndex = 7
         Me.btnReturn.Text = "Return / Refund"
         Me.btnReturn.Visible = False
@@ -563,10 +538,9 @@ Partial Class POS
         Me.btnPay.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnPay.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnPay.ForeColor = System.Drawing.Color.White
-        Me.btnPay.Location = New System.Drawing.Point(28, 736)
-        Me.btnPay.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnPay.Location = New System.Drawing.Point(21, 598)
         Me.btnPay.Name = "btnPay"
-        Me.btnPay.Size = New System.Drawing.Size(586, 55)
+        Me.btnPay.Size = New System.Drawing.Size(440, 45)
         Me.btnPay.TabIndex = 5
         Me.btnPay.Text = "[ P ] Check Out"
         '
@@ -579,10 +553,9 @@ Partial Class POS
         Me.btnAddMember.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnAddMember.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnAddMember.ForeColor = System.Drawing.Color.White
-        Me.btnAddMember.Location = New System.Drawing.Point(323, 610)
-        Me.btnAddMember.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnAddMember.Location = New System.Drawing.Point(242, 496)
         Me.btnAddMember.Name = "btnAddMember"
-        Me.btnAddMember.Size = New System.Drawing.Size(291, 55)
+        Me.btnAddMember.Size = New System.Drawing.Size(218, 45)
         Me.btnAddMember.TabIndex = 8
         Me.btnAddMember.Text = "Add Membership"
         Me.btnAddMember.Visible = False
@@ -596,10 +569,9 @@ Partial Class POS
         Me.btnRetrieveHold.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnRetrieveHold.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnRetrieveHold.ForeColor = System.Drawing.Color.White
-        Me.btnRetrieveHold.Location = New System.Drawing.Point(25, 673)
-        Me.btnRetrieveHold.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnRetrieveHold.Location = New System.Drawing.Point(19, 547)
         Me.btnRetrieveHold.Name = "btnRetrieveHold"
-        Me.btnRetrieveHold.Size = New System.Drawing.Size(291, 55)
+        Me.btnRetrieveHold.Size = New System.Drawing.Size(218, 45)
         Me.btnRetrieveHold.TabIndex = 6
         Me.btnRetrieveHold.Text = "[ G ] Recall Transaction"
         '
@@ -612,20 +584,18 @@ Partial Class POS
         Me.btnHoldTransaction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnHoldTransaction.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnHoldTransaction.ForeColor = System.Drawing.Color.White
-        Me.btnHoldTransaction.Location = New System.Drawing.Point(25, 610)
-        Me.btnHoldTransaction.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnHoldTransaction.Location = New System.Drawing.Point(19, 496)
         Me.btnHoldTransaction.Name = "btnHoldTransaction"
-        Me.btnHoldTransaction.Size = New System.Drawing.Size(291, 55)
+        Me.btnHoldTransaction.Size = New System.Drawing.Size(218, 45)
         Me.btnHoldTransaction.TabIndex = 4
         Me.btnHoldTransaction.Text = "[ H ] Hold Transaction"
         '
         'Guna2Panel2
         '
         Me.Guna2Panel2.BackColor = System.Drawing.Color.LightGray
-        Me.Guna2Panel2.Location = New System.Drawing.Point(5, 119)
-        Me.Guna2Panel2.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel2.Location = New System.Drawing.Point(4, 97)
         Me.Guna2Panel2.Name = "Guna2Panel2"
-        Me.Guna2Panel2.Size = New System.Drawing.Size(633, 2)
+        Me.Guna2Panel2.Size = New System.Drawing.Size(475, 2)
         Me.Guna2Panel2.TabIndex = 12
         '
         'Guna2ShadowPanel1
@@ -639,13 +609,12 @@ Partial Class POS
         Me.Guna2ShadowPanel1.Controls.Add(Me.lblDate)
         Me.Guna2ShadowPanel1.Controls.Add(Me.lblTransactionNo)
         Me.Guna2ShadowPanel1.FillColor = System.Drawing.Color.White
-        Me.Guna2ShadowPanel1.Location = New System.Drawing.Point(5, 9)
-        Me.Guna2ShadowPanel1.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2ShadowPanel1.Location = New System.Drawing.Point(4, 7)
         Me.Guna2ShadowPanel1.Name = "Guna2ShadowPanel1"
         Me.Guna2ShadowPanel1.Radius = 5
         Me.Guna2ShadowPanel1.ShadowColor = System.Drawing.Color.Black
         Me.Guna2ShadowPanel1.ShadowStyle = Guna.UI2.WinForms.Guna2ShadowPanel.ShadowMode.Dropped
-        Me.Guna2ShadowPanel1.Size = New System.Drawing.Size(621, 110)
+        Me.Guna2ShadowPanel1.Size = New System.Drawing.Size(473, 89)
         Me.Guna2ShadowPanel1.TabIndex = 73
         '
         'lblInvoiceNo
@@ -653,10 +622,9 @@ Partial Class POS
         Me.lblInvoiceNo.AutoSize = True
         Me.lblInvoiceNo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblInvoiceNo.ForeColor = System.Drawing.Color.Black
-        Me.lblInvoiceNo.Location = New System.Drawing.Point(88, 62)
-        Me.lblInvoiceNo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblInvoiceNo.Location = New System.Drawing.Point(66, 50)
         Me.lblInvoiceNo.Name = "lblInvoiceNo"
-        Me.lblInvoiceNo.Size = New System.Drawing.Size(57, 17)
+        Me.lblInvoiceNo.Size = New System.Drawing.Size(45, 13)
         Me.lblInvoiceNo.TabIndex = 31
         Me.lblInvoiceNo.Text = "Label1"
         '
@@ -664,11 +632,10 @@ Partial Class POS
         '
         Me.userpbcircle.FillColor = System.Drawing.Color.WhiteSmoke
         Me.userpbcircle.ImageRotate = 0!
-        Me.userpbcircle.Location = New System.Drawing.Point(12, 16)
-        Me.userpbcircle.Margin = New System.Windows.Forms.Padding(4)
+        Me.userpbcircle.Location = New System.Drawing.Point(9, 13)
         Me.userpbcircle.Name = "userpbcircle"
         Me.userpbcircle.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
-        Me.userpbcircle.Size = New System.Drawing.Size(67, 62)
+        Me.userpbcircle.Size = New System.Drawing.Size(50, 50)
         Me.userpbcircle.TabIndex = 28
         Me.userpbcircle.TabStop = False
         '
@@ -677,10 +644,9 @@ Partial Class POS
         Me.lblTime.AutoSize = True
         Me.lblTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTime.ForeColor = System.Drawing.Color.Black
-        Me.lblTime.Location = New System.Drawing.Point(393, 52)
-        Me.lblTime.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTime.Location = New System.Drawing.Point(295, 42)
         Me.lblTime.Name = "lblTime"
-        Me.lblTime.Size = New System.Drawing.Size(57, 17)
+        Me.lblTime.Size = New System.Drawing.Size(45, 13)
         Me.lblTime.TabIndex = 29
         Me.lblTime.Text = "Label1"
         '
@@ -689,10 +655,9 @@ Partial Class POS
         Me.lblDate.AutoSize = True
         Me.lblDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDate.ForeColor = System.Drawing.Color.Black
-        Me.lblDate.Location = New System.Drawing.Point(393, 27)
-        Me.lblDate.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDate.Location = New System.Drawing.Point(295, 22)
         Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(43, 17)
+        Me.lblDate.Size = New System.Drawing.Size(34, 13)
         Me.lblDate.TabIndex = 20
         Me.lblDate.Text = "label"
         '
@@ -701,43 +666,41 @@ Partial Class POS
         Me.lblTransactionNo.AutoSize = True
         Me.lblTransactionNo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTransactionNo.ForeColor = System.Drawing.Color.Black
-        Me.lblTransactionNo.Location = New System.Drawing.Point(87, 38)
-        Me.lblTransactionNo.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTransactionNo.Location = New System.Drawing.Point(65, 31)
         Me.lblTransactionNo.Name = "lblTransactionNo"
-        Me.lblTransactionNo.Size = New System.Drawing.Size(57, 17)
+        Me.lblTransactionNo.Size = New System.Drawing.Size(45, 13)
         Me.lblTransactionNo.TabIndex = 30
         Me.lblTransactionNo.Text = "Label1"
         '
         'dgvProductList
         '
-        DataGridViewCellStyle13.BackColor = System.Drawing.Color.White
-        Me.dgvProductList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
+        Me.dgvProductList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvProductList.BackgroundColor = System.Drawing.Color.WhiteSmoke
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvProductList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvProductList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvProductList.ColumnHeadersHeight = 4
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvProductList.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvProductList.DefaultCellStyle = DataGridViewCellStyle3
         Me.dgvProductList.GridColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.dgvProductList.Location = New System.Drawing.Point(12, 160)
-        Me.dgvProductList.Margin = New System.Windows.Forms.Padding(4)
+        Me.dgvProductList.Location = New System.Drawing.Point(9, 130)
         Me.dgvProductList.Name = "dgvProductList"
         Me.dgvProductList.RowHeadersVisible = False
         Me.dgvProductList.RowHeadersWidth = 51
         Me.dgvProductList.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.dgvProductList.Size = New System.Drawing.Size(615, 217)
+        Me.dgvProductList.Size = New System.Drawing.Size(461, 176)
         Me.dgvProductList.TabIndex = 3
         Me.dgvProductList.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White
         Me.dgvProductList.ThemeStyle.AlternatingRowsStyle.Font = Nothing
@@ -764,46 +727,41 @@ Partial Class POS
         'Guna2Panel10
         '
         Me.Guna2Panel10.BackColor = System.Drawing.Color.LightGray
-        Me.Guna2Panel10.Location = New System.Drawing.Point(3, 601)
-        Me.Guna2Panel10.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel10.Location = New System.Drawing.Point(2, 488)
         Me.Guna2Panel10.Name = "Guna2Panel10"
-        Me.Guna2Panel10.Size = New System.Drawing.Size(633, 2)
+        Me.Guna2Panel10.Size = New System.Drawing.Size(475, 2)
         Me.Guna2Panel10.TabIndex = 11
         '
         'Guna2Panel9
         '
         Me.Guna2Panel9.BackColor = System.Drawing.Color.LightGray
-        Me.Guna2Panel9.Location = New System.Drawing.Point(4, 549)
-        Me.Guna2Panel9.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel9.Location = New System.Drawing.Point(3, 446)
         Me.Guna2Panel9.Name = "Guna2Panel9"
-        Me.Guna2Panel9.Size = New System.Drawing.Size(633, 2)
+        Me.Guna2Panel9.Size = New System.Drawing.Size(475, 2)
         Me.Guna2Panel9.TabIndex = 11
         '
         'Guna2Panel3
         '
         Me.Guna2Panel3.BackColor = System.Drawing.Color.LightGray
-        Me.Guna2Panel3.Location = New System.Drawing.Point(5, 384)
-        Me.Guna2Panel3.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel3.Location = New System.Drawing.Point(4, 312)
         Me.Guna2Panel3.Name = "Guna2Panel3"
-        Me.Guna2Panel3.Size = New System.Drawing.Size(633, 2)
+        Me.Guna2Panel3.Size = New System.Drawing.Size(475, 2)
         Me.Guna2Panel3.TabIndex = 11
         '
         'Guna2Panel5
         '
         Me.Guna2Panel5.BackColor = System.Drawing.Color.LightGray
-        Me.Guna2Panel5.Location = New System.Drawing.Point(3, 420)
-        Me.Guna2Panel5.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel5.Location = New System.Drawing.Point(2, 341)
         Me.Guna2Panel5.Name = "Guna2Panel5"
-        Me.Guna2Panel5.Size = New System.Drawing.Size(633, 2)
+        Me.Guna2Panel5.Size = New System.Drawing.Size(475, 2)
         Me.Guna2Panel5.TabIndex = 10
         '
         'Guna2Panel8
         '
         Me.Guna2Panel8.BackColor = System.Drawing.Color.Gainsboro
-        Me.Guna2Panel8.Location = New System.Drawing.Point(3, 150)
-        Me.Guna2Panel8.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel8.Location = New System.Drawing.Point(2, 122)
         Me.Guna2Panel8.Name = "Guna2Panel8"
-        Me.Guna2Panel8.Size = New System.Drawing.Size(633, 2)
+        Me.Guna2Panel8.Size = New System.Drawing.Size(475, 2)
         Me.Guna2Panel8.TabIndex = 10
         '
         'Label6
@@ -811,10 +769,9 @@ Partial Class POS
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold)
         Me.Label6.ForeColor = System.Drawing.Color.Black
-        Me.Label6.Location = New System.Drawing.Point(19, 564)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label6.Location = New System.Drawing.Point(14, 458)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(141, 25)
+        Me.Label6.Size = New System.Drawing.Size(116, 20)
         Me.Label6.TabIndex = 42
         Me.Label6.Text = "Total Amount"
         '
@@ -822,10 +779,9 @@ Partial Class POS
         '
         Me.Label15.AutoSize = True
         Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(17, 478)
-        Me.Label15.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label15.Location = New System.Drawing.Point(13, 388)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(143, 18)
+        Me.Label15.Size = New System.Drawing.Size(119, 15)
         Me.Label15.TabIndex = 41
         Me.Label15.Text = "Loyalty Discount :"
         '
@@ -833,10 +789,9 @@ Partial Class POS
         '
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(17, 501)
-        Me.Label13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label13.Location = New System.Drawing.Point(13, 407)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(120, 18)
+        Me.Label13.Size = New System.Drawing.Size(103, 15)
         Me.Label13.TabIndex = 40
         Me.Label13.Text = "Vatable Sales :"
         '
@@ -844,10 +799,9 @@ Partial Class POS
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(17, 526)
-        Me.Label12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label12.Location = New System.Drawing.Point(13, 427)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(42, 18)
+        Me.Label12.Size = New System.Drawing.Size(35, 15)
         Me.Label12.TabIndex = 39
         Me.Label12.Text = "Vat :"
         '
@@ -855,10 +809,9 @@ Partial Class POS
         '
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(17, 453)
-        Me.Label11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label11.Location = New System.Drawing.Point(13, 368)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(85, 18)
+        Me.Label11.Size = New System.Drawing.Size(71, 15)
         Me.Label11.TabIndex = 38
         Me.Label11.Text = "Discount :"
         '
@@ -866,10 +819,9 @@ Partial Class POS
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(8, 393)
-        Me.Label14.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label14.Location = New System.Drawing.Point(6, 319)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(149, 18)
+        Me.Label14.Size = New System.Drawing.Size(126, 15)
         Me.Label14.TabIndex = 37
         Me.Label14.Text = "Payment Summary"
         '
@@ -878,10 +830,9 @@ Partial Class POS
         Me.lblloyaltydiscount.AutoSize = True
         Me.lblloyaltydiscount.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblloyaltydiscount.ForeColor = System.Drawing.Color.Gray
-        Me.lblloyaltydiscount.Location = New System.Drawing.Point(433, 478)
-        Me.lblloyaltydiscount.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblloyaltydiscount.Location = New System.Drawing.Point(325, 388)
         Me.lblloyaltydiscount.Name = "lblloyaltydiscount"
-        Me.lblloyaltydiscount.Size = New System.Drawing.Size(133, 18)
+        Me.lblloyaltydiscount.Size = New System.Drawing.Size(111, 15)
         Me.lblloyaltydiscount.TabIndex = 27
         Me.lblloyaltydiscount.Text = "loyaltyDiscount :"
         '
@@ -890,10 +841,9 @@ Partial Class POS
         Me.lblTotalAmount.AutoSize = True
         Me.lblTotalAmount.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold)
         Me.lblTotalAmount.ForeColor = System.Drawing.Color.Red
-        Me.lblTotalAmount.Location = New System.Drawing.Point(423, 564)
-        Me.lblTotalAmount.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblTotalAmount.Location = New System.Drawing.Point(317, 458)
         Me.lblTotalAmount.Name = "lblTotalAmount"
-        Me.lblTotalAmount.Size = New System.Drawing.Size(141, 25)
+        Me.lblTotalAmount.Size = New System.Drawing.Size(116, 20)
         Me.lblTotalAmount.TabIndex = 24
         Me.lblTotalAmount.Text = "Total Amount"
         '
@@ -901,10 +851,9 @@ Partial Class POS
         '
         Me.Label18.AutoSize = True
         Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(8, 126)
-        Me.Label18.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label18.Location = New System.Drawing.Point(6, 102)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(106, 20)
+        Me.Label18.Size = New System.Drawing.Size(84, 16)
         Me.Label18.TabIndex = 44
         Me.Label18.Text = "Product list"
         '
@@ -913,10 +862,9 @@ Partial Class POS
         Me.lblWholesale.AutoSize = True
         Me.lblWholesale.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblWholesale.ForeColor = System.Drawing.Color.Gray
-        Me.lblWholesale.Location = New System.Drawing.Point(201, 447)
-        Me.lblWholesale.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblWholesale.Location = New System.Drawing.Point(151, 363)
         Me.lblWholesale.Name = "lblWholesale"
-        Me.lblWholesale.Size = New System.Drawing.Size(171, 18)
+        Me.lblWholesale.Size = New System.Drawing.Size(144, 15)
         Me.lblWholesale.TabIndex = 75
         Me.lblWholesale.Text = "WholeSale Discount :"
         Me.lblWholesale.Visible = False
@@ -930,10 +878,9 @@ Partial Class POS
         Me.btnproductcancel.FillColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnproductcancel.Font = New System.Drawing.Font("Segoe UI Black", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnproductcancel.ForeColor = System.Drawing.Color.White
-        Me.btnproductcancel.Location = New System.Drawing.Point(439, 73)
-        Me.btnproductcancel.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnproductcancel.Location = New System.Drawing.Point(329, 59)
         Me.btnproductcancel.Name = "btnproductcancel"
-        Me.btnproductcancel.Size = New System.Drawing.Size(244, 37)
+        Me.btnproductcancel.Size = New System.Drawing.Size(183, 30)
         Me.btnproductcancel.TabIndex = 39
         Me.btnproductcancel.Text = "CANCEL"
         Me.btnproductcancel.Visible = False
@@ -943,10 +890,9 @@ Partial Class POS
         Me.lblCritical.AutoSize = True
         Me.lblCritical.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCritical.ForeColor = System.Drawing.Color.Black
-        Me.lblCritical.Location = New System.Drawing.Point(787, 73)
-        Me.lblCritical.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblCritical.Location = New System.Drawing.Point(590, 59)
         Me.lblCritical.Name = "lblCritical"
-        Me.lblCritical.Size = New System.Drawing.Size(53, 19)
+        Me.lblCritical.Size = New System.Drawing.Size(41, 13)
         Me.lblCritical.TabIndex = 7
         Me.lblCritical.Text = "Label7"
         Me.lblCritical.Visible = False
@@ -965,10 +911,9 @@ Partial Class POS
         Me.btnSelectProduct.FillColor = System.Drawing.Color.Teal
         Me.btnSelectProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSelectProduct.ForeColor = System.Drawing.Color.White
-        Me.btnSelectProduct.Location = New System.Drawing.Point(689, 15)
-        Me.btnSelectProduct.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSelectProduct.Location = New System.Drawing.Point(517, 12)
         Me.btnSelectProduct.Name = "btnSelectProduct"
-        Me.btnSelectProduct.Size = New System.Drawing.Size(152, 39)
+        Me.btnSelectProduct.Size = New System.Drawing.Size(114, 32)
         Me.btnSelectProduct.TabIndex = 2
         Me.btnSelectProduct.Text = "Select Product"
         '
@@ -980,10 +925,9 @@ Partial Class POS
         Me.btnUpdateQuantity.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnUpdateQuantity.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.btnUpdateQuantity.ForeColor = System.Drawing.Color.White
-        Me.btnUpdateQuantity.Location = New System.Drawing.Point(751, 113)
-        Me.btnUpdateQuantity.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnUpdateQuantity.Location = New System.Drawing.Point(563, 92)
         Me.btnUpdateQuantity.Name = "btnUpdateQuantity"
-        Me.btnUpdateQuantity.Size = New System.Drawing.Size(32, 23)
+        Me.btnUpdateQuantity.Size = New System.Drawing.Size(24, 19)
         Me.btnUpdateQuantity.TabIndex = 41
         Me.btnUpdateQuantity.Text = "Guna2Button5"
         Me.btnUpdateQuantity.Visible = False
@@ -998,10 +942,9 @@ Partial Class POS
         Me.btnLoyal.FillColor = System.Drawing.Color.Blue
         Me.btnLoyal.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnLoyal.ForeColor = System.Drawing.Color.White
-        Me.btnLoyal.Location = New System.Drawing.Point(64, 416)
-        Me.btnLoyal.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnLoyal.Location = New System.Drawing.Point(48, 338)
         Me.btnLoyal.Name = "btnLoyal"
-        Me.btnLoyal.Size = New System.Drawing.Size(245, 55)
+        Me.btnLoyal.Size = New System.Drawing.Size(184, 45)
         Me.btnLoyal.TabIndex = 30
         Me.btnLoyal.Text = "Select Member"
         '
@@ -1015,10 +958,9 @@ Partial Class POS
         Me.btn1.FillColor = System.Drawing.Color.Silver
         Me.btn1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn1.ForeColor = System.Drawing.Color.White
-        Me.btn1.Location = New System.Drawing.Point(24, 322)
-        Me.btn1.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn1.Location = New System.Drawing.Point(18, 262)
         Me.btn1.Name = "btn1"
-        Me.btn1.Size = New System.Drawing.Size(120, 55)
+        Me.btn1.Size = New System.Drawing.Size(90, 45)
         Me.btn1.TabIndex = 16
         Me.btn1.Text = "1"
         '
@@ -1032,10 +974,9 @@ Partial Class POS
         Me.btn2.FillColor = System.Drawing.Color.Silver
         Me.btn2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn2.ForeColor = System.Drawing.Color.White
-        Me.btn2.Location = New System.Drawing.Point(152, 322)
-        Me.btn2.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn2.Location = New System.Drawing.Point(114, 262)
         Me.btn2.Name = "btn2"
-        Me.btn2.Size = New System.Drawing.Size(120, 55)
+        Me.btn2.Size = New System.Drawing.Size(90, 45)
         Me.btn2.TabIndex = 17
         Me.btn2.Text = "2"
         '
@@ -1049,10 +990,9 @@ Partial Class POS
         Me.btn3.FillColor = System.Drawing.Color.Silver
         Me.btn3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn3.ForeColor = System.Drawing.Color.White
-        Me.btn3.Location = New System.Drawing.Point(279, 322)
-        Me.btn3.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn3.Location = New System.Drawing.Point(209, 262)
         Me.btn3.Name = "btn3"
-        Me.btn3.Size = New System.Drawing.Size(120, 55)
+        Me.btn3.Size = New System.Drawing.Size(90, 45)
         Me.btn3.TabIndex = 18
         Me.btn3.Text = "3"
         '
@@ -1066,10 +1006,9 @@ Partial Class POS
         Me.btn4.FillColor = System.Drawing.Color.Silver
         Me.btn4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn4.ForeColor = System.Drawing.Color.White
-        Me.btn4.Location = New System.Drawing.Point(23, 385)
-        Me.btn4.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn4.Location = New System.Drawing.Point(17, 313)
         Me.btn4.Name = "btn4"
-        Me.btn4.Size = New System.Drawing.Size(120, 55)
+        Me.btn4.Size = New System.Drawing.Size(90, 45)
         Me.btn4.TabIndex = 19
         Me.btn4.Text = "4"
         '
@@ -1083,10 +1022,9 @@ Partial Class POS
         Me.btn5.FillColor = System.Drawing.Color.Silver
         Me.btn5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn5.ForeColor = System.Drawing.Color.White
-        Me.btn5.Location = New System.Drawing.Point(152, 385)
-        Me.btn5.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn5.Location = New System.Drawing.Point(114, 313)
         Me.btn5.Name = "btn5"
-        Me.btn5.Size = New System.Drawing.Size(120, 55)
+        Me.btn5.Size = New System.Drawing.Size(90, 45)
         Me.btn5.TabIndex = 20
         Me.btn5.Text = "5"
         '
@@ -1100,10 +1038,9 @@ Partial Class POS
         Me.btn6.FillColor = System.Drawing.Color.Silver
         Me.btn6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn6.ForeColor = System.Drawing.Color.White
-        Me.btn6.Location = New System.Drawing.Point(279, 385)
-        Me.btn6.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn6.Location = New System.Drawing.Point(209, 313)
         Me.btn6.Name = "btn6"
-        Me.btn6.Size = New System.Drawing.Size(120, 55)
+        Me.btn6.Size = New System.Drawing.Size(90, 45)
         Me.btn6.TabIndex = 21
         Me.btn6.Text = "6"
         '
@@ -1117,10 +1054,9 @@ Partial Class POS
         Me.btn7.FillColor = System.Drawing.Color.Silver
         Me.btn7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn7.ForeColor = System.Drawing.Color.White
-        Me.btn7.Location = New System.Drawing.Point(23, 448)
-        Me.btn7.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn7.Location = New System.Drawing.Point(17, 364)
         Me.btn7.Name = "btn7"
-        Me.btn7.Size = New System.Drawing.Size(120, 55)
+        Me.btn7.Size = New System.Drawing.Size(90, 45)
         Me.btn7.TabIndex = 22
         Me.btn7.Text = "7"
         '
@@ -1134,10 +1070,9 @@ Partial Class POS
         Me.btn8.FillColor = System.Drawing.Color.Silver
         Me.btn8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn8.ForeColor = System.Drawing.Color.White
-        Me.btn8.Location = New System.Drawing.Point(152, 448)
-        Me.btn8.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn8.Location = New System.Drawing.Point(114, 364)
         Me.btn8.Name = "btn8"
-        Me.btn8.Size = New System.Drawing.Size(120, 55)
+        Me.btn8.Size = New System.Drawing.Size(90, 45)
         Me.btn8.TabIndex = 23
         Me.btn8.Text = "8"
         '
@@ -1151,10 +1086,9 @@ Partial Class POS
         Me.btn9.FillColor = System.Drawing.Color.Silver
         Me.btn9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn9.ForeColor = System.Drawing.Color.White
-        Me.btn9.Location = New System.Drawing.Point(279, 448)
-        Me.btn9.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn9.Location = New System.Drawing.Point(209, 364)
         Me.btn9.Name = "btn9"
-        Me.btn9.Size = New System.Drawing.Size(120, 55)
+        Me.btn9.Size = New System.Drawing.Size(90, 45)
         Me.btn9.TabIndex = 24
         Me.btn9.Text = "9"
         '
@@ -1168,10 +1102,9 @@ Partial Class POS
         Me.btndot.FillColor = System.Drawing.Color.Silver
         Me.btndot.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btndot.ForeColor = System.Drawing.Color.White
-        Me.btndot.Location = New System.Drawing.Point(23, 511)
-        Me.btndot.Margin = New System.Windows.Forms.Padding(4)
+        Me.btndot.Location = New System.Drawing.Point(17, 415)
         Me.btndot.Name = "btndot"
-        Me.btndot.Size = New System.Drawing.Size(120, 55)
+        Me.btndot.Size = New System.Drawing.Size(90, 45)
         Me.btndot.TabIndex = 25
         Me.btndot.Text = "."
         '
@@ -1185,10 +1118,9 @@ Partial Class POS
         Me.btn00.FillColor = System.Drawing.Color.Silver
         Me.btn00.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn00.ForeColor = System.Drawing.Color.White
-        Me.btn00.Location = New System.Drawing.Point(279, 511)
-        Me.btn00.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn00.Location = New System.Drawing.Point(209, 415)
         Me.btn00.Name = "btn00"
-        Me.btn00.Size = New System.Drawing.Size(120, 55)
+        Me.btn00.Size = New System.Drawing.Size(90, 45)
         Me.btn00.TabIndex = 27
         Me.btn00.Text = "00"
         '
@@ -1202,10 +1134,9 @@ Partial Class POS
         Me.btn0.FillColor = System.Drawing.Color.Silver
         Me.btn0.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn0.ForeColor = System.Drawing.Color.White
-        Me.btn0.Location = New System.Drawing.Point(151, 511)
-        Me.btn0.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn0.Location = New System.Drawing.Point(113, 415)
         Me.btn0.Name = "btn0"
-        Me.btn0.Size = New System.Drawing.Size(120, 55)
+        Me.btn0.Size = New System.Drawing.Size(90, 45)
         Me.btn0.TabIndex = 26
         Me.btn0.Text = "0"
         '
@@ -1244,12 +1175,11 @@ Partial Class POS
         Me.Checkoutshadowpanel.Controls.Add(Me.btn2)
         Me.Checkoutshadowpanel.Controls.Add(Me.Label7)
         Me.Checkoutshadowpanel.FillColor = System.Drawing.Color.White
-        Me.Checkoutshadowpanel.Location = New System.Drawing.Point(29, 92)
-        Me.Checkoutshadowpanel.Margin = New System.Windows.Forms.Padding(4)
+        Me.Checkoutshadowpanel.Location = New System.Drawing.Point(22, 75)
         Me.Checkoutshadowpanel.Name = "Checkoutshadowpanel"
         Me.Checkoutshadowpanel.Radius = 2
         Me.Checkoutshadowpanel.ShadowColor = System.Drawing.Color.Black
-        Me.Checkoutshadowpanel.Size = New System.Drawing.Size(801, 650)
+        Me.Checkoutshadowpanel.Size = New System.Drawing.Size(601, 528)
         Me.Checkoutshadowpanel.TabIndex = 75
         Me.Checkoutshadowpanel.Visible = False
         '
@@ -1257,10 +1187,9 @@ Partial Class POS
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(737, 12)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox1.Location = New System.Drawing.Point(553, 10)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(49, 49)
+        Me.PictureBox1.Size = New System.Drawing.Size(37, 40)
         Me.PictureBox1.TabIndex = 31
         Me.PictureBox1.TabStop = False
         '
@@ -1279,11 +1208,10 @@ Partial Class POS
         Me.Guna2ShadowPanel3.Controls.Add(Me.btnLoyal)
         Me.Guna2ShadowPanel3.Controls.Add(Me.picbarcode)
         Me.Guna2ShadowPanel3.FillColor = System.Drawing.Color.White
-        Me.Guna2ShadowPanel3.Location = New System.Drawing.Point(407, 78)
-        Me.Guna2ShadowPanel3.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2ShadowPanel3.Location = New System.Drawing.Point(305, 63)
         Me.Guna2ShadowPanel3.Name = "Guna2ShadowPanel3"
         Me.Guna2ShadowPanel3.ShadowColor = System.Drawing.Color.Black
-        Me.Guna2ShadowPanel3.Size = New System.Drawing.Size(369, 490)
+        Me.Guna2ShadowPanel3.Size = New System.Drawing.Size(277, 398)
         Me.Guna2ShadowPanel3.TabIndex = 89
         '
         'Label3
@@ -1292,10 +1220,9 @@ Partial Class POS
         Me.Label3.BackColor = System.Drawing.Color.Transparent
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.Black
-        Me.Label3.Location = New System.Drawing.Point(84, 208)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(63, 169)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(102, 15)
+        Me.Label3.Size = New System.Drawing.Size(82, 12)
         Me.Label3.TabIndex = 69
         Me.Label3.Text = "Current Points:"
         '
@@ -1305,10 +1232,9 @@ Partial Class POS
         Me.Label8.BackColor = System.Drawing.Color.Transparent
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.Color.Black
-        Me.Label8.Location = New System.Drawing.Point(84, 186)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Location = New System.Drawing.Point(63, 151)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(114, 15)
+        Me.Label8.Size = New System.Drawing.Size(90, 12)
         Me.Label8.TabIndex = 70
         Me.Label8.Text = "Customer Name:"
         '
@@ -1322,10 +1248,9 @@ Partial Class POS
         Me.btnCancel.FillColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.White
-        Me.btnCancel.Location = New System.Drawing.Point(64, 358)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnCancel.Location = New System.Drawing.Point(48, 291)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(245, 55)
+        Me.btnCancel.Size = New System.Drawing.Size(184, 45)
         Me.btnCancel.TabIndex = 68
         Me.btnCancel.Text = "Cancel"
         '
@@ -1339,10 +1264,9 @@ Partial Class POS
         Me.btnredeempoints.FillColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.btnredeempoints.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnredeempoints.ForeColor = System.Drawing.Color.White
-        Me.btnredeempoints.Location = New System.Drawing.Point(64, 299)
-        Me.btnredeempoints.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnredeempoints.Location = New System.Drawing.Point(48, 243)
         Me.btnredeempoints.Name = "btnredeempoints"
-        Me.btnredeempoints.Size = New System.Drawing.Size(245, 55)
+        Me.btnredeempoints.Size = New System.Drawing.Size(184, 45)
         Me.btnredeempoints.TabIndex = 29
         Me.btnredeempoints.Text = "Redeem"
         '
@@ -1350,31 +1274,28 @@ Partial Class POS
         '
         Me.customerpbcircle.FillColor = System.Drawing.Color.WhiteSmoke
         Me.customerpbcircle.ImageRotate = 0!
-        Me.customerpbcircle.Location = New System.Drawing.Point(16, 178)
-        Me.customerpbcircle.Margin = New System.Windows.Forms.Padding(4)
+        Me.customerpbcircle.Location = New System.Drawing.Point(12, 145)
         Me.customerpbcircle.Name = "customerpbcircle"
         Me.customerpbcircle.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
-        Me.customerpbcircle.Size = New System.Drawing.Size(67, 62)
+        Me.customerpbcircle.Size = New System.Drawing.Size(50, 50)
         Me.customerpbcircle.TabIndex = 62
         Me.customerpbcircle.TabStop = False
         '
         'picbarcode
         '
         Me.picbarcode.BackColor = System.Drawing.Color.Silver
-        Me.picbarcode.Location = New System.Drawing.Point(21, 73)
-        Me.picbarcode.Margin = New System.Windows.Forms.Padding(4)
+        Me.picbarcode.Location = New System.Drawing.Point(16, 59)
         Me.picbarcode.Name = "picbarcode"
-        Me.picbarcode.Size = New System.Drawing.Size(327, 98)
+        Me.picbarcode.Size = New System.Drawing.Size(245, 80)
         Me.picbarcode.TabIndex = 66
         Me.picbarcode.TabStop = False
         '
         'Guna2Panel4
         '
         Me.Guna2Panel4.BackColor = System.Drawing.Color.LightGray
-        Me.Guna2Panel4.Location = New System.Drawing.Point(421, 574)
-        Me.Guna2Panel4.Margin = New System.Windows.Forms.Padding(4)
+        Me.Guna2Panel4.Location = New System.Drawing.Point(316, 466)
         Me.Guna2Panel4.Name = "Guna2Panel4"
-        Me.Guna2Panel4.Size = New System.Drawing.Size(360, 2)
+        Me.Guna2Panel4.Size = New System.Drawing.Size(270, 2)
         Me.Guna2Panel4.TabIndex = 12
         '
         'btn1000
@@ -1387,10 +1308,9 @@ Partial Class POS
         Me.btn1000.FillColor = System.Drawing.Color.Silver
         Me.btn1000.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btn1000.ForeColor = System.Drawing.Color.White
-        Me.btn1000.Location = New System.Drawing.Point(313, 276)
-        Me.btn1000.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn1000.Location = New System.Drawing.Point(235, 224)
         Me.btn1000.Name = "btn1000"
-        Me.btn1000.Size = New System.Drawing.Size(84, 41)
+        Me.btn1000.Size = New System.Drawing.Size(63, 33)
         Me.btn1000.TabIndex = 15
         Me.btn1000.Text = "₱ 1000"
         '
@@ -1404,10 +1324,9 @@ Partial Class POS
         Me.btn500.FillColor = System.Drawing.Color.Silver
         Me.btn500.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold)
         Me.btn500.ForeColor = System.Drawing.Color.White
-        Me.btn500.Location = New System.Drawing.Point(217, 276)
-        Me.btn500.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn500.Location = New System.Drawing.Point(163, 224)
         Me.btn500.Name = "btn500"
-        Me.btn500.Size = New System.Drawing.Size(84, 41)
+        Me.btn500.Size = New System.Drawing.Size(63, 33)
         Me.btn500.TabIndex = 14
         Me.btn500.Text = "₱ 500"
         '
@@ -1421,10 +1340,9 @@ Partial Class POS
         Me.btn100.FillColor = System.Drawing.Color.Silver
         Me.btn100.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold)
         Me.btn100.ForeColor = System.Drawing.Color.White
-        Me.btn100.Location = New System.Drawing.Point(120, 276)
-        Me.btn100.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn100.Location = New System.Drawing.Point(90, 224)
         Me.btn100.Name = "btn100"
-        Me.btn100.Size = New System.Drawing.Size(84, 41)
+        Me.btn100.Size = New System.Drawing.Size(63, 33)
         Me.btn100.TabIndex = 13
         Me.btn100.Text = "₱ 100"
         '
@@ -1438,10 +1356,9 @@ Partial Class POS
         Me.btn50.FillColor = System.Drawing.Color.Silver
         Me.btn50.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold)
         Me.btn50.ForeColor = System.Drawing.Color.White
-        Me.btn50.Location = New System.Drawing.Point(23, 276)
-        Me.btn50.Margin = New System.Windows.Forms.Padding(4)
+        Me.btn50.Location = New System.Drawing.Point(17, 224)
         Me.btn50.Name = "btn50"
-        Me.btn50.Size = New System.Drawing.Size(84, 41)
+        Me.btn50.Size = New System.Drawing.Size(63, 33)
         Me.btn50.TabIndex = 12
         Me.btn50.Text = "₱ 50"
         '
@@ -1454,10 +1371,9 @@ Partial Class POS
         Me.btnCheckout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnCheckout.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnCheckout.ForeColor = System.Drawing.Color.White
-        Me.btnCheckout.Location = New System.Drawing.Point(23, 574)
-        Me.btnCheckout.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnCheckout.Location = New System.Drawing.Point(17, 466)
         Me.btnCheckout.Name = "btnCheckout"
-        Me.btnCheckout.Size = New System.Drawing.Size(376, 55)
+        Me.btnCheckout.Size = New System.Drawing.Size(282, 45)
         Me.btnCheckout.TabIndex = 28
         Me.btnCheckout.Text = "Pay Now"
         '
@@ -1466,10 +1382,9 @@ Partial Class POS
         Me.lblChange.AutoSize = True
         Me.lblChange.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblChange.ForeColor = System.Drawing.Color.Red
-        Me.lblChange.Location = New System.Drawing.Point(679, 604)
-        Me.lblChange.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblChange.Location = New System.Drawing.Point(509, 491)
         Me.lblChange.Name = "lblChange"
-        Me.lblChange.Size = New System.Drawing.Size(56, 18)
+        Me.lblChange.Size = New System.Drawing.Size(48, 15)
         Me.lblChange.TabIndex = 72
         Me.lblChange.Text = "₱ 0.00"
         '
@@ -1486,20 +1401,18 @@ Partial Class POS
         Me.Panel1.Controls.Add(Me.lblMainCustomersToday)
         Me.Panel1.Controls.Add(Me.lblMainTodaySales)
         Me.Panel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Panel1.Location = New System.Drawing.Point(149, 809)
-        Me.Panel1.Margin = New System.Windows.Forms.Padding(4)
+        Me.Panel1.Location = New System.Drawing.Point(112, 657)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1121, 100)
+        Me.Panel1.Size = New System.Drawing.Size(841, 81)
         Me.Panel1.TabIndex = 82
         '
         'lblTotalRevenue
         '
         Me.lblTotalRevenue.BackColor = System.Drawing.Color.Transparent
         Me.lblTotalRevenue.Font = New System.Drawing.Font("Segoe UI", 14.0!, System.Drawing.FontStyle.Bold)
-        Me.lblTotalRevenue.Location = New System.Drawing.Point(4, 46)
-        Me.lblTotalRevenue.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblTotalRevenue.Location = New System.Drawing.Point(3, 37)
         Me.lblTotalRevenue.Name = "lblTotalRevenue"
-        Me.lblTotalRevenue.Size = New System.Drawing.Size(145, 33)
+        Me.lblTotalRevenue.Size = New System.Drawing.Size(123, 27)
         Me.lblTotalRevenue.TabIndex = 1
         Me.lblTotalRevenue.Text = "P 1,000,000,0"
         '
@@ -1507,10 +1420,9 @@ Partial Class POS
         '
         Me.lblTotalCustomers.BackColor = System.Drawing.Color.Transparent
         Me.lblTotalCustomers.Font = New System.Drawing.Font("Segoe UI", 14.0!, System.Drawing.FontStyle.Bold)
-        Me.lblTotalCustomers.Location = New System.Drawing.Point(216, 46)
-        Me.lblTotalCustomers.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblTotalCustomers.Location = New System.Drawing.Point(162, 37)
         Me.lblTotalCustomers.Name = "lblTotalCustomers"
-        Me.lblTotalCustomers.Size = New System.Drawing.Size(145, 33)
+        Me.lblTotalCustomers.Size = New System.Drawing.Size(121, 27)
         Me.lblTotalCustomers.TabIndex = 9
         Me.lblTotalCustomers.Text = "Today's Sales"
         '
@@ -1518,10 +1430,9 @@ Partial Class POS
         '
         Me.lblAverageSale.BackColor = System.Drawing.Color.Transparent
         Me.lblAverageSale.Font = New System.Drawing.Font("Segoe UI", 14.0!, System.Drawing.FontStyle.Bold)
-        Me.lblAverageSale.Location = New System.Drawing.Point(429, 46)
-        Me.lblAverageSale.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblAverageSale.Location = New System.Drawing.Point(322, 37)
         Me.lblAverageSale.Name = "lblAverageSale"
-        Me.lblAverageSale.Size = New System.Drawing.Size(145, 33)
+        Me.lblAverageSale.Size = New System.Drawing.Size(121, 27)
         Me.lblAverageSale.TabIndex = 8
         Me.lblAverageSale.Text = "Today's Sales"
         '
@@ -1529,10 +1440,9 @@ Partial Class POS
         '
         Me.lblMainRevenue.BackColor = System.Drawing.Color.Transparent
         Me.lblMainRevenue.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMainRevenue.Location = New System.Drawing.Point(4, 17)
-        Me.lblMainRevenue.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblMainRevenue.Location = New System.Drawing.Point(3, 14)
         Me.lblMainRevenue.Name = "lblMainRevenue"
-        Me.lblMainRevenue.Size = New System.Drawing.Size(168, 22)
+        Me.lblMainRevenue.Size = New System.Drawing.Size(135, 17)
         Me.lblMainRevenue.TabIndex = 0
         Me.lblMainRevenue.Text = "Total Revenue (Overall)"
         '
@@ -1540,10 +1450,9 @@ Partial Class POS
         '
         Me.lblHold.BackColor = System.Drawing.Color.Transparent
         Me.lblHold.Font = New System.Drawing.Font("Segoe UI", 14.0!, System.Drawing.FontStyle.Bold)
-        Me.lblHold.Location = New System.Drawing.Point(680, 46)
-        Me.lblHold.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblHold.Location = New System.Drawing.Point(510, 37)
         Me.lblHold.Name = "lblHold"
-        Me.lblHold.Size = New System.Drawing.Size(145, 33)
+        Me.lblHold.Size = New System.Drawing.Size(121, 27)
         Me.lblHold.TabIndex = 7
         Me.lblHold.Text = "Today's Sales"
         '
@@ -1551,10 +1460,9 @@ Partial Class POS
         '
         Me.lblMainHold.BackColor = System.Drawing.Color.Transparent
         Me.lblMainHold.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMainHold.Location = New System.Drawing.Point(680, 17)
-        Me.lblMainHold.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblMainHold.Location = New System.Drawing.Point(510, 14)
         Me.lblMainHold.Name = "lblMainHold"
-        Me.lblMainHold.Size = New System.Drawing.Size(201, 22)
+        Me.lblMainHold.Size = New System.Drawing.Size(157, 17)
         Me.lblMainHold.TabIndex = 4
         Me.lblMainHold.Text = "Pending / Hold Transactions"
         '
@@ -1562,10 +1470,9 @@ Partial Class POS
         '
         Me.lblMainAverage.BackColor = System.Drawing.Color.Transparent
         Me.lblMainAverage.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMainAverage.Location = New System.Drawing.Point(429, 17)
-        Me.lblMainAverage.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblMainAverage.Location = New System.Drawing.Point(322, 14)
         Me.lblMainAverage.Name = "lblMainAverage"
-        Me.lblMainAverage.Size = New System.Drawing.Size(192, 22)
+        Me.lblMainAverage.Size = New System.Drawing.Size(155, 17)
         Me.lblMainAverage.TabIndex = 5
         Me.lblMainAverage.Text = "Average Sale per Customer"
         '
@@ -1573,10 +1480,9 @@ Partial Class POS
         '
         Me.lblTodaySale.BackColor = System.Drawing.Color.Transparent
         Me.lblTodaySale.Font = New System.Drawing.Font("Segoe UI", 14.0!, System.Drawing.FontStyle.Bold)
-        Me.lblTodaySale.Location = New System.Drawing.Point(935, 46)
-        Me.lblTodaySale.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblTodaySale.Location = New System.Drawing.Point(701, 37)
         Me.lblTodaySale.Name = "lblTodaySale"
-        Me.lblTodaySale.Size = New System.Drawing.Size(145, 33)
+        Me.lblTodaySale.Size = New System.Drawing.Size(123, 27)
         Me.lblTodaySale.TabIndex = 3
         Me.lblTodaySale.Text = "P 1,000,000,0"
         '
@@ -1584,10 +1490,9 @@ Partial Class POS
         '
         Me.lblMainCustomersToday.BackColor = System.Drawing.Color.Transparent
         Me.lblMainCustomersToday.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMainCustomersToday.Location = New System.Drawing.Point(216, 17)
-        Me.lblMainCustomersToday.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblMainCustomersToday.Location = New System.Drawing.Point(162, 14)
         Me.lblMainCustomersToday.Name = "lblMainCustomersToday"
-        Me.lblMainCustomersToday.Size = New System.Drawing.Size(165, 22)
+        Me.lblMainCustomersToday.Size = New System.Drawing.Size(129, 17)
         Me.lblMainCustomersToday.TabIndex = 6
         Me.lblMainCustomersToday.Text = "Total Customers Today"
         '
@@ -1595,43 +1500,41 @@ Partial Class POS
         '
         Me.lblMainTodaySales.BackColor = System.Drawing.Color.Transparent
         Me.lblMainTodaySales.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMainTodaySales.Location = New System.Drawing.Point(935, 17)
-        Me.lblMainTodaySales.Margin = New System.Windows.Forms.Padding(4)
+        Me.lblMainTodaySales.Location = New System.Drawing.Point(701, 14)
         Me.lblMainTodaySales.Name = "lblMainTodaySales"
-        Me.lblMainTodaySales.Size = New System.Drawing.Size(96, 22)
+        Me.lblMainTodaySales.Size = New System.Drawing.Size(76, 17)
         Me.lblMainTodaySales.TabIndex = 2
         Me.lblMainTodaySales.Text = "Today's Sales"
         '
         'dgvCart
         '
-        DataGridViewCellStyle16.BackColor = System.Drawing.Color.White
-        Me.dgvCart.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
+        Me.dgvCart.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvCart.BackgroundColor = System.Drawing.Color.WhiteSmoke
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvCart.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvCart.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvCart.ColumnHeadersHeight = 4
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle18.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvCart.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvCart.DefaultCellStyle = DataGridViewCellStyle6
         Me.dgvCart.GridColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.dgvCart.Location = New System.Drawing.Point(16, 62)
-        Me.dgvCart.Margin = New System.Windows.Forms.Padding(4)
+        Me.dgvCart.Location = New System.Drawing.Point(12, 50)
         Me.dgvCart.Name = "dgvCart"
         Me.dgvCart.RowHeadersVisible = False
         Me.dgvCart.RowHeadersWidth = 51
         Me.dgvCart.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.dgvCart.Size = New System.Drawing.Size(825, 752)
+        Me.dgvCart.Size = New System.Drawing.Size(619, 611)
         Me.dgvCart.TabIndex = 58
         Me.dgvCart.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White
         Me.dgvCart.ThemeStyle.AlternatingRowsStyle.Font = Nothing
@@ -1668,11 +1571,10 @@ Partial Class POS
         Me.btnLogout.ForeColor = System.Drawing.Color.White
         Me.btnLogout.Image = Global.TSSIS3.My.Resources.Resources.iconmain12
         Me.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnLogout.Location = New System.Drawing.Point(1289, 833)
-        Me.btnLogout.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnLogout.Location = New System.Drawing.Point(967, 677)
         Me.btnLogout.Name = "btnLogout"
         Me.btnLogout.PressedColor = System.Drawing.Color.Transparent
-        Me.btnLogout.Size = New System.Drawing.Size(197, 55)
+        Me.btnLogout.Size = New System.Drawing.Size(148, 45)
         Me.btnLogout.TabIndex = 80
         Me.btnLogout.Text = "      Logout "
         '
@@ -1690,13 +1592,13 @@ Partial Class POS
         Me.txtBarcode.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtBarcode.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.txtBarcode.IconLeft = Global.TSSIS3.My.Resources.Resources.icons8_scan_barcode_80
-        Me.txtBarcode.Location = New System.Drawing.Point(16, 15)
-        Me.txtBarcode.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.txtBarcode.Location = New System.Drawing.Point(12, 12)
+        Me.txtBarcode.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.txtBarcode.Name = "txtBarcode"
         Me.txtBarcode.PlaceholderForeColor = System.Drawing.Color.Black
         Me.txtBarcode.PlaceholderText = "Scan Barcode"
         Me.txtBarcode.SelectedText = ""
-        Me.txtBarcode.Size = New System.Drawing.Size(667, 39)
+        Me.txtBarcode.Size = New System.Drawing.Size(500, 32)
         Me.txtBarcode.TabIndex = 1
         '
         'Guna2TextBox1
@@ -1712,32 +1614,31 @@ Partial Class POS
         Me.Guna2TextBox1.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.Guna2TextBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.Guna2TextBox1.IconLeft = Global.TSSIS3.My.Resources.Resources.icons8_search1
-        Me.Guna2TextBox1.Location = New System.Drawing.Point(791, 62)
-        Me.Guna2TextBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.Guna2TextBox1.Location = New System.Drawing.Point(593, 50)
+        Me.Guna2TextBox1.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Guna2TextBox1.Name = "Guna2TextBox1"
         Me.Guna2TextBox1.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.Guna2TextBox1.PlaceholderText = "Search Product"
         Me.Guna2TextBox1.SelectedText = ""
-        Me.Guna2TextBox1.Size = New System.Drawing.Size(37, 39)
+        Me.Guna2TextBox1.Size = New System.Drawing.Size(28, 32)
         Me.Guna2TextBox1.TabIndex = 71
         Me.Guna2TextBox1.Visible = False
         '
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.TSSIS3.My.Resources.Resources.PS
-        Me.PictureBox2.Location = New System.Drawing.Point(-27, 773)
-        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox2.Location = New System.Drawing.Point(-20, 628)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(189, 135)
+        Me.PictureBox2.Size = New System.Drawing.Size(142, 110)
         Me.PictureBox2.TabIndex = 81
         Me.PictureBox2.TabStop = False
         '
         'POS
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
-        Me.ClientSize = New System.Drawing.Size(1499, 908)
+        Me.ClientSize = New System.Drawing.Size(1130, 740)
         Me.Controls.Add(Me.Checkoutshadowpanel)
         Me.Controls.Add(Me.btnLogout)
         Me.Controls.Add(Me.btnSelectProduct)
@@ -1752,7 +1653,6 @@ Partial Class POS
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.PictureBox2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "POS"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "POS"

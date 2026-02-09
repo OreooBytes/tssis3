@@ -22,9 +22,9 @@ Partial Class Membership
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Guna2DataGridView1 = New Guna.UI2.WinForms.Guna2DataGridView()
         Me.clearbtn = New Guna.UI2.WinForms.Guna2Button()
         Me.deletebtn = New Guna.UI2.WinForms.Guna2Button()
@@ -41,7 +41,10 @@ Partial Class Membership
         Me.pbBarcode = New Guna.UI2.WinForms.Guna2PictureBox()
         Me.btnupdate = New Guna.UI2.WinForms.Guna2Button()
         Me.Guna2GradientPanel1 = New Guna.UI2.WinForms.Guna2GradientPanel()
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.Guna2ShadowPanel2 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lblTotalMember = New System.Windows.Forms.Label()
+        Me.lblCashier = New System.Windows.Forms.Label()
+        Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.btnAddnewUser = New Guna.UI2.WinForms.Guna2Button()
         Me.txtSearch = New Guna.UI2.WinForms.Guna2TextBox()
@@ -51,7 +54,8 @@ Partial Class Membership
         Me.Guna2Panel1.SuspendLayout()
         CType(Me.pbBarcode, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2GradientPanel1.SuspendLayout()
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Guna2ShadowPanel2.SuspendLayout()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -59,32 +63,32 @@ Partial Class Membership
         '
         Me.Guna2DataGridView1.AllowUserToResizeColumns = False
         Me.Guna2DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
-        Me.Guna2DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Guna2DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
+        Me.Guna2DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(88, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Guna2DataGridView1.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.Guna2DataGridView1.ColumnHeadersHeight = 22
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Guna2DataGridView1.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(71, Byte), Integer), CType(CType(69, Byte), Integer), CType(CType(94, Byte), Integer))
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Guna2DataGridView1.DefaultCellStyle = DataGridViewCellStyle3
         Me.Guna2DataGridView1.GridColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(229, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Guna2DataGridView1.Location = New System.Drawing.Point(12, 160)
+        Me.Guna2DataGridView1.Location = New System.Drawing.Point(4, 196)
         Me.Guna2DataGridView1.Name = "Guna2DataGridView1"
         Me.Guna2DataGridView1.ReadOnly = True
         Me.Guna2DataGridView1.RowHeadersVisible = False
         Me.Guna2DataGridView1.RowHeadersWidth = 51
-        Me.Guna2DataGridView1.Size = New System.Drawing.Size(1079, 539)
+        Me.Guna2DataGridView1.Size = New System.Drawing.Size(1099, 464)
         Me.Guna2DataGridView1.TabIndex = 51
         Me.Guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White
         Me.Guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.Font = Nothing
@@ -332,31 +336,70 @@ Partial Class Membership
         '
         Me.Guna2GradientPanel1.BackColor = System.Drawing.Color.Gainsboro
         Me.Guna2GradientPanel1.Controls.Add(Me.Guna2ShadowPanel1)
-        Me.Guna2GradientPanel1.Controls.Add(Me.PictureBox3)
+        Me.Guna2GradientPanel1.Controls.Add(Me.Guna2DataGridView1)
+        Me.Guna2GradientPanel1.Controls.Add(Me.Guna2ShadowPanel2)
         Me.Guna2GradientPanel1.Controls.Add(Me.PictureBox2)
         Me.Guna2GradientPanel1.Controls.Add(Me.btnAddnewUser)
-        Me.Guna2GradientPanel1.Controls.Add(Me.Guna2DataGridView1)
         Me.Guna2GradientPanel1.Controls.Add(Me.txtSearch)
-        Me.Guna2GradientPanel1.Location = New System.Drawing.Point(12, 12)
+        Me.Guna2GradientPanel1.Location = New System.Drawing.Point(-1, -2)
         Me.Guna2GradientPanel1.Name = "Guna2GradientPanel1"
-        Me.Guna2GradientPanel1.Size = New System.Drawing.Size(1103, 712)
+        Me.Guna2GradientPanel1.Size = New System.Drawing.Size(1116, 726)
         Me.Guna2GradientPanel1.TabIndex = 58
         '
-        'PictureBox3
+        'Guna2ShadowPanel2
         '
-        Me.PictureBox3.Image = Global.TSSIS3.My.Resources.Resources.MS
-        Me.PictureBox3.Location = New System.Drawing.Point(-7, -21)
-        Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(475, 111)
-        Me.PictureBox3.TabIndex = 59
-        Me.PictureBox3.TabStop = False
+        Me.Guna2ShadowPanel2.BackColor = System.Drawing.Color.Transparent
+        Me.Guna2ShadowPanel2.Controls.Add(Me.lblTotalMember)
+        Me.Guna2ShadowPanel2.Controls.Add(Me.lblCashier)
+        Me.Guna2ShadowPanel2.Controls.Add(Me.PictureBox5)
+        Me.Guna2ShadowPanel2.FillColor = System.Drawing.Color.White
+        Me.Guna2ShadowPanel2.Location = New System.Drawing.Point(8, 12)
+        Me.Guna2ShadowPanel2.Name = "Guna2ShadowPanel2"
+        Me.Guna2ShadowPanel2.Radius = 5
+        Me.Guna2ShadowPanel2.ShadowColor = System.Drawing.Color.Black
+        Me.Guna2ShadowPanel2.ShadowStyle = Guna.UI2.WinForms.Guna2ShadowPanel.ShadowMode.Dropped
+        Me.Guna2ShadowPanel2.Size = New System.Drawing.Size(211, 100)
+        Me.Guna2ShadowPanel2.TabIndex = 58
+        '
+        'lblTotalMember
+        '
+        Me.lblTotalMember.AutoSize = True
+        Me.lblTotalMember.BackColor = System.Drawing.Color.White
+        Me.lblTotalMember.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotalMember.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.lblTotalMember.Location = New System.Drawing.Point(98, 46)
+        Me.lblTotalMember.Name = "lblTotalMember"
+        Me.lblTotalMember.Size = New System.Drawing.Size(69, 17)
+        Me.lblTotalMember.TabIndex = 31
+        Me.lblTotalMember.Text = "Firstname"
+        '
+        'lblCashier
+        '
+        Me.lblCashier.AutoSize = True
+        Me.lblCashier.BackColor = System.Drawing.Color.White
+        Me.lblCashier.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCashier.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.lblCashier.Location = New System.Drawing.Point(98, 21)
+        Me.lblCashier.Name = "lblCashier"
+        Me.lblCashier.Size = New System.Drawing.Size(100, 17)
+        Me.lblCashier.TabIndex = 32
+        Me.lblCashier.Text = "Total Members"
+        '
+        'PictureBox5
+        '
+        Me.PictureBox5.Image = Global.TSSIS3.My.Resources.Resources.icons8_user_groups_60
+        Me.PictureBox5.Location = New System.Drawing.Point(19, 9)
+        Me.PictureBox5.Name = "PictureBox5"
+        Me.PictureBox5.Size = New System.Drawing.Size(73, 54)
+        Me.PictureBox5.TabIndex = 55
+        Me.PictureBox5.TabStop = False
         '
         'PictureBox2
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox2.Image = Global.TSSIS3.My.Resources.Resources.icons8_close_window_50
-        Me.PictureBox2.Location = New System.Drawing.Point(1048, 3)
+        Me.PictureBox2.Location = New System.Drawing.Point(1056, 1)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(47, 49)
         Me.PictureBox2.TabIndex = 58
@@ -373,7 +416,7 @@ Partial Class Membership
         Me.btnAddnewUser.ForeColor = System.Drawing.Color.White
         Me.btnAddnewUser.Image = Global.TSSIS3.My.Resources.Resources.icons8_add_30__1_
         Me.btnAddnewUser.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnAddnewUser.Location = New System.Drawing.Point(930, 118)
+        Me.btnAddnewUser.Location = New System.Drawing.Point(942, 154)
         Me.btnAddnewUser.Name = "btnAddnewUser"
         Me.btnAddnewUser.Size = New System.Drawing.Size(161, 36)
         Me.btnAddnewUser.TabIndex = 57
@@ -394,7 +437,7 @@ Partial Class Membership
         Me.txtSearch.ForeColor = System.Drawing.Color.Black
         Me.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.txtSearch.IconLeft = Global.TSSIS3.My.Resources.Resources.icons8_search_35
-        Me.txtSearch.Location = New System.Drawing.Point(12, 118)
+        Me.txtSearch.Location = New System.Drawing.Point(4, 154)
         Me.txtSearch.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.PlaceholderForeColor = System.Drawing.Color.Black
@@ -407,7 +450,7 @@ Partial Class Membership
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1126, 735)
+        Me.ClientSize = New System.Drawing.Size(1108, 683)
         Me.Controls.Add(Me.Guna2GradientPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Membership"
@@ -421,7 +464,9 @@ Partial Class Membership
         Me.Guna2Panel1.PerformLayout()
         CType(Me.pbBarcode, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2GradientPanel1.ResumeLayout(False)
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Guna2ShadowPanel2.ResumeLayout(False)
+        Me.Guna2ShadowPanel2.PerformLayout()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -445,6 +490,9 @@ Partial Class Membership
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Guna2GradientPanel1 As Guna.UI2.WinForms.Guna2GradientPanel
     Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents btnupdate As Guna.UI2.WinForms.Guna2Button
+    Friend WithEvents Guna2ShadowPanel2 As Guna.UI2.WinForms.Guna2ShadowPanel
+    Friend WithEvents lblTotalMember As Label
+    Friend WithEvents lblCashier As Label
+    Friend WithEvents PictureBox5 As PictureBox
 End Class

@@ -23,18 +23,75 @@ Partial Class Dashboard
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Dashboard))
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend4 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.lblFileMaintenance = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.lblUtilities = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.Guna2ShadowPanel1 = New Guna.UI2.WinForms.Guna2ShadowPanel()
         Me.Guna2HtmlLabel2 = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.Guna2HtmlLabel1 = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.Guna2ShadowPanel2 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lblName = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblRole = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTime = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblDate = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.PanelMain = New Guna.UI2.WinForms.Guna2Panel()
+        Me.overlaypanel = New Guna.UI2.WinForms.Guna2Panel()
+        Me.Guna2ShadowPanel10 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.Guna2ShadowPanel8 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.Guna2ShadowPanel3 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lblTotalReturn = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTotalReturns = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblPercentReturn = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblReturn = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblRefundsFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.Guna2ShadowPanel9 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.Chart2 = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.Guna2ShadowPanel7 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lblSalesSummary = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblincreased = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTotalSalesToday = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTotalSalesThismonth = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTotalSales2 = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblPercentSales = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTotalSales = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblThismonths = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblToday = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.Guna2ShadowPanel6 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lblTotalProductSold = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTotalProducts = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblPercentSold = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblProductSold = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblProductSoldFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.Guna2ShadowPanel5 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lblPercentCustomers = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblCustomers = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblTotalCustomers = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblCustomersFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.Guna2ShadowPanel4 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lbltotalRevenue = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblPercent1Revenue = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblRevenue = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.lblRevenueFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
+        Me.Guna2Panel1 = New Guna.UI2.WinForms.Guna2Panel()
+        Me.TimerDateTime = New System.Windows.Forms.Timer(Me.components)
+        Me.Guna2ContextMenuStrip1 = New Guna.UI2.WinForms.Guna2ContextMenuStrip()
+        Me.SalesReportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExpirationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Guna2ContextMenuStrip2 = New Guna.UI2.WinForms.Guna2ContextMenuStrip()
+        Me.LogHistoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AuditTrailToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ChangePasswordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.pbAll = New System.Windows.Forms.PictureBox()
+        Me.userpbcircle = New Guna.UI2.WinForms.Guna2CirclePictureBox()
+        Me.btnmembership = New Guna.UI2.WinForms.Guna2Button()
         Me.btnUtilities = New Guna.UI2.WinForms.Guna2Button()
         Me.btnDashboard = New Guna.UI2.WinForms.Guna2Button()
         Me.btnLogout = New Guna.UI2.WinForms.Guna2Button()
@@ -48,101 +105,45 @@ Partial Class Dashboard
         Me.btnVat = New Guna.UI2.WinForms.Guna2Button()
         Me.PictureBox11 = New System.Windows.Forms.PictureBox()
         Me.btnDiscounts = New Guna.UI2.WinForms.Guna2Button()
-        Me.Guna2ShadowPanel2 = New Guna.UI2.WinForms.Guna2ShadowPanel()
-        Me.lblName = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.userpbcircle = New Guna.UI2.WinForms.Guna2CirclePictureBox()
-        Me.lblRole = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblTime = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblDate = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.PanelMain = New Guna.UI2.WinForms.Guna2Panel()
-        Me.overlaypanel = New Guna.UI2.WinForms.Guna2Panel()
-        Me.Guna2ShadowPanel10 = New Guna.UI2.WinForms.Guna2ShadowPanel()
         Me.PictureBox10 = New System.Windows.Forms.PictureBox()
-        Me.Guna2ShadowPanel8 = New Guna.UI2.WinForms.Guna2ShadowPanel()
-        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
-        Me.Guna2ShadowPanel3 = New Guna.UI2.WinForms.Guna2ShadowPanel()
-        Me.lblTotalReturn = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblTotalReturns = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.picPercentReturn = New System.Windows.Forms.PictureBox()
-        Me.lblPercentReturn = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.PictureBox8 = New System.Windows.Forms.PictureBox()
-        Me.lblReturn = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblRefundsFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.Guna2ShadowPanel9 = New Guna.UI2.WinForms.Guna2ShadowPanel()
-        Me.Chart2 = New System.Windows.Forms.DataVisualization.Charting.Chart()
-        Me.Guna2ShadowPanel7 = New Guna.UI2.WinForms.Guna2ShadowPanel()
-        Me.lblSalesSummary = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblincreased = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblTotalSalesToday = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblTotalSalesThismonth = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblTotalSales2 = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblPercentSales = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.picSales = New System.Windows.Forms.PictureBox()
-        Me.lblTotalSales = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblThismonths = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblToday = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.Guna2ShadowPanel6 = New Guna.UI2.WinForms.Guna2ShadowPanel()
-        Me.lblTotalProductSold = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblTotalProducts = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.picPercentSold = New System.Windows.Forms.PictureBox()
-        Me.lblPercentSold = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
-        Me.lblProductSold = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblProductSoldFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.Guna2ShadowPanel5 = New Guna.UI2.WinForms.Guna2ShadowPanel()
         Me.picpercentage2 = New System.Windows.Forms.PictureBox()
-        Me.lblPercentCustomers = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.pic = New System.Windows.Forms.PictureBox()
-        Me.lblCustomers = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblTotalCustomers = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblCustomersFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.Guna2ShadowPanel4 = New Guna.UI2.WinForms.Guna2ShadowPanel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.lbltotalRevenue = New Guna.UI2.WinForms.Guna2HtmlLabel()
         Me.picpercentage1 = New System.Windows.Forms.PictureBox()
-        Me.lblPercent1Revenue = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblRevenue = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.lblRevenueFLD = New Guna.UI2.WinForms.Guna2HtmlLabel()
-        Me.Guna2Panel1 = New Guna.UI2.WinForms.Guna2Panel()
-        Me.pbAll = New System.Windows.Forms.PictureBox()
-        Me.TimerDateTime = New System.Windows.Forms.Timer(Me.components)
-        Me.Guna2ContextMenuStrip1 = New Guna.UI2.WinForms.Guna2ContextMenuStrip()
-        Me.SalesReportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExpirationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Guna2ContextMenuStrip2 = New Guna.UI2.WinForms.Guna2ContextMenuStrip()
-        Me.LogHistoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AuditTrailToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ChangePasswordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Guna2ShadowPanel1.SuspendLayout()
-        CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel2.SuspendLayout()
-        CType(Me.userpbcircle, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.overlaypanel.SuspendLayout()
         Me.Guna2ShadowPanel10.SuspendLayout()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel8.SuspendLayout()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel3.SuspendLayout()
-        CType(Me.picPercentReturn, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel9.SuspendLayout()
         CType(Me.Chart2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel7.SuspendLayout()
-        CType(Me.picSales, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel6.SuspendLayout()
-        CType(Me.picPercentSold, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel5.SuspendLayout()
-        CType(Me.picpercentage2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pic, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ShadowPanel4.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.picpercentage1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2Panel1.SuspendLayout()
-        CType(Me.pbAll, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Guna2ContextMenuStrip1.SuspendLayout()
         Me.Guna2ContextMenuStrip2.SuspendLayout()
+        CType(Me.pbAll, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.userpbcircle, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picPercentReturn, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picSales, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picPercentSold, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picpercentage2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pic, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picpercentage1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblFileMaintenance
@@ -150,7 +151,7 @@ Partial Class Dashboard
         Me.lblFileMaintenance.BackColor = System.Drawing.Color.Transparent
         Me.lblFileMaintenance.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.lblFileMaintenance.ForeColor = System.Drawing.Color.DarkGray
-        Me.lblFileMaintenance.Location = New System.Drawing.Point(5, 182)
+        Me.lblFileMaintenance.Location = New System.Drawing.Point(5, 168)
         Me.lblFileMaintenance.Name = "lblFileMaintenance"
         Me.lblFileMaintenance.Size = New System.Drawing.Size(100, 15)
         Me.lblFileMaintenance.TabIndex = 10
@@ -161,7 +162,7 @@ Partial Class Dashboard
         Me.lblUtilities.BackColor = System.Drawing.Color.Transparent
         Me.lblUtilities.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblUtilities.ForeColor = System.Drawing.Color.DarkGray
-        Me.lblUtilities.Location = New System.Drawing.Point(5, 621)
+        Me.lblUtilities.Location = New System.Drawing.Point(5, 650)
         Me.lblUtilities.Name = "lblUtilities"
         Me.lblUtilities.Size = New System.Drawing.Size(47, 15)
         Me.lblUtilities.TabIndex = 11
@@ -170,6 +171,7 @@ Partial Class Dashboard
         'Guna2ShadowPanel1
         '
         Me.Guna2ShadowPanel1.BackColor = System.Drawing.Color.Transparent
+        Me.Guna2ShadowPanel1.Controls.Add(Me.btnmembership)
         Me.Guna2ShadowPanel1.Controls.Add(Me.Guna2HtmlLabel2)
         Me.Guna2ShadowPanel1.Controls.Add(Me.Guna2HtmlLabel1)
         Me.Guna2ShadowPanel1.Controls.Add(Me.btnUtilities)
@@ -194,7 +196,7 @@ Partial Class Dashboard
         Me.Guna2ShadowPanel1.Radius = 5
         Me.Guna2ShadowPanel1.ShadowColor = System.Drawing.Color.Black
         Me.Guna2ShadowPanel1.ShadowStyle = Guna.UI2.WinForms.Guna2ShadowPanel.ShadowMode.Dropped
-        Me.Guna2ShadowPanel1.Size = New System.Drawing.Size(226, 757)
+        Me.Guna2ShadowPanel1.Size = New System.Drawing.Size(226, 773)
         Me.Guna2ShadowPanel1.TabIndex = 1
         '
         'Guna2HtmlLabel2
@@ -202,7 +204,7 @@ Partial Class Dashboard
         Me.Guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent
         Me.Guna2HtmlLabel2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.Guna2HtmlLabel2.ForeColor = System.Drawing.Color.DarkGray
-        Me.Guna2HtmlLabel2.Location = New System.Drawing.Point(5, 497)
+        Me.Guna2HtmlLabel2.Location = New System.Drawing.Point(5, 526)
         Me.Guna2HtmlLabel2.Name = "Guna2HtmlLabel2"
         Me.Guna2HtmlLabel2.Size = New System.Drawing.Size(76, 15)
         Me.Guna2HtmlLabel2.TabIndex = 18
@@ -213,237 +215,11 @@ Partial Class Dashboard
         Me.Guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent
         Me.Guna2HtmlLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.Guna2HtmlLabel1.ForeColor = System.Drawing.Color.DarkGray
-        Me.Guna2HtmlLabel1.Location = New System.Drawing.Point(5, 560)
+        Me.Guna2HtmlLabel1.Location = New System.Drawing.Point(5, 589)
         Me.Guna2HtmlLabel1.Name = "Guna2HtmlLabel1"
         Me.Guna2HtmlLabel1.Size = New System.Drawing.Size(83, 15)
         Me.Guna2HtmlLabel1.TabIndex = 17
         Me.Guna2HtmlLabel1.Text = "Sytem Utilities"
-        '
-        'btnUtilities
-        '
-        Me.btnUtilities.BorderRadius = 5
-        Me.btnUtilities.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnUtilities.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnUtilities.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnUtilities.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnUtilities.FillColor = System.Drawing.Color.Transparent
-        Me.btnUtilities.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnUtilities.ForeColor = System.Drawing.Color.Black
-        Me.btnUtilities.Image = Global.TSSIS3.My.Resources.Resources.iconmain13
-        Me.btnUtilities.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnUtilities.Location = New System.Drawing.Point(11, 581)
-        Me.btnUtilities.Name = "btnUtilities"
-        Me.btnUtilities.Size = New System.Drawing.Size(205, 36)
-        Me.btnUtilities.TabIndex = 9
-        Me.btnUtilities.Text = "Open Utilities"
-        '
-        'btnDashboard
-        '
-        Me.btnDashboard.BorderRadius = 5
-        Me.btnDashboard.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnDashboard.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnDashboard.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnDashboard.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnDashboard.FillColor = System.Drawing.Color.Transparent
-        Me.btnDashboard.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnDashboard.ForeColor = System.Drawing.Color.Black
-        Me.btnDashboard.Image = CType(resources.GetObject("btnDashboard.Image"), System.Drawing.Image)
-        Me.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnDashboard.Location = New System.Drawing.Point(11, 140)
-        Me.btnDashboard.Name = "btnDashboard"
-        Me.btnDashboard.Size = New System.Drawing.Size(205, 36)
-        Me.btnDashboard.TabIndex = 15
-        Me.btnDashboard.Text = "Overview"
-        '
-        'btnLogout
-        '
-        Me.btnLogout.BorderRadius = 5
-        Me.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnLogout.FillColor = System.Drawing.Color.Transparent
-        Me.btnLogout.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnLogout.ForeColor = System.Drawing.Color.Black
-        Me.btnLogout.Image = Global.TSSIS3.My.Resources.Resources.iconmain12
-        Me.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnLogout.Location = New System.Drawing.Point(11, 698)
-        Me.btnLogout.Name = "btnLogout"
-        Me.btnLogout.Size = New System.Drawing.Size(205, 36)
-        Me.btnLogout.TabIndex = 14
-        Me.btnLogout.Text = "Logout"
-        '
-        'btnUsers
-        '
-        Me.btnUsers.BorderRadius = 5
-        Me.btnUsers.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnUsers.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnUsers.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnUsers.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnUsers.FillColor = System.Drawing.Color.Transparent
-        Me.btnUsers.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnUsers.ForeColor = System.Drawing.Color.Black
-        Me.btnUsers.Image = Global.TSSIS3.My.Resources.Resources.iconmain2
-        Me.btnUsers.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnUsers.Location = New System.Drawing.Point(11, 203)
-        Me.btnUsers.Name = "btnUsers"
-        Me.btnUsers.Size = New System.Drawing.Size(205, 36)
-        Me.btnUsers.TabIndex = 1
-        Me.btnUsers.Text = "Users"
-        '
-        'btnPOS
-        '
-        Me.btnPOS.BorderRadius = 5
-        Me.btnPOS.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnPOS.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnPOS.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnPOS.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnPOS.FillColor = System.Drawing.Color.Transparent
-        Me.btnPOS.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnPOS.ForeColor = System.Drawing.Color.Black
-        Me.btnPOS.Image = Global.TSSIS3.My.Resources.Resources.iconmain7
-        Me.btnPOS.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnPOS.Location = New System.Drawing.Point(11, 518)
-        Me.btnPOS.Name = "btnPOS"
-        Me.btnPOS.Size = New System.Drawing.Size(205, 36)
-        Me.btnPOS.TabIndex = 6
-        Me.btnPOS.Text = "POS"
-        '
-        'btnCategory
-        '
-        Me.btnCategory.BorderRadius = 5
-        Me.btnCategory.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnCategory.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnCategory.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnCategory.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnCategory.FillColor = System.Drawing.Color.Transparent
-        Me.btnCategory.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnCategory.ForeColor = System.Drawing.Color.Black
-        Me.btnCategory.Image = Global.TSSIS3.My.Resources.Resources.iconmain4
-        Me.btnCategory.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnCategory.Location = New System.Drawing.Point(11, 287)
-        Me.btnCategory.Name = "btnCategory"
-        Me.btnCategory.Size = New System.Drawing.Size(205, 36)
-        Me.btnCategory.TabIndex = 3
-        Me.btnCategory.Text = "Categories"
-        '
-        'btnSupplier
-        '
-        Me.btnSupplier.BorderRadius = 5
-        Me.btnSupplier.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnSupplier.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnSupplier.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnSupplier.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnSupplier.FillColor = System.Drawing.Color.Transparent
-        Me.btnSupplier.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnSupplier.ForeColor = System.Drawing.Color.Black
-        Me.btnSupplier.Image = Global.TSSIS3.My.Resources.Resources.iconmain3
-        Me.btnSupplier.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnSupplier.Location = New System.Drawing.Point(11, 245)
-        Me.btnSupplier.Name = "btnSupplier"
-        Me.btnSupplier.Size = New System.Drawing.Size(205, 36)
-        Me.btnSupplier.TabIndex = 2
-        Me.btnSupplier.Text = "Suppliers"
-        '
-        'btnProducts
-        '
-        Me.btnProducts.BorderRadius = 5
-        Me.btnProducts.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnProducts.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnProducts.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnProducts.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnProducts.FillColor = System.Drawing.Color.Transparent
-        Me.btnProducts.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnProducts.ForeColor = System.Drawing.Color.Black
-        Me.btnProducts.Image = Global.TSSIS3.My.Resources.Resources.iconmain5
-        Me.btnProducts.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnProducts.Location = New System.Drawing.Point(11, 329)
-        Me.btnProducts.Name = "btnProducts"
-        Me.btnProducts.Size = New System.Drawing.Size(205, 36)
-        Me.btnProducts.TabIndex = 4
-        Me.btnProducts.Text = "Products"
-        '
-        'btnInventory
-        '
-        Me.btnInventory.BorderRadius = 5
-        Me.btnInventory.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnInventory.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnInventory.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnInventory.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnInventory.FillColor = System.Drawing.Color.Transparent
-        Me.btnInventory.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnInventory.ForeColor = System.Drawing.Color.Black
-        Me.btnInventory.Image = Global.TSSIS3.My.Resources.Resources.iconmain6
-        Me.btnInventory.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnInventory.Location = New System.Drawing.Point(11, 455)
-        Me.btnInventory.Name = "btnInventory"
-        Me.btnInventory.Size = New System.Drawing.Size(205, 36)
-        Me.btnInventory.TabIndex = 5
-        Me.btnInventory.Text = "Inventories"
-        '
-        'btnReports
-        '
-        Me.btnReports.BorderRadius = 5
-        Me.btnReports.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnReports.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnReports.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnReports.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnReports.FillColor = System.Drawing.Color.Transparent
-        Me.btnReports.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnReports.ForeColor = System.Drawing.Color.Black
-        Me.btnReports.Image = Global.TSSIS3.My.Resources.Resources.iconmain10
-        Me.btnReports.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnReports.Location = New System.Drawing.Point(11, 642)
-        Me.btnReports.Name = "btnReports"
-        Me.btnReports.Size = New System.Drawing.Size(205, 36)
-        Me.btnReports.TabIndex = 10
-        Me.btnReports.Text = "View Reports"
-        '
-        'btnVat
-        '
-        Me.btnVat.BorderRadius = 5
-        Me.btnVat.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnVat.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnVat.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnVat.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnVat.FillColor = System.Drawing.Color.Transparent
-        Me.btnVat.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnVat.ForeColor = System.Drawing.Color.Black
-        Me.btnVat.Image = Global.TSSIS3.My.Resources.Resources.iconmain9
-        Me.btnVat.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnVat.Location = New System.Drawing.Point(11, 413)
-        Me.btnVat.Name = "btnVat"
-        Me.btnVat.Size = New System.Drawing.Size(205, 36)
-        Me.btnVat.TabIndex = 8
-        Me.btnVat.Text = "Vat"
-        '
-        'PictureBox11
-        '
-        Me.PictureBox11.Image = Global.TSSIS3.My.Resources.Resources.logomains
-        Me.PictureBox11.Location = New System.Drawing.Point(-24, -46)
-        Me.PictureBox11.Name = "PictureBox11"
-        Me.PictureBox11.Size = New System.Drawing.Size(267, 201)
-        Me.PictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox11.TabIndex = 4
-        Me.PictureBox11.TabStop = False
-        '
-        'btnDiscounts
-        '
-        Me.btnDiscounts.BorderRadius = 5
-        Me.btnDiscounts.DisabledState.BorderColor = System.Drawing.Color.DarkGray
-        Me.btnDiscounts.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
-        Me.btnDiscounts.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
-        Me.btnDiscounts.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.btnDiscounts.FillColor = System.Drawing.Color.Transparent
-        Me.btnDiscounts.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.btnDiscounts.ForeColor = System.Drawing.Color.Black
-        Me.btnDiscounts.Image = Global.TSSIS3.My.Resources.Resources.iconmain8
-        Me.btnDiscounts.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnDiscounts.Location = New System.Drawing.Point(11, 371)
-        Me.btnDiscounts.Name = "btnDiscounts"
-        Me.btnDiscounts.Size = New System.Drawing.Size(205, 36)
-        Me.btnDiscounts.TabIndex = 7
-        Me.btnDiscounts.Text = "Discounts"
         '
         'Guna2ShadowPanel2
         '
@@ -468,17 +244,6 @@ Partial Class Dashboard
         Me.lblName.Size = New System.Drawing.Size(37, 15)
         Me.lblName.TabIndex = 1
         Me.lblName.Text = "Name :"
-        '
-        'userpbcircle
-        '
-        Me.userpbcircle.FillColor = System.Drawing.Color.Black
-        Me.userpbcircle.ImageRotate = 0!
-        Me.userpbcircle.Location = New System.Drawing.Point(12, 5)
-        Me.userpbcircle.Name = "userpbcircle"
-        Me.userpbcircle.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
-        Me.userpbcircle.Size = New System.Drawing.Size(50, 50)
-        Me.userpbcircle.TabIndex = 0
-        Me.userpbcircle.TabStop = False
         '
         'lblRole
         '
@@ -512,7 +277,7 @@ Partial Class Dashboard
         Me.PanelMain.BorderRadius = 5
         Me.PanelMain.Location = New System.Drawing.Point(244, 94)
         Me.PanelMain.Name = "PanelMain"
-        Me.PanelMain.Size = New System.Drawing.Size(1109, 668)
+        Me.PanelMain.Size = New System.Drawing.Size(1109, 682)
         Me.PanelMain.TabIndex = 3
         '
         'overlaypanel
@@ -528,7 +293,7 @@ Partial Class Dashboard
         Me.overlaypanel.Controls.Add(Me.Guna2ShadowPanel4)
         Me.overlaypanel.Location = New System.Drawing.Point(244, 12)
         Me.overlaypanel.Name = "overlaypanel"
-        Me.overlaypanel.Size = New System.Drawing.Size(1109, 750)
+        Me.overlaypanel.Size = New System.Drawing.Size(1109, 764)
         Me.overlaypanel.TabIndex = 4
         '
         'Guna2ShadowPanel10
@@ -546,15 +311,6 @@ Partial Class Dashboard
         Me.Guna2ShadowPanel10.Size = New System.Drawing.Size(265, 69)
         Me.Guna2ShadowPanel10.TabIndex = 12
         '
-        'PictureBox10
-        '
-        Me.PictureBox10.Image = Global.TSSIS3.My.Resources.Resources.icons8_schedule_40
-        Me.PictureBox10.Location = New System.Drawing.Point(16, 6)
-        Me.PictureBox10.Name = "PictureBox10"
-        Me.PictureBox10.Size = New System.Drawing.Size(45, 46)
-        Me.PictureBox10.TabIndex = 11
-        Me.PictureBox10.TabStop = False
-        '
         'Guna2ShadowPanel8
         '
         Me.Guna2ShadowPanel8.BackColor = System.Drawing.Color.Transparent
@@ -569,16 +325,16 @@ Partial Class Dashboard
         '
         'Chart1
         '
-        ChartArea3.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea3)
-        Legend3.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend3)
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.Chart1.Legends.Add(Legend1)
         Me.Chart1.Location = New System.Drawing.Point(17, 18)
         Me.Chart1.Name = "Chart1"
-        Series3.ChartArea = "ChartArea1"
-        Series3.Legend = "Legend1"
-        Series3.Name = "Series1"
-        Me.Chart1.Series.Add(Series3)
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
         Me.Chart1.Size = New System.Drawing.Size(644, 372)
         Me.Chart1.TabIndex = 1
         Me.Chart1.Text = "Chart1"
@@ -623,15 +379,6 @@ Partial Class Dashboard
         Me.lblTotalReturns.TabIndex = 14
         Me.lblTotalReturns.Text = Nothing
         '
-        'picPercentReturn
-        '
-        Me.picPercentReturn.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
-        Me.picPercentReturn.Location = New System.Drawing.Point(25, 86)
-        Me.picPercentReturn.Name = "picPercentReturn"
-        Me.picPercentReturn.Size = New System.Drawing.Size(25, 29)
-        Me.picPercentReturn.TabIndex = 12
-        Me.picPercentReturn.TabStop = False
-        '
         'lblPercentReturn
         '
         Me.lblPercentReturn.BackColor = System.Drawing.Color.Transparent
@@ -641,15 +388,6 @@ Partial Class Dashboard
         Me.lblPercentReturn.Size = New System.Drawing.Size(23, 15)
         Me.lblPercentReturn.TabIndex = 13
         Me.lblPercentReturn.Text = "10%"
-        '
-        'PictureBox8
-        '
-        Me.PictureBox8.Image = Global.TSSIS3.My.Resources.Resources.icons8_refund_75
-        Me.PictureBox8.Location = New System.Drawing.Point(17, 7)
-        Me.PictureBox8.Name = "PictureBox8"
-        Me.PictureBox8.Size = New System.Drawing.Size(75, 76)
-        Me.PictureBox8.TabIndex = 7
-        Me.PictureBox8.TabStop = False
         '
         'lblReturn
         '
@@ -686,16 +424,16 @@ Partial Class Dashboard
         '
         'Chart2
         '
-        ChartArea4.Name = "ChartArea1"
-        Me.Chart2.ChartAreas.Add(ChartArea4)
-        Legend4.Name = "Legend1"
-        Me.Chart2.Legends.Add(Legend4)
+        ChartArea2.Name = "ChartArea1"
+        Me.Chart2.ChartAreas.Add(ChartArea2)
+        Legend2.Name = "Legend1"
+        Me.Chart2.Legends.Add(Legend2)
         Me.Chart2.Location = New System.Drawing.Point(28, 18)
         Me.Chart2.Name = "Chart2"
-        Series4.ChartArea = "ChartArea1"
-        Series4.Legend = "Legend1"
-        Series4.Name = "Series1"
-        Me.Chart2.Series.Add(Series4)
+        Series2.ChartArea = "ChartArea1"
+        Series2.Legend = "Legend1"
+        Series2.Name = "Series1"
+        Me.Chart2.Series.Add(Series2)
         Me.Chart2.Size = New System.Drawing.Size(336, 230)
         Me.Chart2.TabIndex = 0
         Me.Chart2.Text = "Chart2"
@@ -786,15 +524,6 @@ Partial Class Dashboard
         Me.lblPercentSales.TabIndex = 7
         Me.lblPercentSales.Text = "10%"
         '
-        'picSales
-        '
-        Me.picSales.Image = Global.TSSIS3.My.Resources.Resources.icons8_chart_arrow_rise_28
-        Me.picSales.Location = New System.Drawing.Point(20, 89)
-        Me.picSales.Name = "picSales"
-        Me.picSales.Size = New System.Drawing.Size(34, 29)
-        Me.picSales.TabIndex = 5
-        Me.picSales.TabStop = False
-        '
         'lblTotalSales
         '
         Me.lblTotalSales.BackColor = System.Drawing.Color.Transparent
@@ -867,15 +596,6 @@ Partial Class Dashboard
         Me.lblTotalProducts.TabIndex = 12
         Me.lblTotalProducts.Text = Nothing
         '
-        'picPercentSold
-        '
-        Me.picPercentSold.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
-        Me.picPercentSold.Location = New System.Drawing.Point(26, 86)
-        Me.picPercentSold.Name = "picPercentSold"
-        Me.picPercentSold.Size = New System.Drawing.Size(25, 29)
-        Me.picPercentSold.TabIndex = 10
-        Me.picPercentSold.TabStop = False
-        '
         'lblPercentSold
         '
         Me.lblPercentSold.BackColor = System.Drawing.Color.Transparent
@@ -885,15 +605,6 @@ Partial Class Dashboard
         Me.lblPercentSold.Size = New System.Drawing.Size(23, 15)
         Me.lblPercentSold.TabIndex = 11
         Me.lblPercentSold.Text = "10%"
-        '
-        'PictureBox6
-        '
-        Me.PictureBox6.Image = Global.TSSIS3.My.Resources.Resources.icons8_product_75
-        Me.PictureBox6.Location = New System.Drawing.Point(17, 8)
-        Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(75, 76)
-        Me.PictureBox6.TabIndex = 8
-        Me.PictureBox6.TabStop = False
         '
         'lblProductSold
         '
@@ -933,15 +644,6 @@ Partial Class Dashboard
         Me.Guna2ShadowPanel5.Size = New System.Drawing.Size(254, 136)
         Me.Guna2ShadowPanel5.TabIndex = 4
         '
-        'picpercentage2
-        '
-        Me.picpercentage2.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
-        Me.picpercentage2.Location = New System.Drawing.Point(25, 86)
-        Me.picpercentage2.Name = "picpercentage2"
-        Me.picpercentage2.Size = New System.Drawing.Size(25, 29)
-        Me.picpercentage2.TabIndex = 13
-        Me.picpercentage2.TabStop = False
-        '
         'lblPercentCustomers
         '
         Me.lblPercentCustomers.BackColor = System.Drawing.Color.Transparent
@@ -951,15 +653,6 @@ Partial Class Dashboard
         Me.lblPercentCustomers.Size = New System.Drawing.Size(23, 15)
         Me.lblPercentCustomers.TabIndex = 14
         Me.lblPercentCustomers.Text = "10%"
-        '
-        'pic
-        '
-        Me.pic.Image = Global.TSSIS3.My.Resources.Resources.icons8_customers_75
-        Me.pic.Location = New System.Drawing.Point(17, 8)
-        Me.pic.Name = "pic"
-        Me.pic.Size = New System.Drawing.Size(75, 76)
-        Me.pic.TabIndex = 12
-        Me.pic.TabStop = False
         '
         'lblCustomers
         '
@@ -1009,15 +702,6 @@ Partial Class Dashboard
         Me.Guna2ShadowPanel4.Size = New System.Drawing.Size(254, 136)
         Me.Guna2ShadowPanel4.TabIndex = 2
         '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = Global.TSSIS3.My.Resources.Resources.icons8_peso_symbol_75
-        Me.PictureBox1.Location = New System.Drawing.Point(17, 8)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(75, 76)
-        Me.PictureBox1.TabIndex = 11
-        Me.PictureBox1.TabStop = False
-        '
         'lbltotalRevenue
         '
         Me.lbltotalRevenue.BackColor = System.Drawing.Color.Transparent
@@ -1027,15 +711,6 @@ Partial Class Dashboard
         Me.lbltotalRevenue.Size = New System.Drawing.Size(88, 15)
         Me.lbltotalRevenue.TabIndex = 10
         Me.lbltotalRevenue.Text = "Guna2HtmlLabel9"
-        '
-        'picpercentage1
-        '
-        Me.picpercentage1.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
-        Me.picpercentage1.Location = New System.Drawing.Point(26, 86)
-        Me.picpercentage1.Name = "picpercentage1"
-        Me.picpercentage1.Size = New System.Drawing.Size(25, 29)
-        Me.picpercentage1.TabIndex = 4
-        Me.picpercentage1.TabStop = False
         '
         'lblPercent1Revenue
         '
@@ -1076,15 +751,6 @@ Partial Class Dashboard
         Me.Guna2Panel1.Name = "Guna2Panel1"
         Me.Guna2Panel1.Size = New System.Drawing.Size(1108, 79)
         Me.Guna2Panel1.TabIndex = 8
-        '
-        'pbAll
-        '
-        Me.pbAll.Image = Global.TSSIS3.My.Resources.Resources.DB1
-        Me.pbAll.Location = New System.Drawing.Point(-19, -27)
-        Me.pbAll.Name = "pbAll"
-        Me.pbAll.Size = New System.Drawing.Size(399, 128)
-        Me.pbAll.TabIndex = 3
-        Me.pbAll.TabStop = False
         '
         'TimerDateTime
         '
@@ -1159,12 +825,366 @@ Partial Class Dashboard
         Me.ChangePasswordToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
         Me.ChangePasswordToolStripMenuItem.Text = "Change Password"
         '
+        'pbAll
+        '
+        Me.pbAll.Image = Global.TSSIS3.My.Resources.Resources.DB1
+        Me.pbAll.Location = New System.Drawing.Point(-19, -27)
+        Me.pbAll.Name = "pbAll"
+        Me.pbAll.Size = New System.Drawing.Size(399, 128)
+        Me.pbAll.TabIndex = 3
+        Me.pbAll.TabStop = False
+        '
+        'userpbcircle
+        '
+        Me.userpbcircle.FillColor = System.Drawing.Color.Black
+        Me.userpbcircle.ImageRotate = 0!
+        Me.userpbcircle.Location = New System.Drawing.Point(12, 5)
+        Me.userpbcircle.Name = "userpbcircle"
+        Me.userpbcircle.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
+        Me.userpbcircle.Size = New System.Drawing.Size(50, 50)
+        Me.userpbcircle.TabIndex = 0
+        Me.userpbcircle.TabStop = False
+        '
+        'btnmembership
+        '
+        Me.btnmembership.BorderRadius = 5
+        Me.btnmembership.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnmembership.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnmembership.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnmembership.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnmembership.FillColor = System.Drawing.Color.Transparent
+        Me.btnmembership.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnmembership.ForeColor = System.Drawing.Color.Black
+        Me.btnmembership.Image = Global.TSSIS3.My.Resources.Resources.iconmain14
+        Me.btnmembership.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnmembership.Location = New System.Drawing.Point(11, 483)
+        Me.btnmembership.Name = "btnmembership"
+        Me.btnmembership.Size = New System.Drawing.Size(205, 36)
+        Me.btnmembership.TabIndex = 19
+        Me.btnmembership.Text = "Membership"
+        '
+        'btnUtilities
+        '
+        Me.btnUtilities.BorderRadius = 5
+        Me.btnUtilities.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnUtilities.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnUtilities.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnUtilities.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnUtilities.FillColor = System.Drawing.Color.Transparent
+        Me.btnUtilities.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnUtilities.ForeColor = System.Drawing.Color.Black
+        Me.btnUtilities.Image = Global.TSSIS3.My.Resources.Resources.iconmain13
+        Me.btnUtilities.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnUtilities.Location = New System.Drawing.Point(11, 610)
+        Me.btnUtilities.Name = "btnUtilities"
+        Me.btnUtilities.Size = New System.Drawing.Size(205, 36)
+        Me.btnUtilities.TabIndex = 9
+        Me.btnUtilities.Text = "Open Utilities"
+        '
+        'btnDashboard
+        '
+        Me.btnDashboard.BorderRadius = 5
+        Me.btnDashboard.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnDashboard.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnDashboard.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnDashboard.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnDashboard.FillColor = System.Drawing.Color.Transparent
+        Me.btnDashboard.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnDashboard.ForeColor = System.Drawing.Color.Black
+        Me.btnDashboard.Image = CType(resources.GetObject("btnDashboard.Image"), System.Drawing.Image)
+        Me.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnDashboard.Location = New System.Drawing.Point(11, 123)
+        Me.btnDashboard.Name = "btnDashboard"
+        Me.btnDashboard.Size = New System.Drawing.Size(205, 36)
+        Me.btnDashboard.TabIndex = 15
+        Me.btnDashboard.Text = "Overview"
+        '
+        'btnLogout
+        '
+        Me.btnLogout.BorderRadius = 5
+        Me.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnLogout.FillColor = System.Drawing.Color.Transparent
+        Me.btnLogout.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnLogout.ForeColor = System.Drawing.Color.Black
+        Me.btnLogout.Image = Global.TSSIS3.My.Resources.Resources.iconmain12
+        Me.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnLogout.Location = New System.Drawing.Point(11, 720)
+        Me.btnLogout.Name = "btnLogout"
+        Me.btnLogout.Size = New System.Drawing.Size(205, 36)
+        Me.btnLogout.TabIndex = 14
+        Me.btnLogout.Text = "Logout"
+        '
+        'btnUsers
+        '
+        Me.btnUsers.BorderRadius = 5
+        Me.btnUsers.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnUsers.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnUsers.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnUsers.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnUsers.FillColor = System.Drawing.Color.Transparent
+        Me.btnUsers.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnUsers.ForeColor = System.Drawing.Color.Black
+        Me.btnUsers.Image = Global.TSSIS3.My.Resources.Resources.iconmain2
+        Me.btnUsers.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnUsers.Location = New System.Drawing.Point(11, 189)
+        Me.btnUsers.Name = "btnUsers"
+        Me.btnUsers.Size = New System.Drawing.Size(205, 36)
+        Me.btnUsers.TabIndex = 1
+        Me.btnUsers.Text = "Users"
+        '
+        'btnPOS
+        '
+        Me.btnPOS.BorderRadius = 5
+        Me.btnPOS.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnPOS.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnPOS.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnPOS.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnPOS.FillColor = System.Drawing.Color.Transparent
+        Me.btnPOS.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnPOS.ForeColor = System.Drawing.Color.Black
+        Me.btnPOS.Image = Global.TSSIS3.My.Resources.Resources.iconmain7
+        Me.btnPOS.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnPOS.Location = New System.Drawing.Point(11, 547)
+        Me.btnPOS.Name = "btnPOS"
+        Me.btnPOS.Size = New System.Drawing.Size(205, 36)
+        Me.btnPOS.TabIndex = 6
+        Me.btnPOS.Text = "POS"
+        '
+        'btnCategory
+        '
+        Me.btnCategory.BorderRadius = 5
+        Me.btnCategory.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnCategory.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnCategory.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnCategory.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnCategory.FillColor = System.Drawing.Color.Transparent
+        Me.btnCategory.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnCategory.ForeColor = System.Drawing.Color.Black
+        Me.btnCategory.Image = Global.TSSIS3.My.Resources.Resources.iconmain4
+        Me.btnCategory.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnCategory.Location = New System.Drawing.Point(11, 273)
+        Me.btnCategory.Name = "btnCategory"
+        Me.btnCategory.Size = New System.Drawing.Size(205, 36)
+        Me.btnCategory.TabIndex = 3
+        Me.btnCategory.Text = "Categories"
+        '
+        'btnSupplier
+        '
+        Me.btnSupplier.BorderRadius = 5
+        Me.btnSupplier.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnSupplier.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnSupplier.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnSupplier.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnSupplier.FillColor = System.Drawing.Color.Transparent
+        Me.btnSupplier.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnSupplier.ForeColor = System.Drawing.Color.Black
+        Me.btnSupplier.Image = Global.TSSIS3.My.Resources.Resources.iconmain3
+        Me.btnSupplier.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnSupplier.Location = New System.Drawing.Point(11, 231)
+        Me.btnSupplier.Name = "btnSupplier"
+        Me.btnSupplier.Size = New System.Drawing.Size(205, 36)
+        Me.btnSupplier.TabIndex = 2
+        Me.btnSupplier.Text = "Suppliers"
+        '
+        'btnProducts
+        '
+        Me.btnProducts.BorderRadius = 5
+        Me.btnProducts.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnProducts.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnProducts.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnProducts.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnProducts.FillColor = System.Drawing.Color.Transparent
+        Me.btnProducts.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnProducts.ForeColor = System.Drawing.Color.Black
+        Me.btnProducts.Image = Global.TSSIS3.My.Resources.Resources.iconmain5
+        Me.btnProducts.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnProducts.Location = New System.Drawing.Point(11, 315)
+        Me.btnProducts.Name = "btnProducts"
+        Me.btnProducts.Size = New System.Drawing.Size(205, 36)
+        Me.btnProducts.TabIndex = 4
+        Me.btnProducts.Text = "Products"
+        '
+        'btnInventory
+        '
+        Me.btnInventory.BorderRadius = 5
+        Me.btnInventory.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnInventory.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnInventory.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnInventory.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnInventory.FillColor = System.Drawing.Color.Transparent
+        Me.btnInventory.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnInventory.ForeColor = System.Drawing.Color.Black
+        Me.btnInventory.Image = Global.TSSIS3.My.Resources.Resources.iconmain6
+        Me.btnInventory.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnInventory.Location = New System.Drawing.Point(11, 441)
+        Me.btnInventory.Name = "btnInventory"
+        Me.btnInventory.Size = New System.Drawing.Size(205, 36)
+        Me.btnInventory.TabIndex = 5
+        Me.btnInventory.Text = "Inventories"
+        '
+        'btnReports
+        '
+        Me.btnReports.BorderRadius = 5
+        Me.btnReports.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnReports.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnReports.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnReports.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnReports.FillColor = System.Drawing.Color.Transparent
+        Me.btnReports.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnReports.ForeColor = System.Drawing.Color.Black
+        Me.btnReports.Image = Global.TSSIS3.My.Resources.Resources.iconmain10
+        Me.btnReports.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnReports.Location = New System.Drawing.Point(11, 671)
+        Me.btnReports.Name = "btnReports"
+        Me.btnReports.Size = New System.Drawing.Size(205, 36)
+        Me.btnReports.TabIndex = 10
+        Me.btnReports.Text = "View Reports"
+        '
+        'btnVat
+        '
+        Me.btnVat.BorderRadius = 5
+        Me.btnVat.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnVat.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnVat.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnVat.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnVat.FillColor = System.Drawing.Color.Transparent
+        Me.btnVat.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnVat.ForeColor = System.Drawing.Color.Black
+        Me.btnVat.Image = Global.TSSIS3.My.Resources.Resources.iconmain9
+        Me.btnVat.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnVat.Location = New System.Drawing.Point(11, 399)
+        Me.btnVat.Name = "btnVat"
+        Me.btnVat.Size = New System.Drawing.Size(205, 36)
+        Me.btnVat.TabIndex = 8
+        Me.btnVat.Text = "Vat"
+        '
+        'PictureBox11
+        '
+        Me.PictureBox11.Image = Global.TSSIS3.My.Resources.Resources.logomains
+        Me.PictureBox11.Location = New System.Drawing.Point(-24, -46)
+        Me.PictureBox11.Name = "PictureBox11"
+        Me.PictureBox11.Size = New System.Drawing.Size(267, 201)
+        Me.PictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox11.TabIndex = 4
+        Me.PictureBox11.TabStop = False
+        '
+        'btnDiscounts
+        '
+        Me.btnDiscounts.BorderRadius = 5
+        Me.btnDiscounts.DisabledState.BorderColor = System.Drawing.Color.DarkGray
+        Me.btnDiscounts.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray
+        Me.btnDiscounts.DisabledState.FillColor = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
+        Me.btnDiscounts.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.btnDiscounts.FillColor = System.Drawing.Color.Transparent
+        Me.btnDiscounts.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.btnDiscounts.ForeColor = System.Drawing.Color.Black
+        Me.btnDiscounts.Image = Global.TSSIS3.My.Resources.Resources.iconmain8
+        Me.btnDiscounts.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
+        Me.btnDiscounts.Location = New System.Drawing.Point(11, 357)
+        Me.btnDiscounts.Name = "btnDiscounts"
+        Me.btnDiscounts.Size = New System.Drawing.Size(205, 36)
+        Me.btnDiscounts.TabIndex = 7
+        Me.btnDiscounts.Text = "Discounts"
+        '
+        'PictureBox10
+        '
+        Me.PictureBox10.Image = Global.TSSIS3.My.Resources.Resources.icons8_schedule_40
+        Me.PictureBox10.Location = New System.Drawing.Point(16, 6)
+        Me.PictureBox10.Name = "PictureBox10"
+        Me.PictureBox10.Size = New System.Drawing.Size(45, 46)
+        Me.PictureBox10.TabIndex = 11
+        Me.PictureBox10.TabStop = False
+        '
+        'picPercentReturn
+        '
+        Me.picPercentReturn.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
+        Me.picPercentReturn.Location = New System.Drawing.Point(25, 86)
+        Me.picPercentReturn.Name = "picPercentReturn"
+        Me.picPercentReturn.Size = New System.Drawing.Size(25, 29)
+        Me.picPercentReturn.TabIndex = 12
+        Me.picPercentReturn.TabStop = False
+        '
+        'PictureBox8
+        '
+        Me.PictureBox8.Image = Global.TSSIS3.My.Resources.Resources.icons8_refund_75
+        Me.PictureBox8.Location = New System.Drawing.Point(17, 7)
+        Me.PictureBox8.Name = "PictureBox8"
+        Me.PictureBox8.Size = New System.Drawing.Size(75, 76)
+        Me.PictureBox8.TabIndex = 7
+        Me.PictureBox8.TabStop = False
+        '
+        'picSales
+        '
+        Me.picSales.Image = Global.TSSIS3.My.Resources.Resources.icons8_chart_arrow_rise_28
+        Me.picSales.Location = New System.Drawing.Point(20, 89)
+        Me.picSales.Name = "picSales"
+        Me.picSales.Size = New System.Drawing.Size(34, 29)
+        Me.picSales.TabIndex = 5
+        Me.picSales.TabStop = False
+        '
+        'picPercentSold
+        '
+        Me.picPercentSold.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
+        Me.picPercentSold.Location = New System.Drawing.Point(26, 86)
+        Me.picPercentSold.Name = "picPercentSold"
+        Me.picPercentSold.Size = New System.Drawing.Size(25, 29)
+        Me.picPercentSold.TabIndex = 10
+        Me.picPercentSold.TabStop = False
+        '
+        'PictureBox6
+        '
+        Me.PictureBox6.Image = Global.TSSIS3.My.Resources.Resources.icons8_product_75
+        Me.PictureBox6.Location = New System.Drawing.Point(17, 8)
+        Me.PictureBox6.Name = "PictureBox6"
+        Me.PictureBox6.Size = New System.Drawing.Size(75, 76)
+        Me.PictureBox6.TabIndex = 8
+        Me.PictureBox6.TabStop = False
+        '
+        'picpercentage2
+        '
+        Me.picpercentage2.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
+        Me.picpercentage2.Location = New System.Drawing.Point(25, 86)
+        Me.picpercentage2.Name = "picpercentage2"
+        Me.picpercentage2.Size = New System.Drawing.Size(25, 29)
+        Me.picpercentage2.TabIndex = 13
+        Me.picpercentage2.TabStop = False
+        '
+        'pic
+        '
+        Me.pic.Image = Global.TSSIS3.My.Resources.Resources.icons8_customers_75
+        Me.pic.Location = New System.Drawing.Point(17, 8)
+        Me.pic.Name = "pic"
+        Me.pic.Size = New System.Drawing.Size(75, 76)
+        Me.pic.TabIndex = 12
+        Me.pic.TabStop = False
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = Global.TSSIS3.My.Resources.Resources.icons8_peso_symbol_75
+        Me.PictureBox1.Location = New System.Drawing.Point(17, 8)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(75, 76)
+        Me.PictureBox1.TabIndex = 11
+        Me.PictureBox1.TabStop = False
+        '
+        'picpercentage1
+        '
+        Me.picpercentage1.Image = Global.TSSIS3.My.Resources.Resources.icons8_positive_dynamic_25
+        Me.picpercentage1.Location = New System.Drawing.Point(26, 86)
+        Me.picpercentage1.Name = "picpercentage1"
+        Me.picpercentage1.Size = New System.Drawing.Size(25, 29)
+        Me.picpercentage1.TabIndex = 4
+        Me.picpercentage1.TabStop = False
+        '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1366, 776)
+        Me.ClientSize = New System.Drawing.Size(1366, 788)
         Me.Controls.Add(Me.Guna2Panel1)
         Me.Controls.Add(Me.Guna2ShadowPanel1)
         Me.Controls.Add(Me.overlaypanel)
@@ -1176,41 +1196,41 @@ Partial Class Dashboard
         Me.Text = "Dashboard"
         Me.Guna2ShadowPanel1.ResumeLayout(False)
         Me.Guna2ShadowPanel1.PerformLayout()
-        CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel2.ResumeLayout(False)
         Me.Guna2ShadowPanel2.PerformLayout()
-        CType(Me.userpbcircle, System.ComponentModel.ISupportInitialize).EndInit()
         Me.overlaypanel.ResumeLayout(False)
         Me.Guna2ShadowPanel10.ResumeLayout(False)
         Me.Guna2ShadowPanel10.PerformLayout()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel8.ResumeLayout(False)
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel3.ResumeLayout(False)
         Me.Guna2ShadowPanel3.PerformLayout()
-        CType(Me.picPercentReturn, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel9.ResumeLayout(False)
         CType(Me.Chart2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel7.ResumeLayout(False)
         Me.Guna2ShadowPanel7.PerformLayout()
-        CType(Me.picSales, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel6.ResumeLayout(False)
         Me.Guna2ShadowPanel6.PerformLayout()
-        CType(Me.picPercentSold, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel5.ResumeLayout(False)
         Me.Guna2ShadowPanel5.PerformLayout()
-        CType(Me.picpercentage2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pic, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ShadowPanel4.ResumeLayout(False)
         Me.Guna2ShadowPanel4.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.picpercentage1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2Panel1.ResumeLayout(False)
-        CType(Me.pbAll, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Guna2ContextMenuStrip1.ResumeLayout(False)
         Me.Guna2ContextMenuStrip2.ResumeLayout(False)
+        CType(Me.pbAll, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.userpbcircle, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picPercentReturn, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picSales, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picPercentSold, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picpercentage2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pic, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picpercentage1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1299,4 +1319,5 @@ Partial Class Dashboard
     Friend WithEvents AuditTrailToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ChangePasswordToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Guna2HtmlLabel2 As Guna.UI2.WinForms.Guna2HtmlLabel
+    Friend WithEvents btnmembership As Guna.UI2.WinForms.Guna2Button
 End Class

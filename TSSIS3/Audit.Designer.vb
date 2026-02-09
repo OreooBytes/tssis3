@@ -136,7 +136,7 @@ Partial Class Audit
         Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox3.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox3.Image = Global.TSSIS3.My.Resources.Resources.icons8_close_window_50
-        Me.PictureBox3.Location = New System.Drawing.Point(1052, 1)
+        Me.PictureBox3.Location = New System.Drawing.Point(1056, 1)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(47, 49)
         Me.PictureBox3.TabIndex = 70
@@ -145,20 +145,20 @@ Partial Class Audit
         'Guna2HtmlLabel2
         '
         Me.Guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.Guna2HtmlLabel2.Font = New System.Drawing.Font("Outfit", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Guna2HtmlLabel2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Guna2HtmlLabel2.Location = New System.Drawing.Point(898, 73)
         Me.Guna2HtmlLabel2.Name = "Guna2HtmlLabel2"
-        Me.Guna2HtmlLabel2.Size = New System.Drawing.Size(54, 17)
+        Me.Guna2HtmlLabel2.Size = New System.Drawing.Size(62, 17)
         Me.Guna2HtmlLabel2.TabIndex = 69
         Me.Guna2HtmlLabel2.Text = "End Date"
         '
         'Guna2HtmlLabel1
         '
         Me.Guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.Guna2HtmlLabel1.Font = New System.Drawing.Font("Outfit", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Guna2HtmlLabel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Guna2HtmlLabel1.Location = New System.Drawing.Point(709, 73)
         Me.Guna2HtmlLabel1.Name = "Guna2HtmlLabel1"
-        Me.Guna2HtmlLabel1.Size = New System.Drawing.Size(62, 17)
+        Me.Guna2HtmlLabel1.Size = New System.Drawing.Size(67, 17)
         Me.Guna2HtmlLabel1.TabIndex = 68
         Me.Guna2HtmlLabel1.Text = "Start Date"
         '
@@ -166,7 +166,7 @@ Partial Class Audit
         '
         Me.dptStartDate.BorderRadius = 5
         Me.dptStartDate.Checked = True
-        Me.dptStartDate.Font = New System.Drawing.Font("Outfit", 8.0!)
+        Me.dptStartDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!)
         Me.dptStartDate.ForeColor = System.Drawing.SystemColors.Control
         Me.dptStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Long]
         Me.dptStartDate.Location = New System.Drawing.Point(692, 94)
@@ -181,7 +181,7 @@ Partial Class Audit
         '
         Me.dptEndDate.BorderRadius = 5
         Me.dptEndDate.Checked = True
-        Me.dptEndDate.Font = New System.Drawing.Font("Outfit", 8.0!)
+        Me.dptEndDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!)
         Me.dptEndDate.ForeColor = System.Drawing.SystemColors.Control
         Me.dptEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Long]
         Me.dptEndDate.Location = New System.Drawing.Point(898, 94)
@@ -203,7 +203,7 @@ Partial Class Audit
         Me.txtSearch.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer))
         Me.txtSearch.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer), CType(CType(138, Byte), Integer))
         Me.txtSearch.FocusedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.txtSearch.Font = New System.Drawing.Font("Outfit", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSearch.ForeColor = System.Drawing.Color.Black
         Me.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.txtSearch.IconLeft = Global.TSSIS3.My.Resources.Resources.icons8_search_35

@@ -240,21 +240,39 @@ Public Class Discount
     Private Sub addbtn_Click(sender As Object, e As EventArgs) Handles addbtn.Click
         Dim discountType As String = dscnttype.Text.Trim()
         Dim discountPercent As Decimal
-        Dim inputPercent As String = dscnt.Text.Replace("%", "")
+        Dim inputPercent As String = dscnt.Text.Replace("%", "").Trim()
 
         ' --- VALIDATION ---
-        If String.IsNullOrEmpty(discountType) Then
+        If String.IsNullOrWhiteSpace(discountType) Then
             MessageBox.Show("Please enter a discount type.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            dscnttype.Focus()
+            Return
+        End If
+
+        If String.IsNullOrWhiteSpace(inputPercent) Then
+            MessageBox.Show("Please enter a discount percentage.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            dscnt.Focus()
             Return
         End If
 
         If Not Decimal.TryParse(inputPercent, discountPercent) Then
-            MessageBox.Show("Please enter a valid discount percentage.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please enter a valid numeric discount percentage.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            dscnt.Focus()
             Return
         End If
 
+        ' 🔒 Range validation: greater than 0 and less than 100 ONLY
+        If discountPercent <= 0 OrElse discountPercent >= 100 Then
+            MessageBox.Show("Discount must be greater than 0% and less than 100%.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            addbtn.Enabled = True
+            dscnt.Focus()
+            Return
+        End If
+
+
         If DiscountTypeExists(discountType) Then
             MessageBox.Show("Discount type already exists. Please choose a different name.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            dscnttype.Focus()
             Return
         End If
 
@@ -271,7 +289,8 @@ Public Class Discount
                         MessageBox.Show("Discount added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                         ' --- AUDIT LOGGING ---
-                        LogAuditTrail(SessionData.role, SessionData.fullName, $"Added new discount type: {discountType} ({discountPercent}%)")
+                        LogAuditTrail(SessionData.role, SessionData.fullName,
+                                  $"Added new discount type: {discountType} ({discountPercent:0.00}%)")
                     End Using
                 Catch ex As MySqlException
                     MessageBox.Show("Database error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -286,6 +305,7 @@ Public Class Discount
         ClearInputs()
     End Sub
 
+
     '==========================
     ' UPDATE DISCOUNT
     '==========================
@@ -298,20 +318,38 @@ Public Class Discount
 
         Dim discountType As String = dscnttype.Text.Trim()
         Dim discountPercent As Decimal
-        Dim inputPercent As String = dscnt.Text.Replace("%", "")
+        Dim inputPercent As String = dscnt.Text.Replace("%", "").Trim()
 
         ' --- VALIDATION ---
-        If String.IsNullOrEmpty(discountType) Then
+        If String.IsNullOrWhiteSpace(discountType) Then
             MessageBox.Show("Please enter a discount type.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             addbtn.Enabled = True
+            dscnttype.Focus()
+            Return
+        End If
+
+        If String.IsNullOrWhiteSpace(inputPercent) Then
+            MessageBox.Show("Please enter a discount percentage.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            addbtn.Enabled = True
+            dscnt.Focus()
             Return
         End If
 
         If Not Decimal.TryParse(inputPercent, discountPercent) Then
-            MessageBox.Show("Please enter a valid discount percentage.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            MessageBox.Show("Please enter a valid numeric discount percentage.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             addbtn.Enabled = True
+            dscnt.Focus()
             Return
         End If
+
+        ' 🔒 Range validation: greater than 0 and less than 100 ONLY
+        If discountPercent <= 0 OrElse discountPercent >= 100 Then
+            MessageBox.Show("Discount must be greater than 0% and less than 100%.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            addbtn.Enabled = True
+            dscnt.Focus()
+            Return
+        End If
+
 
         Using conn As MySqlConnection = Module1.Openconnection()
             If conn IsNot Nothing Then
@@ -322,7 +360,8 @@ Public Class Discount
                     ' --- GET CURRENT VALUES ---
                     Dim currentType As String = ""
                     Dim currentPercent As Decimal = 0
-                    Dim getCurrentCmd As New MySqlCommand("SELECT DiscountType, DiscountPercent FROM discount WHERE DiscountType = @originalDiscount", conn)
+                    Dim getCurrentCmd As New MySqlCommand(
+                    "SELECT DiscountType, DiscountPercent FROM discount WHERE DiscountType = @originalDiscount", conn)
                     getCurrentCmd.Parameters.AddWithValue("@originalDiscount", originalDiscount)
 
                     Using reader As MySqlDataReader = getCurrentCmd.ExecuteReader()
@@ -335,10 +374,15 @@ Public Class Discount
                     ' --- DUPLICATE CHECK ---
                     Dim checkDiscountTypeCmd As New MySqlCommand("
                     SELECT COUNT(*) FROM discount
-                    WHERE (LOWER(DiscountType) = LOWER(@DiscountType) OR LOWER(DiscountType) = LOWER(@DiscountTypeWithS))
+                    WHERE (LOWER(DiscountType) = LOWER(@DiscountType)
+                       OR LOWER(DiscountType) = LOWER(@DiscountTypeWithS))
                     AND DiscountType <> @originalDiscount", conn)
+
                     checkDiscountTypeCmd.Parameters.AddWithValue("@DiscountType", discountType.ToLower())
-                    checkDiscountTypeCmd.Parameters.AddWithValue("@DiscountTypeWithS", If(discountType.ToLower().EndsWith("s"), discountType.ToLower().TrimEnd("s"c), discountType.ToLower() & "s"))
+                    checkDiscountTypeCmd.Parameters.AddWithValue("@DiscountTypeWithS",
+                    If(discountType.ToLower().EndsWith("s"),
+                       discountType.ToLower().TrimEnd("s"c),
+                       discountType.ToLower() & "s"))
                     checkDiscountTypeCmd.Parameters.AddWithValue("@originalDiscount", originalDiscount)
 
                     Dim discountExist As Integer = Convert.ToInt32(checkDiscountTypeCmd.ExecuteScalar())
@@ -355,7 +399,10 @@ Public Class Discount
                     If currentPercent <> discountPercent Then updatedFields.Add($"Percent: {currentPercent}% → {discountPercent}%")
 
                     If updatedFields.Count > 0 Then
-                        Dim cmd As New MySqlCommand("UPDATE discount SET DiscountPercent = @DiscountPercent, DiscountType = @DiscountType WHERE DiscountType = @originalDiscount", conn)
+                        Dim cmd As New MySqlCommand(
+                        "UPDATE discount SET DiscountPercent = @DiscountPercent, DiscountType = @DiscountType 
+                         WHERE DiscountType = @originalDiscount", conn)
+
                         cmd.Parameters.AddWithValue("@DiscountType", discountType)
                         cmd.Parameters.AddWithValue("@DiscountPercent", discountPercent)
                         cmd.Parameters.AddWithValue("@originalDiscount", originalDiscount)
@@ -364,7 +411,8 @@ Public Class Discount
                         MessageBox.Show("Discount updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                         ' --- AUDIT LOGGING ---
-                        Dim actionDescription As String = "Updated discount:" & vbCrLf & String.Join(vbCrLf, updatedFields)
+                        Dim actionDescription As String =
+                        "Updated discount:" & vbCrLf & String.Join(vbCrLf, updatedFields)
                         LogAuditTrail(SessionData.role, SessionData.fullName, actionDescription)
                     Else
                         MessageBox.Show("No changes were made.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -383,6 +431,7 @@ Public Class Discount
             End If
         End Using
     End Sub
+
 
 
     ' ✅ ginawa kong Friend para matawag sa ibang Sub

@@ -89,6 +89,11 @@ Public Class HoldTransactions
         If dgvHoldTransactions.Columns.Contains("HoldID") Then dgvHoldTransactions.Columns("HoldID").Visible = False
         If dgvHoldTransactions.Columns.Contains("SaleType") Then dgvHoldTransactions.Columns("SaleType").Visible = False
 
+        ' Format DateHeld column
+        If dgvHoldTransactions.Columns.Contains("DateHeld") Then
+            dgvHoldTransactions.Columns("DateHeld").DefaultCellStyle.Format = "MMM dd, yyyy hh:mm tt"
+        End If
+
         ' Apply consistent row height
         For Each row As DataGridViewRow In dgvHoldTransactions.Rows
             row.Height = 35
@@ -115,7 +120,7 @@ Public Class HoldTransactions
 
                 ' 1️⃣ Kunin ang held items
                 Dim sqlSelect As String = "SELECT BarcodeID, ProductName, Quantity, UnitPrice, Total " &
-                                      "FROM hold_transaction_items WHERE HoldID=@HoldID"
+                                          "FROM hold_transaction_items WHERE HoldID=@HoldID"
                 Using cmd As New MySqlCommand(sqlSelect, conn)
                     cmd.Parameters.AddWithValue("@HoldID", holdID)
                     Using da As New MySqlDataAdapter(cmd)
@@ -138,8 +143,7 @@ Public Class HoldTransactions
                 End Using
             End Using
 
-            ' 4️⃣ Load held items sa POS (quantity at lahat ng columns maayos)
-            ' ✅ Ang LoadHeldItems ay dapat mag-sync ng quantity sa dgvProductList
+            ' 4️⃣ Load held items sa POS
             pos.LoadHeldItems(itemsTable, transactionNo)
 
             ' 5️⃣ Notify user
@@ -155,8 +159,6 @@ Public Class HoldTransactions
             MessageBox.Show("Error retrieving held transaction: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-
-
 
     ' ================== Audit Trail ==================
     Private Sub LogAuditTrail(role As String, fullName As String, action As String)

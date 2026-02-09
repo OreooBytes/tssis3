@@ -79,48 +79,54 @@ Public Class Vat
     Private Sub updatebtn_Click(sender As Object, e As EventArgs) Handles updatebtn.Click
         Dim newVat As Double
 
-        ' Remove % sign and extra spaces from input
+        ' Remove % sign and extra spaces
         Dim vatInput As String = update.Text.Replace("%", "").Trim()
 
-        ' Try to parse the new VAT value
-        If Double.TryParse(vatInput, newVat) Then
-            ' Get current VAT (remove "%" and parse to double)
-            Dim currentVat As Double
-            Double.TryParse(currvat.Text.Replace("%", "").Trim(), currentVat)
+        ' 1️⃣ Check kung empty
+        If String.IsNullOrWhiteSpace(vatInput) Then
+            MessageBox.Show("Please enter VAT value.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            update.Focus()
+            Return
+        End If
 
-            ' Validate VAT: must be >= 0 and less than 100 (do not allow 100% or more)
-            If newVat < 0 OrElse newVat >= 100 Then
-                MessageBox.Show("VAT must be a non-negative number and less than 100%.", "Invalid VAT", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                update.Focus()
-                Return
-            End If
+        ' 2️⃣ Try to parse numeric value
+        If Not Double.TryParse(vatInput, newVat) Then
+            MessageBox.Show("Please enter a valid numeric VAT percentage.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            update.Focus()
+            Return
+        End If
 
-            ' Only proceed if there's an actual change
-            If Math.Round(newVat, 4) <> Math.Round(currentVat, 4) Then
-                ' Update the VAT value in the database
-                UpdateVatInDatabase(newVat)
+        ' 🔒 Validate range: greater than 0 and less than 100 ONLY
+        If newVat <= 0 OrElse newVat >= 100 Then
+            MessageBox.Show("VAT must be greater than 0% and less than 100%.", "Invalid VAT", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            update.Focus()
+            Return
+        End If
 
-                ' Prepare audit log details
-                Dim updatedFields As New List(Of String)
-                updatedFields.Add($"VAT changed from {currentVat:0.00}% to {newVat:0.00}%")
-                Dim actionDescription As String = "Updated VAT Settings:" & vbCrLf & String.Join(vbCrLf, updatedFields)
 
-                ' Log to audit trail
-                LogAuditTrail(SessionData.role, SessionData.fullName, actionDescription)
+        ' Get current VAT
+        Dim currentVat As Double
+        Double.TryParse(currvat.Text.Replace("%", "").Trim(), currentVat)
 
-                ' Kapag successfully updated
-                MessageBox.Show("Successfully updated!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        ' 4️⃣ Check kung may pagbabago talaga
+        If Math.Round(newVat, 4) <> Math.Round(currentVat, 4) Then
+            ' Update database
+            UpdateVatInDatabase(newVat)
 
-                update.Clear()
-                currvat.Text = newVat.ToString("0.00") & "%"
-            Else
-                MessageBox.Show("No changes made to VAT.")
-            End If
+            ' Audit trail
+            Dim actionDescription As String =
+            $"Updated VAT Settings:{vbCrLf}VAT changed from {currentVat:0.00}% to {newVat:0.00}%"
+            LogAuditTrail(SessionData.role, SessionData.fullName, actionDescription)
+
+            MessageBox.Show("Successfully updated!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            update.Clear()
+            currvat.Text = newVat.ToString("0.00") & "%"
         Else
-            ' Invalid input
-            MessageBox.Show("Please enter a valid VAT percentage.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("No changes made to VAT.")
         End If
     End Sub
+
 
 
     ' ===============================

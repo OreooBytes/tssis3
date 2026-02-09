@@ -119,38 +119,67 @@ Public Class LoyaltyDiscount
             Dim newRedeem As Integer = 0
             Dim newPrice As Double = 0
 
-            ' Read raw inputs (strip trailing % for disc/price)
+            ' Read raw inputs
             Dim discInput As String = If(updatedlyltydcsnt.Text IsNot Nothing, updatedlyltydcsnt.Text.Replace("%"c, "").Trim(), "")
             Dim priceInput As String = If(Guna2TextBox2.Text IsNot Nothing, Guna2TextBox2.Text.Replace("%"c, "").Trim(), "")
             Dim redeemInput As String = If(txtredeemablepoints.Text IsNot Nothing, txtredeemablepoints.Text.Trim(), "")
 
-            ' Only attempt parse if user provided something — empty means "no change"
             Dim hasDisc As Boolean = False
             Dim hasPrice As Boolean = False
             Dim hasRedeem As Boolean = False
 
-            If discInput <> "" Then hasDisc = Double.TryParse(discInput, newDisc)
-            If priceInput <> "" Then hasPrice = Double.TryParse(priceInput, newPrice)
-            If redeemInput <> "" Then hasRedeem = Integer.TryParse(redeemInput, newRedeem)
+            ' --- PARSE WITH VALIDATION ---
+            If discInput <> "" Then
+                If Not Double.TryParse(discInput, newDisc) Then
+                    MessageBox.Show("Please enter a valid numeric loyalty discount.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Exit Sub
+                End If
+                hasDisc = True
+            End If
 
-            ' If nothing provided, inform user and exit
+            If priceInput <> "" Then
+                If Not Double.TryParse(priceInput, newPrice) Then
+                    MessageBox.Show("Please enter a valid numeric price to gain point.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Exit Sub
+                End If
+                hasPrice = True
+            End If
+
+            If redeemInput <> "" Then
+                If Not Integer.TryParse(redeemInput, newRedeem) Then
+                    MessageBox.Show("Please enter a valid numeric redeemable points value.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Exit Sub
+                End If
+                hasRedeem = True
+            End If
+
+            ' If nothing provided
             If Not (hasDisc Or hasPrice Or hasRedeem) Then
                 MessageBox.Show("Please enter at least one value to update (Discount, Redeemable Points or Price to Gain Point).", "No Input", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Exit Sub
             End If
 
-            ' Validate discount constraint early if provided
-            If hasDisc Then
-                If newDisc < 0 OrElse newDisc >= 100 Then
-                    MessageBox.Show("Discount must be greater than or equal to 0 and less than 100%.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    Exit Sub
-                End If
+            ' --- RANGE VALIDATION ---
+            If hasDisc AndAlso (newDisc <= 0 OrElse newDisc >= 100) Then
+                MessageBox.Show("Discount must be greater than 0% and less than 100%.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Exit Sub
+            End If
+
+
+            If hasPrice AndAlso newPrice < 0 Then
+                MessageBox.Show("Price to gain point cannot be negative.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Exit Sub
+            End If
+
+            If hasRedeem AndAlso newRedeem < 0 Then
+                MessageBox.Show("Redeemable points cannot be negative.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Exit Sub
             End If
 
             Using conn As MySqlConnection = Module1.Openconnection()
                 ' === Check if record exists ===
                 Dim recordExists As Boolean = False
-                Using checkCmd As New MySqlCommand("SELECT RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount FROM loyaltydiscount WHERE id=@id", conn)
+                Using checkCmd As New MySqlCommand("SELECT id FROM loyaltydiscount WHERE id=@id", conn)
                     checkCmd.Parameters.AddWithValue("@id", latestId)
                     Using rdr As MySqlDataReader = checkCmd.ExecuteReader()
                         If rdr.Read() Then recordExists = True
@@ -158,12 +187,14 @@ Public Class LoyaltyDiscount
                 End Using
 
                 If recordExists Then
-                    ' Get current values for comparison
+                    ' --- GET CURRENT VALUES ---
                     Dim currentDisc As Double = 0
                     Dim currentRedeem As Integer = 0
                     Dim currentPrice As Double = 0
 
-                    Using getCmd As New MySqlCommand("SELECT RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount FROM loyaltydiscount WHERE id=@id", conn)
+                    Using getCmd As New MySqlCommand(
+                    "SELECT RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount 
+                     FROM loyaltydiscount WHERE id=@id", conn)
                         getCmd.Parameters.AddWithValue("@id", latestId)
                         Using rdr As MySqlDataReader = getCmd.ExecuteReader()
                             If rdr.Read() Then
@@ -177,7 +208,6 @@ Public Class LoyaltyDiscount
                     Dim updatedFields As New List(Of String)
                     Dim updateFields As New List(Of String)
 
-                    ' Compare only fields provided by user
                     If hasRedeem AndAlso newRedeem <> currentRedeem Then
                         updateFields.Add("RedeemablePoints=@redeem")
                         updatedFields.Add($"Redeemable Points changed from {currentRedeem} to {newRedeem}")
@@ -207,24 +237,17 @@ Public Class LoyaltyDiscount
                         cmd.ExecuteNonQuery()
                     End Using
 
-                    LogAuditTrail(SessionData.role, SessionData.fullName, "Updated Loyalty Settings:" & vbCrLf & String.Join(vbCrLf, updatedFields))
+                    LogAuditTrail(SessionData.role, SessionData.fullName,
+                              "Updated Loyalty Settings:" & vbCrLf & String.Join(vbCrLf, updatedFields))
                 Else
-                    ' If no record exists and user provided some fields, insert a new record using provided values or defaults
-                    ' Determine values to insert: prefer provided, otherwise fallback to safe defaults (0)
-                    Dim insertRedeem As Integer = If(hasRedeem, newRedeem, 0)
-                    Dim insertPrice As Double = If(hasPrice, newPrice, 0)
-                    Dim insertDisc As Double = If(hasDisc, newDisc, 0)
-
-                    If hasDisc AndAlso insertDisc >= 100 Then
-                        MessageBox.Show("Discount must be less than 100%. Insert aborted.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        Exit Sub
-                    End If
-
-                    Using insertCmd As New MySqlCommand("INSERT INTO loyaltydiscount (id, RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount) VALUES (@id, @redeem, @price, @disc)", conn)
+                    ' --- INSERT ---
+                    Using insertCmd As New MySqlCommand(
+                    "INSERT INTO loyaltydiscount (id, RedeemablePoints, PriceToGainPoint, Currentloyaltydiscount)
+                     VALUES (@id, @redeem, @price, @disc)", conn)
                         insertCmd.Parameters.AddWithValue("@id", latestId)
-                        insertCmd.Parameters.AddWithValue("@redeem", insertRedeem)
-                        insertCmd.Parameters.AddWithValue("@price", insertPrice)
-                        insertCmd.Parameters.AddWithValue("@disc", insertDisc)
+                        insertCmd.Parameters.AddWithValue("@redeem", If(hasRedeem, newRedeem, 0))
+                        insertCmd.Parameters.AddWithValue("@price", If(hasPrice, newPrice, 0))
+                        insertCmd.Parameters.AddWithValue("@disc", If(hasDisc, newDisc, 0))
                         insertCmd.ExecuteNonQuery()
                     End Using
 
@@ -234,16 +257,16 @@ Public Class LoyaltyDiscount
 
             MessageBox.Show("Loyalty settings saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-            ' Refresh UI with saved data and clear only the fields the user expects
             LoadData()
-            ' Do not force user to re-type everything — clear only the inputs they used
             If hasDisc Then updatedlyltydcsnt.Clear()
             If hasRedeem Then txtredeemablepoints.Clear()
             If hasPrice Then Guna2TextBox2.Clear()
+
         Catch ex As Exception
             MessageBox.Show("Error updating loyalty data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
 
 
 

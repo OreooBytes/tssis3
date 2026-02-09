@@ -211,6 +211,11 @@ Public Class POS
 
 
 
+        '=== FOR Short key ===
+
+        Me.KeyPreview = True
+
+
     End Sub
 
     ' === AUTO GENERATE TRX - RCP ===
@@ -1631,6 +1636,8 @@ Public Class POS
         txtBarcode.Focus()
         GenerateNewNumbers()
         ComputeCartTotal()
+        Checkoutshadowpanel.Visible = False
+
     End Sub
 
     ' =================== Add Membership ===================
@@ -1678,12 +1685,16 @@ Public Class POS
     Private Sub btnReturn_Click(sender As Object, e As EventArgs) Handles btnReturn.Click
         Dim returnitem As New ReturnItem
         returnitem.Show()
+        Checkoutshadowpanel.Visible = False
+
     End Sub
 
     ' =================== Returnrefund ===================
     Private Sub btnReturnrefund_Click(sender As Object, e As EventArgs) Handles btnReturnrefund.Click
         Dim returnrefund As New ReturnRefund
         returnrefund.ShowDialog()
+        Checkoutshadowpanel.Visible = False
+
     End Sub
 
     ' =================== PointsEarned ===================
@@ -2643,7 +2654,15 @@ Public Class POS
     ' =================== Load Held Items Back to POS ===================
     Public Sub LoadHeldItems(items As DataTable, transactionNo As String)
         Try
-            ' 1️⃣ Save current selection
+            ' ================== 0️⃣ Delete old held items (older than today) ==================
+            Using conn As New MySqlConnection(connectionstring)
+                conn.Open()
+                Dim deleteCmd As New MySqlCommand("DELETE FROM hold_transaction_items WHERE HeldDate < @today", conn)
+                deleteCmd.Parameters.AddWithValue("@today", DateTime.Today)
+                deleteCmd.ExecuteNonQuery()
+            End Using
+
+            ' ================== 1️⃣ Save current selection ==================
             Dim selectedRowIndex As Integer = -1
             Dim selectedColIndex As Integer = -1
             If dgvProductList.CurrentCell IsNot Nothing Then
@@ -2651,66 +2670,77 @@ Public Class POS
                 selectedColIndex = dgvProductList.CurrentCell.ColumnIndex
             End If
 
-            ' 2️⃣ Clear current cart
+            ' ================== 2️⃣ Clear current cart ==================
             dgvCart.Rows.Clear()
 
-            ' 3️⃣ Reset EditQuantity for all products
+            ' ================== 3️⃣ Reset EditQuantity ==================
             If dgvProductList.Columns.Contains("EditQuantity") Then
                 For Each row As DataGridViewRow In dgvProductList.Rows
                     row.Cells("EditQuantity").Value = 0
                 Next
             End If
 
-            ' 4️⃣ Load inventory quantities into dictionary
-            Dim inventoryDict As New Dictionary(Of String, Integer)
+            ' ================== 4️⃣ Load inventory quantities ==================
+            Dim inventoryByBarcode As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
+            Dim inventoryByName As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
+
             Using conn As New MySqlConnection(connectionstring)
                 conn.Open()
-                Dim sql As String = "SELECT ProductName, Quantity FROM inventory"
+                Dim sql As String = "SELECT BarcodeID, ProductName, Quantity FROM inventory"
                 Using cmd As New MySqlCommand(sql, conn)
                     Using reader = cmd.ExecuteReader()
                         While reader.Read()
-                            Dim prodName As String = reader("ProductName").ToString().Trim()
-                            Dim qty As Integer = Convert.ToInt32(reader("Quantity"))
-                            If Not inventoryDict.ContainsKey(prodName) Then
-                                inventoryDict(prodName) = qty
+                            Dim bc As String = If(IsDBNull(reader("BarcodeID")), "", reader("BarcodeID").ToString().Trim())
+                            Dim pName As String = If(IsDBNull(reader("ProductName")), "", reader("ProductName").ToString().Trim())
+                            Dim qty As Integer = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
+
+                            If Not String.IsNullOrEmpty(bc) AndAlso Not inventoryByBarcode.ContainsKey(bc) Then
+                                inventoryByBarcode(bc) = qty
+                            End If
+
+                            Dim keyName As String = pName.ToLower()
+                            If Not inventoryByName.ContainsKey(keyName) Then
+                                inventoryByName(keyName) = qty
                             End If
                         End While
                     End Using
                 End Using
             End Using
 
-            ' Track held items for updating AvailableQuantity later
-            Dim heldItemNames As New List(Of String)
+            ' ================== 5️⃣ Load held items into cart ==================
+            Dim heldItemNames As New HashSet(Of String) ' track names for AvailableQuantity update
 
-            ' 5️⃣ Load held items into dgvCart and update dgvProductList
             For Each row As DataRow In items.Rows
-                Dim productName As String = row("ProductName").ToString().Trim()
+                Dim storedDisplay As String = row("ProductName").ToString().Trim()
+                Dim displayName As String = storedDisplay
+                Dim baseName As String = BaseNameFromDisplay(displayName)
                 Dim quantity As Integer = Convert.ToInt32(row("Quantity"))
                 Dim unitPrice As Decimal = Convert.ToDecimal(row("UnitPrice"))
                 Dim total As Decimal = Convert.ToDecimal(row("Total"))
                 Dim barcode As String = If(items.Columns.Contains("BarcodeID"), row("BarcodeID").ToString().Trim(), "")
 
-                heldItemNames.Add(productName.ToLower())
+                heldItemNames.Add(baseName.ToLower())
 
-                ' Determine SaleType based on quantity
                 Dim saleType As String = If(quantity >= 50, "Wholesale", "Retail")
+                Dim cartRowIndex As Integer = dgvCart.Rows.Add(barcode, displayName, quantity, unitPrice, total)
 
-                ' Add to cart
-                Dim cartRowIndex As Integer = dgvCart.Rows.Add(barcode, productName, quantity, unitPrice, total, Nothing, Nothing)
                 If dgvCart.Columns.Contains("PriceType") Then
                     dgvCart.Rows(cartRowIndex).Cells("PriceType").Value = saleType
                 End If
 
                 ' Determine available quantity
-                Dim availableQty As Integer = If(inventoryDict.ContainsKey(productName), inventoryDict(productName), 0)
+                Dim availableQty As Integer = 0
+                If Not String.IsNullOrEmpty(barcode) AndAlso inventoryByBarcode.ContainsKey(barcode) Then
+                    availableQty = inventoryByBarcode(barcode)
+                ElseIf inventoryByName.ContainsKey(baseName.ToLower()) Then
+                    availableQty = inventoryByName(baseName.ToLower())
+                End If
 
-                ' Find existing product row
+                ' Update product list
                 Dim existingRow As DataGridViewRow = dgvProductList.Rows.Cast(Of DataGridViewRow)() _
-                .FirstOrDefault(Function(r) r.Cells("ProductName").Value IsNot Nothing AndAlso
-                                            r.Cells("ProductName").Value.ToString().Trim().ToLower() = productName.ToLower())
+                .FirstOrDefault(Function(r) r.Cells("ProductName").Value IsNot Nothing AndAlso r.Cells("ProductName").Value.ToString().Trim().ToLower() = baseName.ToLower())
 
                 If existingRow IsNot Nothing Then
-                    ' Update existing row
                     If dgvProductList.Columns.Contains("EditQuantity") Then existingRow.Cells("EditQuantity").Value = quantity
                     If dgvProductList.Columns.Contains("AvailableQuantity") Then existingRow.Cells("AvailableQuantity").Value = availableQty
                     With existingRow.Cells("EditQuantity").Style
@@ -2720,47 +2750,50 @@ Public Class POS
                         .SelectionForeColor = Color.Black
                     End With
                 Else
-                    ' Add new row
-                    Dim newRowIndex As Integer = dgvProductList.Rows.Add(productName, quantity, availableQty)
+                    Dim newRowIndex As Integer = dgvProductList.Rows.Add(baseName, quantity, availableQty)
                     Dim newRow As DataGridViewRow = dgvProductList.Rows(newRowIndex)
-                    With newRow.Cells("EditQuantity").Style
-                        .BackColor = Color.LightGreen
-                        .SelectionBackColor = Color.LightGreen
-                        .ForeColor = Color.Black
-                        .SelectionForeColor = Color.Black
-                    End With
-                End If
-            Next
-
-            ' 6️⃣ Update AvailableQuantity for all other products (not held)
-            For Each prodRow As DataGridViewRow In dgvProductList.Rows
-                If dgvProductList.Columns.Contains("ProductName") AndAlso dgvProductList.Columns.Contains("AvailableQuantity") Then
-                    Dim prodName As String = prodRow.Cells("ProductName").Value?.ToString().Trim().ToLower()
-                    If Not String.IsNullOrEmpty(prodName) AndAlso inventoryDict.ContainsKey(prodName) AndAlso Not heldItemNames.Contains(prodName) Then
-                        prodRow.Cells("AvailableQuantity").Value = inventoryDict(prodName)
+                    If dgvProductList.Columns.Contains("EditQuantity") Then
+                        With newRow.Cells("EditQuantity").Style
+                            .BackColor = Color.LightGreen
+                            .SelectionBackColor = Color.LightGreen
+                            .ForeColor = Color.Black
+                            .SelectionForeColor = Color.Black
+                        End With
                     End If
                 End If
             Next
 
-            ' 7️⃣ Restore Transaction Number only
+            ' ================== 6️⃣ Update AvailableQuantity for other products ==================
+            If dgvProductList.Columns.Contains("ProductName") AndAlso dgvProductList.Columns.Contains("AvailableQuantity") Then
+                For Each prodRow As DataGridViewRow In dgvProductList.Rows
+                    Dim prodName As String = prodRow.Cells("ProductName").Value?.ToString().Trim().ToLower()
+                    If Not String.IsNullOrEmpty(prodName) AndAlso inventoryByName.ContainsKey(prodName) AndAlso Not heldItemNames.Contains(prodName) Then
+                        prodRow.Cells("AvailableQuantity").Value = inventoryByName(prodName)
+                    End If
+                Next
+            End If
+
+            ' ================== 7️⃣ Restore Transaction Number ==================
             lblTransactionNo.Text = "Transaction Number : " & transactionNo
             currentTransactionNo = transactionNo
 
-            ' 8️⃣ Recompute totals
+            ' ================== 8️⃣ Recompute totals ==================
             ComputeCartTotal()
 
-            ' 9️⃣ Restore selection
+            ' ================== 9️⃣ Restore selection ==================
             If selectedRowIndex >= 0 AndAlso selectedRowIndex < dgvProductList.Rows.Count AndAlso selectedColIndex >= 0 Then
                 dgvProductList.CurrentCell = dgvProductList.Rows(selectedRowIndex).Cells(selectedColIndex)
             End If
 
-            ' 🔟 Focus on barcode
+            ' ================== 🔟 Focus on barcode ==================
             txtBarcode.Focus()
 
         Catch ex As Exception
             MessageBox.Show("Error loading held items: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+
 
 
     ' =================== PICTURE BOX SECTIONS ===================
@@ -3048,6 +3081,64 @@ Public Class POS
         End If
         Return MyBase.ProcessCmdKey(msg, keyData)
     End Function
+
+    ' Flag para malaman kung may active transaction
+    Private hasActiveTransaction As Boolean = False
+
+    ' -----------------------------
+    ' Form KeyDown: single key shortcuts
+    ' -----------------------------
+    Private Sub Form2_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        Select Case e.KeyCode
+            Case Keys.H ' N = New Transaction
+                HandleTransactionButton(btnHoldTransaction)
+
+            Case Keys.R ' R = Return / Refund
+                HandleTransactionButton(btnReturnrefund)
+
+            Case Keys.G ' T = Retrieve Hold (example)
+                HandleTransactionButton(btnRetrieveHold)
+
+            Case Keys.N ' T = Retrieve Hold (example)
+                HandleTransactionButton(btnNewTransaction)
+
+            Case Keys.P ' P = Payment
+                HandleTransactionButton(btnPay)
+        End Select
+    End Sub
+
+    ' -----------------------------
+    ' Trigger button na may sound + highlight
+    ' -----------------------------
+    Private Sub TriggerButton(btn As Guna.UI2.WinForms.Guna2Button)
+        btn.PerformClick()                        ' Execute button click
+        System.Media.SystemSounds.Beep.Play()     ' Sound feedback
+
+        ' Highlight button
+        Dim originalColor As Color = btn.FillColor
+        btn.FillColor = ColorTranslator.FromHtml("#FFD93D")
+
+
+        ' Reset highlight after 0.5 second
+        Dim t As New Timer With {.Interval = 500, .Enabled = True}
+        AddHandler t.Tick, Sub()
+                               btn.FillColor = originalColor
+                               t.Stop()
+                               t.Dispose()
+                           End Sub
+    End Sub
+
+    ' -----------------------------
+    ' Trigger button lang kung may active transaction
+    ' -----------------------------
+    Private Sub HandleTransactionButton(btn As Guna.UI2.WinForms.Guna2Button)
+        ' List of buttons that require active transaction
+        Dim requiresTransaction As Boolean = (btn Is btnNewTransaction OrElse btn Is btnPay OrElse btn Is btnHoldTransaction OrElse btn Is btnReturnrefund OrElse btn Is btnRetrieveHold)
+
+        TriggerButton(btn)
+    End Sub
+
+
 
 End Class
 

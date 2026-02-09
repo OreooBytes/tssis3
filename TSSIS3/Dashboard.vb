@@ -1,9 +1,10 @@
-﻿Imports Guna.UI2.WinForms
+﻿Imports System.Drawing.Drawing2D
+Imports System.Security.Policy
+Imports System.Windows.Forms.DataVisualization.Charting
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
+Imports Guna.UI2.WinForms
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports MySql.Data.MySqlClient
-Imports System.Drawing.Drawing2D
-Imports System.Windows.Forms.DataVisualization.Charting
 
 Public Class Dashboard
 
@@ -41,6 +42,7 @@ Public Class Dashboard
 
     Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         '============ UI ==============
+
 
 
         LoggedInFullName = SessionData.fullName

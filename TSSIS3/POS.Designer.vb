@@ -448,7 +448,7 @@ Partial Class POS
         Me.lblRevenue.CustomBorderColor = System.Drawing.Color.LightGray
         Me.lblRevenue.Location = New System.Drawing.Point(637, 12)
         Me.lblRevenue.Name = "lblRevenue"
-        Me.lblRevenue.Size = New System.Drawing.Size(480, 649)
+        Me.lblRevenue.Size = New System.Drawing.Size(480, 655)
         Me.lblRevenue.TabIndex = 42
         '
         'lblSubtotal
@@ -481,7 +481,7 @@ Partial Class POS
         Me.btnReturnrefund.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnReturnrefund.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnReturnrefund.ForeColor = System.Drawing.Color.White
-        Me.btnReturnrefund.Location = New System.Drawing.Point(243, 496)
+        Me.btnReturnrefund.Location = New System.Drawing.Point(243, 499)
         Me.btnReturnrefund.Name = "btnReturnrefund"
         Me.btnReturnrefund.Size = New System.Drawing.Size(218, 45)
         Me.btnReturnrefund.TabIndex = 76
@@ -507,7 +507,7 @@ Partial Class POS
         Me.btnNewTransaction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnNewTransaction.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnNewTransaction.ForeColor = System.Drawing.Color.White
-        Me.btnNewTransaction.Location = New System.Drawing.Point(242, 547)
+        Me.btnNewTransaction.Location = New System.Drawing.Point(242, 550)
         Me.btnNewTransaction.Name = "btnNewTransaction"
         Me.btnNewTransaction.Size = New System.Drawing.Size(218, 45)
         Me.btnNewTransaction.TabIndex = 9
@@ -522,7 +522,7 @@ Partial Class POS
         Me.btnReturn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnReturn.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnReturn.ForeColor = System.Drawing.Color.White
-        Me.btnReturn.Location = New System.Drawing.Point(242, 547)
+        Me.btnReturn.Location = New System.Drawing.Point(242, 550)
         Me.btnReturn.Name = "btnReturn"
         Me.btnReturn.Size = New System.Drawing.Size(218, 45)
         Me.btnReturn.TabIndex = 7
@@ -538,7 +538,7 @@ Partial Class POS
         Me.btnPay.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnPay.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnPay.ForeColor = System.Drawing.Color.White
-        Me.btnPay.Location = New System.Drawing.Point(21, 598)
+        Me.btnPay.Location = New System.Drawing.Point(21, 601)
         Me.btnPay.Name = "btnPay"
         Me.btnPay.Size = New System.Drawing.Size(440, 45)
         Me.btnPay.TabIndex = 5
@@ -553,7 +553,7 @@ Partial Class POS
         Me.btnAddMember.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnAddMember.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnAddMember.ForeColor = System.Drawing.Color.White
-        Me.btnAddMember.Location = New System.Drawing.Point(242, 496)
+        Me.btnAddMember.Location = New System.Drawing.Point(242, 499)
         Me.btnAddMember.Name = "btnAddMember"
         Me.btnAddMember.Size = New System.Drawing.Size(218, 45)
         Me.btnAddMember.TabIndex = 8
@@ -569,7 +569,7 @@ Partial Class POS
         Me.btnRetrieveHold.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnRetrieveHold.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnRetrieveHold.ForeColor = System.Drawing.Color.White
-        Me.btnRetrieveHold.Location = New System.Drawing.Point(19, 547)
+        Me.btnRetrieveHold.Location = New System.Drawing.Point(19, 550)
         Me.btnRetrieveHold.Name = "btnRetrieveHold"
         Me.btnRetrieveHold.Size = New System.Drawing.Size(218, 45)
         Me.btnRetrieveHold.TabIndex = 6
@@ -584,7 +584,7 @@ Partial Class POS
         Me.btnHoldTransaction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.btnHoldTransaction.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
         Me.btnHoldTransaction.ForeColor = System.Drawing.Color.White
-        Me.btnHoldTransaction.Location = New System.Drawing.Point(19, 496)
+        Me.btnHoldTransaction.Location = New System.Drawing.Point(19, 499)
         Me.btnHoldTransaction.Name = "btnHoldTransaction"
         Me.btnHoldTransaction.Size = New System.Drawing.Size(218, 45)
         Me.btnHoldTransaction.TabIndex = 4
@@ -1401,7 +1401,7 @@ Partial Class POS
         Me.Panel1.Controls.Add(Me.lblMainCustomersToday)
         Me.Panel1.Controls.Add(Me.lblMainTodaySales)
         Me.Panel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Panel1.Location = New System.Drawing.Point(112, 657)
+        Me.Panel1.Location = New System.Drawing.Point(112, 673)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(841, 81)
         Me.Panel1.TabIndex = 82
@@ -1534,7 +1534,7 @@ Partial Class POS
         Me.dgvCart.RowHeadersVisible = False
         Me.dgvCart.RowHeadersWidth = 51
         Me.dgvCart.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.dgvCart.Size = New System.Drawing.Size(619, 611)
+        Me.dgvCart.Size = New System.Drawing.Size(619, 617)
         Me.dgvCart.TabIndex = 58
         Me.dgvCart.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White
         Me.dgvCart.ThemeStyle.AlternatingRowsStyle.Font = Nothing
@@ -1571,7 +1571,7 @@ Partial Class POS
         Me.btnLogout.ForeColor = System.Drawing.Color.White
         Me.btnLogout.Image = Global.TSSIS3.My.Resources.Resources.iconmain12
         Me.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnLogout.Location = New System.Drawing.Point(967, 677)
+        Me.btnLogout.Location = New System.Drawing.Point(967, 693)
         Me.btnLogout.Name = "btnLogout"
         Me.btnLogout.PressedColor = System.Drawing.Color.Transparent
         Me.btnLogout.Size = New System.Drawing.Size(148, 45)
@@ -1627,7 +1627,7 @@ Partial Class POS
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.TSSIS3.My.Resources.Resources.PS
-        Me.PictureBox2.Location = New System.Drawing.Point(-20, 628)
+        Me.PictureBox2.Location = New System.Drawing.Point(-20, 644)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(142, 110)
         Me.PictureBox2.TabIndex = 81
@@ -1638,7 +1638,7 @@ Partial Class POS
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
-        Me.ClientSize = New System.Drawing.Size(1130, 740)
+        Me.ClientSize = New System.Drawing.Size(1130, 755)
         Me.Controls.Add(Me.Checkoutshadowpanel)
         Me.Controls.Add(Me.btnLogout)
         Me.Controls.Add(Me.btnSelectProduct)

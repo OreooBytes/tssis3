@@ -977,8 +977,8 @@ Public Class User
             If Clipboard.ContainsText() Then
                 Dim clipboardText As String = Clipboard.GetText()
 
-                ' Check if clipboard contains only letters, numbers, or spaces
-                If clipboardText.All(Function(c) Char.IsLetterOrDigit(c) OrElse Char.IsWhiteSpace(c)) Then
+                ' Check if clipboard contains only letters, numbers, spaces, or hyphens
+                If clipboardText.All(Function(c) Char.IsLetterOrDigit(c) OrElse Char.IsWhiteSpace(c) OrElse c = "-"c) Then
                     ' Check if pasted result will not exceed 200 characters
                     If (txt.TextLength + clipboardText.Length) <= 200 Then
                         ' Allow paste
@@ -992,8 +992,8 @@ Public Class User
             Return
         End If
 
-        ' Normal typing: allow letters, numbers, spaces, and control keys only
-        If Not Char.IsControl(e.KeyChar) AndAlso Not (Char.IsLetterOrDigit(e.KeyChar) OrElse Char.IsWhiteSpace(e.KeyChar)) Then
+        ' Normal typing: allow letters, numbers, spaces, hyphens, and control keys only
+        If Not Char.IsControl(e.KeyChar) AndAlso Not (Char.IsLetterOrDigit(e.KeyChar) OrElse Char.IsWhiteSpace(e.KeyChar) OrElse e.KeyChar = "-"c) Then
             e.Handled = True
             Return
         End If
@@ -1003,6 +1003,7 @@ Public Class User
             e.Handled = True
         End If
     End Sub
+
 
 
     ' === CLEAR ===

@@ -211,26 +211,58 @@ Public Class ExpirationReports
         Try
             Using conn As New MySqlConnection(connectionstring)
                 conn.Open()
-                Using cmd As New MySqlCommand("
-                SELECT 
-                    SUM(CASE WHEN d.ExpirationDate < CURDATE() AND d.ExpirationDate <> '0000-00-00' THEN 1 ELSE 0 END) AS ExpiredCount,
-                    SUM(CASE WHEN (d.ExpirationDate > CURDATE() OR d.ExpirationDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)) AND d.ExpirationDate <> '0000-00-00' THEN 1 ELSE 0 END) AS ValidCount,
-                    SUM(CASE WHEN d.ExpirationDate = '0000-00-00' OR d.ExpirationDate IS NULL THEN 1 ELSE 0 END) AS NoExpCount
-                FROM deliveries d", conn)
 
+                ' Collect currently visible rows (skip new/empty rows)
+                Dim batchBarcodeList As New List(Of String)
+                For Each row As DataGridViewRow In dgvExpiration.Rows
+                    If Not row.IsNewRow Then
+                        batchBarcodeList.Add($"'{row.Cells("BatchNumber").Value}_{row.Cells("BarcodeID").Value}'")
+                    End If
+                Next
+
+                If batchBarcodeList.Count = 0 Then Return
+
+                ' Query only RemainingQty for visible rows
+                Dim query As String = $"
+                SELECT d.BatchNumber, d.BarcodeID, SUM(d.RemainingQty) AS RemainingQty
+                FROM deliveries d
+                WHERE CONCAT(d.BatchNumber, '_', d.BarcodeID) IN ({String.Join(",", batchBarcodeList)})
+                GROUP BY d.BatchNumber, d.BarcodeID"
+
+                Using cmd As New MySqlCommand(query, conn)
                     Using reader As MySqlDataReader = cmd.ExecuteReader()
-                        If reader.Read() Then
-                            lblExpired.Text = If(IsDBNull(reader("ExpiredCount")), "0", reader("ExpiredCount").ToString())
-                            lblValid.Text = If(IsDBNull(reader("ValidCount")), "0", reader("ValidCount").ToString())
-                            lblNonExpiring.Text = If(IsDBNull(reader("NoExpCount")), "0", reader("NoExpCount").ToString())
-                        End If
+                        ' Map key -> RemainingQty
+                        Dim remainingDict As New Dictionary(Of String, Decimal)
+                        While reader.Read()
+                            Dim key As String = $"{reader("BatchNumber")}_{reader("BarcodeID")}"
+                            remainingDict(key) = Convert.ToDecimal(reader("RemainingQty"))
+                        End While
+
+                        ' Update only visible cells if value has changed (prevents flicker)
+                        For Each row As DataGridViewRow In dgvExpiration.Rows
+                            If row.IsNewRow Then Continue For
+
+                            Dim key As String = $"{row.Cells("BatchNumber").Value}_{row.Cells("BarcodeID").Value}"
+                            If remainingDict.ContainsKey(key) Then
+                                Dim newQty As Decimal = remainingDict(key)
+                                Dim oldQty As Decimal = If(IsDBNull(row.Cells("RemainingQty").Value), 0, Convert.ToDecimal(row.Cells("RemainingQty").Value))
+
+                                ' Update only if different
+                                If oldQty <> newQty Then
+                                    row.Cells("RemainingQty").Value = newQty
+                                End If
+                            End If
+                        Next
                     End Using
                 End Using
             End Using
+
         Catch ex As Exception
-            ' Optional: ignore or log error; do not interrupt timer
+            ' Optional: log error; do not interrupt timer
         End Try
     End Sub
+
+
 
 
 

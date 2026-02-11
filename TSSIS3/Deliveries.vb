@@ -426,7 +426,6 @@ Public Class Deliveries
                 Exit Sub
             End If
 
-
             expirationDisplay = selectedDate.ToString("yyyy-MM-dd")
         End If
 
@@ -463,15 +462,16 @@ Public Class Deliveries
         Next
 
         If existingRow IsNot Nothing Then
-            ' Update quantity, total cost & wholesale price
+            ' Update quantity, total cost, wholesale price, AND transaction number
             Dim existingQty As Decimal = Convert.ToDecimal(existingRow.Cells("Quantity").Value)
             existingQty += qty
             existingRow.Cells("Quantity").Value = existingQty
             existingRow.Cells("TotalCost").Value = (existingQty * unitPrice).ToString("N2")
             existingRow.Cells("WholesalePrice").Value = wholesalePrice.ToString("N2")
+            existingRow.Cells("TransactionNo").Value = transactionNo ' <-- FIXED
             MessageBox.Show("Existing product quantity updated!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
-            ' Add new row — FIXED COLUMN ORDER
+            ' Add new row — FIXED COLUMN ORDER, include transactionNo
             dgvPendingList.Rows.Add(
             batchNo,         ' ← first column = Batch No
             transactionNo,   ' ← second column = Transaction No
@@ -487,6 +487,21 @@ Public Class Deliveries
             expirationDisplay
         )
             MessageBox.Show("Item successfully added to pending list!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
+            ' Reset controls
+            txtTransactionNo.Text = String.Empty
+            cmbSupplierName.SelectedIndex = -1
+            lblTotalCost.Text = "Total Cost: ₱0.00"
+            txtBarcodeID.Text = String.Empty
+            txtProductname.Text = String.Empty
+            txtCostprice.Text = String.Empty
+            txtUnitPrice.Text = String.Empty
+            txtWholesaleprice.Text = String.Empty
+            numQuantity.Value = 0
+            dtpExpirationDate.Value = Date.Today
+            txtBarcodeID.Enabled = True
+            txtBarcodeID.Focus()
         End If
 
         ' Preserve persistent fields
@@ -500,27 +515,8 @@ Public Class Deliveries
         lblBatchNo.Text = currentBatchNo
         txtrecievedby.Text = currentReceivedBy
 
-        ' Reset total cost label
-
-        txtTransactionNo.Text = String.Empty
-        cmbSupplierName.SelectedIndex = -1
-        lblTotalCost.Text = "Total Cost: ₱0.00"
-        txtBarcodeID.Text = String.Empty
-        txtProductname.Text = String.Empty
-        txtCostprice.Text = String.Empty
-        txtUnitPrice.Text = String.Empty
-        txtWholesaleprice.Text = String.Empty
-
-        ' Reset label
-        lblTotalCost.Text = "Total Cost: ₱0.00"
-
-        txtBarcodeID.Enabled = True
-        txtBarcodeID.Focus()
-
-        ' Reset numeric and date controls
-        numQuantity.Value = 0  ' or 1, depending on your default quantity
-        dtpExpirationDate.Value = Date.Today  ' resets to today's date
     End Sub
+
 
 
 
@@ -561,9 +557,9 @@ Public Class Deliveries
                         Dim existsId As Integer = 0
                         Dim existingQty As Integer = 0
                         Using checkInv As New MySqlCommand("
-                        SELECT id, quantity 
-                        FROM inventory 
-                        WHERE BarcodeID=@Barcode AND ProductName=@ProductName", conn, trans)
+                    SELECT id, quantity 
+                    FROM inventory 
+                    WHERE BarcodeID=@Barcode AND ProductName=@ProductName", conn, trans)
                             checkInv.Parameters.AddWithValue("@Barcode", row.Cells("Barcode").Value)
                             checkInv.Parameters.AddWithValue("@ProductName", row.Cells("ProductName").Value)
                             Using reader As MySqlDataReader = checkInv.ExecuteReader()
@@ -577,9 +573,9 @@ Public Class Deliveries
                         ' === Update or Insert into inventory ===
                         If existsId > 0 Then
                             Using updInv As New MySqlCommand("
-                            UPDATE inventory 
-                            SET quantity=@newQty, CostPrice=@CostPrice, UnitPrice=@UnitPrice 
-                            WHERE id=@id", conn, trans)
+                        UPDATE inventory 
+                        SET quantity=@newQty, CostPrice=@CostPrice, UnitPrice=@UnitPrice 
+                        WHERE id=@id", conn, trans)
                                 updInv.Parameters.AddWithValue("@newQty", existingQty + Convert.ToInt32(row.Cells("Quantity").Value))
                                 updInv.Parameters.AddWithValue("@CostPrice", row.Cells("CostPrice").Value)
                                 updInv.Parameters.AddWithValue("@UnitPrice", row.Cells("UnitPrice").Value)
@@ -588,8 +584,8 @@ Public Class Deliveries
                             End Using
                         Else
                             Using insInv As New MySqlCommand("
-                            INSERT INTO inventory (BarcodeID, ProductName, quantity, CostPrice, UnitPrice, CriticalLevel)
-                            VALUES (@BarcodeID, @ProductName, @Quantity, @CostPrice, @UnitPrice, 10)", conn, trans)
+                        INSERT INTO inventory (BarcodeID, ProductName, quantity, CostPrice, UnitPrice, CriticalLevel)
+                        VALUES (@BarcodeID, @ProductName, @Quantity, @CostPrice, @UnitPrice, 10)", conn, trans)
                                 insInv.Parameters.AddWithValue("@BarcodeID", row.Cells("Barcode").Value)
                                 insInv.Parameters.AddWithValue("@ProductName", row.Cells("ProductName").Value)
                                 insInv.Parameters.AddWithValue("@Quantity", row.Cells("Quantity").Value)
@@ -601,16 +597,17 @@ Public Class Deliveries
 
                         ' === Insert into deliveries ===
                         Using insDelivery As New MySqlCommand("
-                        INSERT INTO deliveries 
-                        (TransactionNumber, BatchNumber, BarcodeID, ProductName, SupplierID, 
-                         ReceiveDate, Quantity, RemainingQty, CostPrice, UnitPrice, WholesalePrice, TotalCost, 
-                         ReceivedBy, ExpirationDate, OriginalExpirationDate) 
-                        VALUES 
-                        (@TransactionNumber, @BatchNumber, @BarcodeID, @ProductName, @SupplierID,
-                         NOW(), @Quantity, @RemainingQty, @CostPrice, @UnitPrice, @WholesalePrice, @TotalCost, 
-                         @ReceivedBy, @ExpirationDate, @OriginalExpirationDate)", conn, trans)
+                    INSERT INTO deliveries 
+                    (TransactionNumber, BatchNumber, BarcodeID, ProductName, SupplierID, 
+                     ReceiveDate, Quantity, RemainingQty, CostPrice, UnitPrice, WholesalePrice, TotalCost, 
+                     ReceivedBy, ExpirationDate, OriginalExpirationDate) 
+                    VALUES 
+                    (@TransactionNumber, @BatchNumber, @BarcodeID, @ProductName, @SupplierID,
+                     NOW(), @Quantity, @RemainingQty, @CostPrice, @UnitPrice, @WholesalePrice, @TotalCost, 
+                     @ReceivedBy, @ExpirationDate, @OriginalExpirationDate)", conn, trans)
 
-                            insDelivery.Parameters.AddWithValue("@TransactionNumber", txtTransactionNo.Text.Trim())
+                            ' <-- FIX: use row's TransactionNo instead of textbox
+                            insDelivery.Parameters.AddWithValue("@TransactionNumber", row.Cells("TransactionNo").Value)
                             insDelivery.Parameters.AddWithValue("@BatchNumber", row.Cells("BatchNo").Value)
                             insDelivery.Parameters.AddWithValue("@BarcodeID", row.Cells("Barcode").Value)
                             insDelivery.Parameters.AddWithValue("@ProductName", row.Cells("ProductName").Value)
@@ -619,7 +616,7 @@ Public Class Deliveries
                             insDelivery.Parameters.AddWithValue("@RemainingQty", row.Cells("Quantity").Value)
                             insDelivery.Parameters.AddWithValue("@CostPrice", row.Cells("CostPrice").Value)
                             insDelivery.Parameters.AddWithValue("@UnitPrice", row.Cells("UnitPrice").Value)
-                            insDelivery.Parameters.AddWithValue("@WholesalePrice", row.Cells("WholesalePrice").Value) ' ← NEW
+                            insDelivery.Parameters.AddWithValue("@WholesalePrice", row.Cells("WholesalePrice").Value)
                             insDelivery.Parameters.AddWithValue("@TotalCost", Convert.ToDecimal(row.Cells("TotalCost").Value))
                             insDelivery.Parameters.AddWithValue("@ReceivedBy", row.Cells("ReceivedBy").Value)
                             insDelivery.Parameters.AddWithValue("@ExpirationDate", expDate)
@@ -655,6 +652,7 @@ Public Class Deliveries
             End Using
         End Using
     End Sub
+
 
 
     ' === FUNCTION TO GET EXPIRATION FROM PRODUCT TABLE ===
@@ -741,6 +739,26 @@ Public Class Deliveries
     End Sub
 
 
+    ' === FETCH PRODUCT BY BARCODE ===
+    'Private Sub txtBarcodeID_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtBarcodeID.KeyPress
+    '    ' If barcode is empty, clear all other input fields
+    '    If String.IsNullOrWhiteSpace(txtBarcodeID.Text) Then
+    '        ClearAllInputsExceptBarcode()
+    '    End If
+    'End Sub
+
+    '' Helper function: clears all textboxes/numeric/date controls except the barcode
+    'Private Sub ClearAllInputsExceptBarcode()
+    '    ' Clear product fields
+    '    txtProductname.Text = String.Empty
+    '    numQuantity.Value = 0
+    '    txtUnitPrice.Text = String.Empty
+    '    txtCostprice.Text = String.Empty
+    '    txtWholesaleprice.Text = String.Empty
+    '    dtpExpirationDate.Value = Date.Today
+    '    lblTotalCost.Text = "Total Cost: ₱0.00"
+
+    'End Sub
 
 
 
@@ -763,10 +781,7 @@ Public Class Deliveries
 
 
 
-    ' === FETCH PRODUCT BY BARCODE ===
-    Private Sub txtBarcodeID_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtBarcodeID.KeyPress
 
-    End Sub
 
 
 
@@ -1221,17 +1236,26 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
                     End If
                 End If
 
-                'SetIfExists("TransactionNo", Sub(v) lblTransactionNo.Text = "Transaction Number: " & v)
+                ' Transaction Number → txtTransactionNo
+                If dgvPendingList.Columns.Contains("TransactionNo") Then
+                    Dim transValue = row.Cells("TransactionNo").Value
+                    If transValue IsNot Nothing Then
+                        txtTransactionNo.Text = transValue.ToString()
+                    Else
+                        txtTransactionNo.Text = ""
+                    End If
+                End If
+
+                ' Batch Number
                 SetIfExists("BatchNo", Sub(v) lblBatchNo.Text = "Batch Number: " & v)
 
+                ' Show panels and buttons
                 panel4.Visible = True
                 Panelmain2.Visible = True
                 btnUpdate.Visible = True
                 btnAddtopending.Visible = False
                 panel4.Location = New Point(103, 86)
-
                 panel4.Location = New Point(176, 113)
-
 
             Case "Delete"
                 If MessageBox.Show("Are you sure you want to delete this item?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
@@ -1242,6 +1266,7 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
         End Select
 
     End Sub
+
 
     Private Sub SetIfExists(columnName As String, setter As Action(Of String))
         If dgvPendingList.Columns.Contains(columnName) Then

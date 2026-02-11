@@ -85,6 +85,9 @@ Public Class PullOut
     End Sub
 
 
+    ' Event to notify parent/main form
+    Public Event PullOutCompleted As EventHandler
+
     ' Save Pull Out
     Private Sub btnPullOut_Click(sender As Object, e As EventArgs) Handles btnPullOut.Click
         Dim batchNumber As String = lblBatchNumberValue.Text.Trim()
@@ -128,19 +131,20 @@ Public Class PullOut
             Using conn As New MySqlConnection(connectionstring)
                 conn.Open()
 
-                ' 🧮 Check Available Quantity before proceeding
+                ' ✅ NEW: Check available quantity for the selected batch
                 Dim availableQty As Integer = 0
-                Using cmdCheck As New MySqlCommand("SELECT Quantity FROM inventory WHERE BarcodeID=@barcode", conn)
+                Using cmdCheck As New MySqlCommand("SELECT RemainingQty FROM deliveries WHERE BarcodeID=@barcode AND BatchNumber=@batch", conn)
                     cmdCheck.Parameters.AddWithValue("@barcode", barcode)
+                    cmdCheck.Parameters.AddWithValue("@batch", batchNumber)
                     Dim result = cmdCheck.ExecuteScalar()
                     If result IsNot Nothing AndAlso Not IsDBNull(result) Then
                         availableQty = Convert.ToInt32(result)
                     End If
                 End Using
 
-                ' 🚫 If requested qty > available qty, stop the process
+                ' 🚫 Validation: requested qty must not exceed batch remaining quantity
                 If qty > availableQty Then
-                    MessageBox.Show($"Insufficient stock! Available quantity: {availableQty}.", "Not Enough Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    MessageBox.Show($"Insufficient quantity in this batch! Available quantity for Batch {batchNumber}: {availableQty}.", "Not Enough Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     txtPullQty.Focus()
                     Return
                 End If
@@ -205,6 +209,9 @@ Public Class PullOut
                         ' --- SUCCESS MESSAGE ---
                         MessageBox.Show("Item successfully pulled out.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
+                        ' Trigger the event
+                        RaiseEvent PullOutCompleted(Me, EventArgs.Empty)
+
                         ' Reset fields
                         txtPullQty.Clear()
                         cmbReason.SelectedIndex = -1
@@ -219,6 +226,7 @@ Public Class PullOut
             MessageBox.Show("Database connection failed: " & ex.Message, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
 
 
 

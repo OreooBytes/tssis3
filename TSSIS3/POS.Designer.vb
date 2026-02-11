@@ -1401,7 +1401,7 @@ Partial Class POS
         Me.Panel1.Controls.Add(Me.lblMainCustomersToday)
         Me.Panel1.Controls.Add(Me.lblMainTodaySales)
         Me.Panel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Panel1.Location = New System.Drawing.Point(112, 673)
+        Me.Panel1.Location = New System.Drawing.Point(112, 684)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(841, 81)
         Me.Panel1.TabIndex = 82
@@ -1571,7 +1571,7 @@ Partial Class POS
         Me.btnLogout.ForeColor = System.Drawing.Color.White
         Me.btnLogout.Image = Global.TSSIS3.My.Resources.Resources.iconmain12
         Me.btnLogout.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left
-        Me.btnLogout.Location = New System.Drawing.Point(967, 693)
+        Me.btnLogout.Location = New System.Drawing.Point(967, 704)
         Me.btnLogout.Name = "btnLogout"
         Me.btnLogout.PressedColor = System.Drawing.Color.Transparent
         Me.btnLogout.Size = New System.Drawing.Size(148, 45)
@@ -1627,7 +1627,7 @@ Partial Class POS
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.TSSIS3.My.Resources.Resources.PS
-        Me.PictureBox2.Location = New System.Drawing.Point(-20, 644)
+        Me.PictureBox2.Location = New System.Drawing.Point(-20, 655)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(142, 110)
         Me.PictureBox2.TabIndex = 81
@@ -1638,7 +1638,7 @@ Partial Class POS
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
-        Me.ClientSize = New System.Drawing.Size(1130, 755)
+        Me.ClientSize = New System.Drawing.Size(1130, 778)
         Me.Controls.Add(Me.Checkoutshadowpanel)
         Me.Controls.Add(Me.btnLogout)
         Me.Controls.Add(Me.btnSelectProduct)

@@ -153,27 +153,38 @@ Public Class Supplier
                 Dim dupCmd As New MySqlCommand("
                 SELECT 
                     SUM(CASE WHEN SupplierName = @SupplierName THEN 1 ELSE 0 END) AS NameExists,
-                    SUM(CASE WHEN ContactNo = @ContactNo THEN 1 ELSE 0 END) AS ContactExists
+                    SUM(CASE WHEN ContactNo = @ContactNo THEN 1 ELSE 0 END) AS ContactExists,
+                    SUM(CASE WHEN Email = @Email THEN 1 ELSE 0 END) AS EmailExists,
+                    SUM(CASE WHEN Address = @Address THEN 1 ELSE 0 END) AS AddressExists
                 FROM supplier", conn)
 
                 dupCmd.Parameters.AddWithValue("@SupplierName", sname.Text.Trim())
                 dupCmd.Parameters.AddWithValue("@ContactNo", cno.Text.Trim())
+                dupCmd.Parameters.AddWithValue("@Email", eml.Text.Trim())
+                dupCmd.Parameters.AddWithValue("@Address", adrss.Text.Trim())
 
                 Using reader As MySqlDataReader = dupCmd.ExecuteReader()
                     If reader.Read() Then
                         Dim nameExists As Boolean = If(IsDBNull(reader("NameExists")), False, Convert.ToInt32(reader("NameExists")) > 0)
                         Dim contactExists As Boolean = If(IsDBNull(reader("ContactExists")), False, Convert.ToInt32(reader("ContactExists")) > 0)
+                        Dim emailExists As Boolean = If(IsDBNull(reader("EmailExists")), False, Convert.ToInt32(reader("EmailExists")) > 0)
+                        Dim addressExists As Boolean = If(IsDBNull(reader("AddressExists")), False, Convert.ToInt32(reader("AddressExists")) > 0)
 
-                        If nameExists AndAlso contactExists Then
-                            MessageBox.Show("Both Supplier Name and Contact Number already exist.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            Return
-                        ElseIf nameExists Then
-                            MessageBox.Show("Supplier Name already exists. Please enter a different one.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            sname.Focus()
-                            Return
-                        ElseIf contactExists Then
-                            MessageBox.Show("Contact Number already exists. Please enter a different one.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            cno.Focus()
+                        ' ===== Build duplicate message =====
+                        Dim dupMessage As String = ""
+                        If nameExists Then dupMessage &= "Supplier Name already exists." & vbCrLf
+                        If contactExists Then dupMessage &= "Contact Number already exists." & vbCrLf
+                        If emailExists Then dupMessage &= "Email already exists." & vbCrLf
+                        If addressExists Then dupMessage &= "Address already exists." & vbCrLf
+
+                        If dupMessage <> "" Then
+                            MessageBox.Show(dupMessage.Trim(), "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+
+                            ' Set focus to the first duplicate field
+                            If nameExists Then sname.Focus()
+                            If contactExists Then cno.Focus()
+                            If emailExists Then eml.Focus()
+                            If addressExists Then adrss.Focus()
                             Return
                         End If
                     End If
@@ -211,6 +222,7 @@ Public Class Supplier
 
 
 
+
     '=============================
     '       UPDATE SUPPLIER
     '=============================
@@ -231,28 +243,39 @@ Public Class Supplier
                 Dim dupCmd As New MySqlCommand("
                 SELECT 
                     SUM(CASE WHEN SupplierName = @SupplierName AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS NameExists,
-                    SUM(CASE WHEN ContactNo = @ContactNo AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS ContactExists
+                    SUM(CASE WHEN ContactNo = @ContactNo AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS ContactExists,
+                    SUM(CASE WHEN Email = @Email AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS EmailExists,
+                    SUM(CASE WHEN Address = @Address AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS AddressExists
                 FROM supplier", conn)
 
                 dupCmd.Parameters.AddWithValue("@SupplierName", sname.Text.Trim())
                 dupCmd.Parameters.AddWithValue("@ContactNo", cno.Text.Trim())
+                dupCmd.Parameters.AddWithValue("@Email", eml.Text.Trim())
+                dupCmd.Parameters.AddWithValue("@Address", adrss.Text.Trim())
                 dupCmd.Parameters.AddWithValue("@SupplierID", currentSupplierID)
 
                 Using reader As MySqlDataReader = dupCmd.ExecuteReader()
                     If reader.Read() Then
                         Dim nameExists As Boolean = If(IsDBNull(reader("NameExists")), False, Convert.ToInt32(reader("NameExists")) > 0)
                         Dim contactExists As Boolean = If(IsDBNull(reader("ContactExists")), False, Convert.ToInt32(reader("ContactExists")) > 0)
+                        Dim emailExists As Boolean = If(IsDBNull(reader("EmailExists")), False, Convert.ToInt32(reader("EmailExists")) > 0)
+                        Dim addressExists As Boolean = If(IsDBNull(reader("AddressExists")), False, Convert.ToInt32(reader("AddressExists")) > 0)
 
-                        If nameExists AndAlso contactExists Then
-                            MessageBox.Show("Both Supplier Name and Contact Number already exist.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            Return
-                        ElseIf nameExists Then
-                            MessageBox.Show("Supplier Name already exists. Please enter a different one.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            sname.Focus()
-                            Return
-                        ElseIf contactExists Then
-                            MessageBox.Show("Contact Number already exists. Please enter a different one.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                            cno.Focus()
+                        ' ===== Build duplicate message =====
+                        Dim dupMessage As String = ""
+                        If nameExists Then dupMessage &= "Supplier Name already exists." & vbCrLf
+                        If contactExists Then dupMessage &= "Contact Number already exists." & vbCrLf
+                        If emailExists Then dupMessage &= "Email already exists." & vbCrLf
+                        If addressExists Then dupMessage &= "Address already exists." & vbCrLf
+
+                        If dupMessage <> "" Then
+                            MessageBox.Show(dupMessage.Trim(), "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+
+                            ' Focus the first duplicate field
+                            If nameExists Then sname.Focus()
+                            If contactExists Then cno.Focus()
+                            If emailExists Then eml.Focus()
+                            If addressExists Then adrss.Focus()
                             Return
                         End If
                     End If
@@ -317,6 +340,7 @@ Public Class Supplier
             End Try
         End Using
     End Sub
+
 
 
     '=============================
@@ -514,6 +538,89 @@ Public Class Supplier
 
         ' --- ALL VALID ---
         Return True
+    End Function
+
+    ' =============================
+    '  Helper: Levenshtein Distance / Similarity
+    ' =============================
+    Private Function LevenshteinDistance(s As String, t As String) As Integer
+        If s Is Nothing Then s = String.Empty
+        If t Is Nothing Then t = String.Empty
+
+        Dim n As Integer = s.Length
+        Dim m As Integer = t.Length
+        If n = 0 Then Return m
+        If m = 0 Then Return n
+
+        Dim d(n + 1, m + 1) As Integer
+        For i As Integer = 0 To n
+            d(i, 0) = i
+        Next
+        For j As Integer = 0 To m
+            d(0, j) = j
+        Next
+
+        For i As Integer = 1 To n
+            For j As Integer = 1 To m
+                Dim cost As Integer = If(Char.ToLowerInvariant(s(i - 1)) = Char.ToLowerInvariant(t(j - 1)), 0, 1)
+                d(i, j) = Math.Min(Math.Min(d(i - 1, j) + 1, d(i, j - 1) + 1), d(i - 1, j - 1) + cost)
+            Next
+        Next
+
+        Return d(n, m)
+    End Function
+
+    Private Function IsSimilar(a As String, b As String, Optional maxDistance As Integer = 1) As Boolean
+        a = If(a, String.Empty).Trim()
+        b = If(b, String.Empty).Trim()
+        If String.Equals(a, b, StringComparison.OrdinalIgnoreCase) Then Return True
+        ' Treat very short strings specially
+        If a.Length <= 2 OrElse b.Length <= 2 Then
+            Return String.Equals(a, b, StringComparison.OrdinalIgnoreCase)
+        End If
+        Dim dist = LevenshteinDistance(a, b)
+        Return dist <= maxDistance
+    End Function
+
+    ' Check if a supplier already exists with near-identical details
+    Private Function IsDuplicateSupplier(company As String, supplier As String, contact As String, email As String, address As String, Optional excludeSupplierID As Integer = -1) As Boolean
+        Using conn As MySqlConnection = Module1.Openconnection()
+            If conn Is Nothing Then Return False
+            Try
+                Using cmd As New MySqlCommand("SELECT SupplierID, CompanyName, SupplierName, ContactNo, Email, Address FROM supplier", conn)
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        While reader.Read()
+                            Dim sid As Integer = If(IsDBNull(reader("SupplierID")), -1, Convert.ToInt32(reader("SupplierID")))
+                            If excludeSupplierID <> -1 AndAlso sid = excludeSupplierID Then Continue While
+
+                            Dim exCompany = If(IsDBNull(reader("CompanyName")), "", reader("CompanyName").ToString())
+                            Dim exSupplier = If(IsDBNull(reader("SupplierName")), "", reader("SupplierName").ToString())
+                            Dim exContact = If(IsDBNull(reader("ContactNo")), "", reader("ContactNo").ToString())
+                            Dim exEmail = If(IsDBNull(reader("Email")), "", reader("Email").ToString())
+                            Dim exAddress = If(IsDBNull(reader("Address")), "", reader("Address").ToString())
+
+                            Dim matchCompany = IsSimilar(company, exCompany)
+                            Dim matchSupplier = IsSimilar(supplier, exSupplier)
+                            Dim matchContact = IsSimilar(contact, exContact)
+                            Dim matchEmail = IsSimilar(email, exEmail)
+                            Dim matchAddress = IsSimilar(address, exAddress)
+
+                            ' If all key fields are similar (allowing small typos), consider duplicate
+                            If matchCompany AndAlso matchSupplier AndAlso matchContact AndAlso matchEmail AndAlso matchAddress Then
+                                Return True
+                            End If
+                        End While
+                    End Using
+                End Using
+            Catch ex As Exception
+                ' on error, be conservative and do not block
+                Return False
+            Finally
+                Module1.ConnectionClose(conn)
+            End Try
+        End Using
+
+        Return False
     End Function
 
 

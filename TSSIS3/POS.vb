@@ -211,7 +211,7 @@ Public Class POS
         DashboardTimer.Interval = 1000 ' every 5 seconds
         DashboardTimer.Start()
 
-        StartFocusTimer(1000) ' default 1 second
+        'StartFocusTimer(1000) ' default 1 second
 
 
 
@@ -222,17 +222,17 @@ Public Class POS
 
     End Sub
 
-    Private Sub StartFocusTimer(intervalValue As Integer)
-        focusTimer.Stop()
-        focusTimer.Interval = intervalValue
-        focusTimer.Start()
-    End Sub
+    'Private Sub StartFocusTimer(intervalValue As Integer)
+    '    focusTimer.Stop()
+    '    focusTimer.Interval = intervalValue
+    '    focusTimer.Start()
+    'End Sub
 
-    Private Sub focusTimer_Tick(sender As Object, e As EventArgs) Handles focusTimer.Tick
-        If Not txtBarcode.Focused Then
-            txtBarcode.Focus()
-        End If
-    End Sub
+    'Private Sub focusTimer_Tick(sender As Object, e As EventArgs) Handles focusTimer.Tick
+    '    If Not txtBarcode.Focused Then
+    '        txtBarcode.Focus()
+    '    End If
+    'End Sub
 
 
 
@@ -950,6 +950,10 @@ Public Class POS
                 dgvProductList.CurrentCell = editCell
                 dgvProductList.BeginEdit(True)
                 dgvProductList.FirstDisplayedScrollingRowIndex = foundIndex
+
+
+
+
             End If
         End If
     End Sub
@@ -1354,6 +1358,8 @@ Public Class POS
                 qtyTypingTimer.Stop()
                 qtyTypingTimer.Start()
             End If
+
+
 
         Catch ex As Exception
             MessageBox.Show("Error while updating quantity: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)

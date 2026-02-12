@@ -98,7 +98,7 @@ Public Class POS
         lblCashier.Text = SessionData.fullName  ' optional, kung gusto mo rin ipakita buong name
 
 
-
+        CheckProductCount()
 
         '===== Button Fore Color =====
 
@@ -697,7 +697,10 @@ Public Class POS
                                     existingCartRow.Cells("Quantity").Value = currentQty
                                     existingCartRow.Cells("UnitPrice").Value = retailPrice
                                     existingCartRow.Cells("Total").Value = currentQty * retailPrice
-                                    existingCartRow.Cells("PriceType").Value = If(currentQty > 50, "Wholesale", "Retail")
+
+                                    ' Determine price type using product threshold
+                                    Dim thresh As Integer = GetWholesaleThreshold(barcode, baseProductName)
+                                    existingCartRow.Cells("PriceType").Value = If(thresh > 0 AndAlso currentQty >= thresh, "Wholesale", "Retail")
 
                                     ' update display name only
                                     existingCartRow.Cells("ProductName").Value = productName
@@ -710,7 +713,10 @@ Public Class POS
 
                                 cartRow = existingCartRow
                             Else
-                                dgvCart.Rows.Add(barcode, productName, 1, retailPrice, retailPrice, "Retail")
+                                ' Compute initial price type using product threshold
+                                Dim initialThresh As Integer = GetWholesaleThreshold(barcode, baseProductName)
+                                Dim initialType As String = If(initialThresh > 0 AndAlso 1 >= initialThresh, "Wholesale", "Retail")
+                                dgvCart.Rows.Add(barcode, productName, 1, retailPrice, retailPrice, initialType)
                                 cartRow = dgvCart.Rows(dgvCart.Rows.Count - 1)
                             End If
 
@@ -762,6 +768,13 @@ Public Class POS
         End Try
     End Sub
 
+    Private Sub CheckProductCount()
+        If dgvCart.Rows.Count > 2 Then
+            btnNewTransaction.Enabled = False
+        Else
+            btnNewTransaction.Enabled = True
+        End If
+    End Sub
 
 
 
@@ -895,6 +908,34 @@ Public Class POS
             Return txt.Substring(0, idx).Trim()
         End If
         Return txt
+    End Function
+
+    ' === Get wholesale threshold per product (read from product.MinimumWholesaleQuantity) ===
+    Private Function GetWholesaleThreshold(barcode As String, Optional productName As String = "") As Integer
+        Dim threshold As Integer = 0
+        Try
+            Using conn As New MySqlConnection(connectionstring)
+                conn.Open()
+                Dim sql As String = "SELECT MinimumWholesaleQuantity FROM product WHERE BarcodeID = @barcode LIMIT 1"
+                If String.IsNullOrEmpty(barcode) AndAlso Not String.IsNullOrEmpty(productName) Then
+                    sql = "SELECT MinimumWholesaleQuantity FROM product WHERE ProductName = @productName LIMIT 1"
+                End If
+                Using cmd As New MySqlCommand(sql, conn)
+                    If sql.Contains("@barcode") Then
+                        cmd.Parameters.AddWithValue("@barcode", barcode)
+                    Else
+                        cmd.Parameters.AddWithValue("@productName", productName)
+                    End If
+                    Dim result = cmd.ExecuteScalar()
+                    If result IsNot Nothing AndAlso Not IsDBNull(result) Then
+                        Integer.TryParse(result.ToString(), threshold)
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            ' swallow to avoid breaking flow; default threshold 0 => retail
+        End Try
+        Return threshold
     End Function
 
 
@@ -1291,7 +1332,9 @@ Public Class POS
                     cartRow.Cells("Total").Value = (unitPrice * newQty).ToString("N2")
                 End If
                 If dgvCart.Columns.Contains("PriceType") Then
-                    cartRow.Cells("PriceType").Value = If(newQty >= 50, "Wholesale", "Retail")
+                    Dim bc As String = If(cartRow.Cells("Barcode").Value, "").ToString().Trim()
+                    Dim thresh As Integer = GetWholesaleThreshold(bc, productName)
+                    cartRow.Cells("PriceType").Value = If(thresh > 0 AndAlso newQty >= thresh, "Wholesale", "Retail")
                 End If
                 Exit For
             End If
@@ -1539,7 +1582,8 @@ Public Class POS
                 row.Cells("ProductName").Value = displayProductName
 
                 If dgvCart.Columns.Contains("PriceType") Then
-                    row.Cells("PriceType").Value = If(currentQty + qty >= 50, "Wholesale", "Retail")
+                    Dim thresh As Integer = GetWholesaleThreshold(barcode, productName)
+                    row.Cells("PriceType").Value = If(thresh > 0 AndAlso currentQty + qty >= thresh, "Wholesale", "Retail")
                 End If
 
                 foundInCart = True
@@ -1549,12 +1593,12 @@ Public Class POS
 
         ' === Add new row if item not in cart ===
         If Not foundInCart Then
-            Dim newRowIndex As Integer =
-            dgvCart.Rows.Add(barcode, displayProductName, qty, price, qty * price)
+            Dim newRowIndex As Integer = dgvCart.Rows.Add(barcode, displayProductName, qty, price, qty * price)
 
             Dim newRow As DataGridViewRow = dgvCart.Rows(newRowIndex)
             If dgvCart.Columns.Contains("PriceType") Then
-                newRow.Cells("PriceType").Value = If(qty >= 50, "Wholesale", "Retail")
+                Dim thresh As Integer = GetWholesaleThreshold(barcode, productName)
+                newRow.Cells("PriceType").Value = If(thresh > 0 AndAlso qty >= thresh, "Wholesale", "Retail")
             End If
         End If
 
@@ -1892,7 +1936,10 @@ Public Class POS
                         If row.IsNewRow Then Continue For
 
                         Dim qty As Integer = CInt(row.Cells("Quantity").Value)
-                        Dim saleType As String = If(qty >= 50, "Wholesale", "Retail")
+                        Dim bc As String = If(row.Cells("Barcode").Value, "").ToString().Trim()
+                        Dim prodNameForThreshold As String = BaseNameFromDisplay(If(row.Cells("ProductName").Value, "").ToString())
+                        Dim thresh As Integer = GetWholesaleThreshold(bc, prodNameForThreshold)
+                        Dim saleType As String = If(thresh > 0 AndAlso qty >= thresh, "Wholesale", "Retail")
 
                         Using cmd As New MySqlCommand("
                         INSERT INTO sales_items
@@ -1915,19 +1962,21 @@ Public Class POS
 
                     ' ============================
                     ' LOYALTY POINTS (EARN)
+                    ' Add points only as part of the checkout transaction so rollback cancels it
                     ' ============================
+                    Dim pointsAdded As Boolean = False
                     If isMemberSelected AndAlso memberBarcode <> "" Then
                         If totalDue >= priceToGainPoint Then
-                            Using addPointConn As New MySqlConnection(connectionstring)
-                                addPointConn.Open()
-                                Using cmd As New MySqlCommand("
-                                UPDATE membership 
-                                SET Points = Points + 1 
-                                WHERE Barcode=@b", addPointConn)
-                                    cmd.Parameters.AddWithValue("@b", memberBarcode)
-                                    cmd.ExecuteNonQuery()
+                            Try
+                                Using cmdPoints As New MySqlCommand("UPDATE membership SET Points = Points + 1 WHERE Barcode=@b", conn, trans)
+                                    cmdPoints.Parameters.AddWithValue("@b", memberBarcode)
+                                    cmdPoints.ExecuteNonQuery()
                                 End Using
-                            End Using
+                                pointsAdded = True
+                            Catch ex As Exception
+                                ' Will be rolled back with transaction; notify cashier after transaction failure
+                                pointsAdded = False
+                            End Try
                         End If
                     End If
 
@@ -1936,6 +1985,26 @@ Public Class POS
                     ' COMMIT
                     ' ============================
                     trans.Commit()
+
+                    ' If points were added as part of the transaction, inform cashier with updated total
+                    Try
+                        If pointsAdded AndAlso Not String.IsNullOrEmpty(memberBarcode) Then
+                            Using connInfo As New MySqlConnection(connectionstring)
+                                connInfo.Open()
+                                Using cmdGet As New MySqlCommand("SELECT Points FROM membership WHERE Barcode=@b LIMIT 1", connInfo)
+                                    cmdGet.Parameters.AddWithValue("@b", memberBarcode)
+                                    Dim ptsObj = cmdGet.ExecuteScalar()
+                                    Dim updatedPts As Integer = 0
+                                    If ptsObj IsNot Nothing AndAlso Not IsDBNull(ptsObj) Then
+                                        Integer.TryParse(ptsObj.ToString(), updatedPts)
+                                    End If
+                                    MessageBox.Show($"Member earned 1 point. Current points: {updatedPts}", "Points Earned", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                End Using
+                            End Using
+                        End If
+                    Catch
+                        ' ignore messaging errors
+                    End Try
 
                     ' Print receipt
                     GenerateReceipt(payment, change, receiptNumber, transactionNumber)
@@ -2068,6 +2137,22 @@ Public Class POS
         lblInfo.AutoSize = True
         lblInfo.Location = New Point(10, 10)
         Guna2Panel3.Controls.Add(lblInfo)
+
+        ' ✅ Also remove any dynamic initials label inside customerpbcircle (customer avatar)
+        If customerpbcircle IsNot Nothing Then
+            For i As Integer = customerpbcircle.Controls.Count - 1 To 0 Step -1
+                Dim ctrl As Control = customerpbcircle.Controls(i)
+                If TypeOf ctrl Is Label Then
+                    customerpbcircle.Controls.Remove(ctrl)
+                    ctrl.Dispose()
+                End If
+            Next
+            ' Reset fill color to default (safe-guard in Try)
+            Try
+                customerpbcircle.FillColor = ColorTranslator.FromHtml("#1D3A70")
+            Catch
+            End Try
+        End If
 
         ' ✅ Return focus to the product barcode field
         txtBarcode.Focus()
@@ -2264,22 +2349,13 @@ Public Class POS
         memberBarcode = txtBarcodeCustomer.Text.Trim()
         isLoyaltyApplied = True
 
-        ' ✅ Automatically ADD 1 loyalty point
-        If Not String.IsNullOrEmpty(memberBarcode) Then
-            Try
-                Using conn2 As New MySqlConnection(connectionstring)
-                    conn2.Open()
-                    Dim sql As String = "UPDATE membership SET Points = Points + 1 WHERE Barcode = @barcode"
-                    Using cmd As New MySqlCommand(sql, conn2)
-                        cmd.Parameters.AddWithValue("@barcode", memberBarcode)
-                        cmd.ExecuteNonQuery()
-                    End Using
-                End Using
-            Catch ex As Exception
-                MessageBox.Show("Error updating points: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-        Else
+        ' Note: Do NOT update membership points here. Points will be added as part of a successful checkout
+        ' so that cancelling the transaction/redeem does not prematurely change member points.
+        If String.IsNullOrEmpty(memberBarcode) Then
             MessageBox.Show("No member selected.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        Else
+            ' Inform cashier that points will be applied at checkout when transaction completes
+            MessageBox.Show("Loyalty discount applied. Member points will be updated when the transaction is completed.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
 
         UpdateChange()
@@ -2681,7 +2757,7 @@ Public Class POS
             ' ================== 0️⃣ Delete old held items (older than today) ==================
             Using conn As New MySqlConnection(connectionstring)
                 conn.Open()
-                Dim deleteCmd As New MySqlCommand("DELETE FROM hold_transaction_items WHERE HeldDate < @today", conn)
+                Dim deleteCmd As New MySqlCommand("DELETE FROM hold_transactions WHERE Dateheld < @today", conn)
                 deleteCmd.Parameters.AddWithValue("@today", DateTime.Today)
                 deleteCmd.ExecuteNonQuery()
             End Using
@@ -2738,34 +2814,61 @@ Public Class POS
                 Dim storedDisplay As String = row("ProductName").ToString().Trim()
                 Dim displayName As String = storedDisplay
                 Dim baseName As String = BaseNameFromDisplay(displayName)
-                Dim quantity As Integer = Convert.ToInt32(row("Quantity"))
-                Dim unitPrice As Decimal = Convert.ToDecimal(row("UnitPrice"))
-                Dim total As Decimal = Convert.ToDecimal(row("Total"))
-                Dim barcode As String = If(items.Columns.Contains("BarcodeID"), row("BarcodeID").ToString().Trim(), "")
+
+                ' Robust parsing for quantity and unit price (strip currency & commas)
+                Dim qtyStr As String = If(row("Quantity") IsNot Nothing, row("Quantity").ToString(), "").Trim()
+                Dim unitStr As String = If(row("UnitPrice") IsNot Nothing, row("UnitPrice").ToString(), "").Trim()
+                Dim totalStr As String = If(row("Total") IsNot Nothing, row("Total").ToString(), "").Trim()
+
+                Dim quantity As Integer = 0
+                Integer.TryParse(qtyStr.Replace("₱", "").Replace(",", ""), quantity)
+
+                Dim unitPrice As Decimal = 0D
+                Decimal.TryParse(unitStr.Replace("₱", "").Replace(",", ""), unitPrice)
+
+                ' Prefer stored total if valid, otherwise compute
+                Dim total As Decimal = 0D
+                If Not Decimal.TryParse(totalStr.Replace("₱", "").Replace(",", ""), total) Then
+                    total = unitPrice * quantity
+                End If
+
+                Dim barcode As String = If(items.Columns.Contains("BarcodeID") AndAlso row("BarcodeID") IsNot Nothing, row("BarcodeID").ToString().Trim(), "")
 
                 heldItemNames.Add(baseName.ToLower())
 
-                Dim saleType As String = If(quantity >= 50, "Wholesale", "Retail")
-                Dim cartRowIndex As Integer = dgvCart.Rows.Add(barcode, displayName, quantity, unitPrice, total)
+                ' Determine sale type based on product-specific threshold
+                Dim thresh As Integer = GetWholesaleThreshold(barcode, baseName)
 
+                Dim saleType As String = If(thresh > 0 AndAlso quantity >= thresh, "Wholesale", "Retail")
+
+                ' Add row to cart using numeric values
+                Dim cartRowIndex As Integer = dgvCart.Rows.Add(barcode, displayName, quantity, unitPrice, total)
                 If dgvCart.Columns.Contains("PriceType") Then
                     dgvCart.Rows(cartRowIndex).Cells("PriceType").Value = saleType
                 End If
 
-                ' Determine available quantity
+                ' Determine available quantity from inventory caches
                 Dim availableQty As Integer = 0
                 If Not String.IsNullOrEmpty(barcode) AndAlso inventoryByBarcode.ContainsKey(barcode) Then
                     availableQty = inventoryByBarcode(barcode)
-                ElseIf inventoryByName.ContainsKey(baseName.ToLower()) Then
+                ElseIf Not String.IsNullOrEmpty(baseName) AndAlso inventoryByName.ContainsKey(baseName.ToLower()) Then
                     availableQty = inventoryByName(baseName.ToLower())
                 End If
 
-                ' Update product list
-                Dim existingRow As DataGridViewRow = dgvProductList.Rows.Cast(Of DataGridViewRow)() _
-                .FirstOrDefault(Function(r) r.Cells("ProductName").Value IsNot Nothing AndAlso r.Cells("ProductName").Value.ToString().Trim().ToLower() = baseName.ToLower())
+                ' Update product list: match using BaseNameFromDisplay for robustness and accumulate quantities
+                Dim existingRow As DataGridViewRow = dgvProductList.Rows.Cast(Of DataGridViewRow)().
+                FirstOrDefault(Function(r)
+                                   If r.Cells("ProductName").Value Is Nothing Then Return False
+                                   Dim plBase = BaseNameFromDisplay(r.Cells("ProductName").Value.ToString()).ToLower()
+                                   Return plBase = baseName.ToLower()
+                               End Function)
 
                 If existingRow IsNot Nothing Then
-                    If dgvProductList.Columns.Contains("EditQuantity") Then existingRow.Cells("EditQuantity").Value = quantity
+                    If dgvProductList.Columns.Contains("EditQuantity") Then
+                        Dim prevQty As Integer = 0
+                        Integer.TryParse(existingRow.Cells("EditQuantity").Value?.ToString(), prevQty)
+                        existingRow.Cells("EditQuantity").Value = prevQty + quantity
+                    End If
                     If dgvProductList.Columns.Contains("AvailableQuantity") Then existingRow.Cells("AvailableQuantity").Value = availableQty
                     With existingRow.Cells("EditQuantity").Style
                         .BackColor = Color.LightGreen
@@ -2794,6 +2897,38 @@ Public Class POS
                     If Not String.IsNullOrEmpty(prodName) AndAlso inventoryByName.ContainsKey(prodName) AndAlso Not heldItemNames.Contains(prodName) Then
                         prodRow.Cells("AvailableQuantity").Value = inventoryByName(prodName)
                     End If
+                Next
+            End If
+
+            ' === Ensure EditQuantity in product list matches total quantities in dgvCart ===
+            If dgvProductList.Columns.Contains("ProductName") AndAlso dgvProductList.Columns.Contains("EditQuantity") Then
+                For Each prodRow As DataGridViewRow In dgvProductList.Rows
+                    Dim prodBase As String = BaseNameFromDisplay(If(prodRow.Cells("ProductName").Value, "").ToString()).ToLower()
+                    Dim sumQty As Integer = 0
+
+                    For Each cartRow As DataGridViewRow In dgvCart.Rows
+                        If cartRow.IsNewRow Then Continue For
+                        Dim cartBase As String = BaseNameFromDisplay(If(cartRow.Cells("ProductName").Value, "").ToString()).ToLower()
+                        If String.Compare(cartBase, prodBase, StringComparison.OrdinalIgnoreCase) = 0 Then
+                            Dim q As Integer = 0
+                            Integer.TryParse(If(cartRow.Cells("Quantity").Value, "0").ToString(), q)
+                            sumQty += q
+                        End If
+                    Next
+
+                    ' Update EditQuantity to reflect cart totals
+                    prodRow.Cells("EditQuantity").Value = sumQty
+
+                    ' Also refresh AvailableQuantity from inventory cache if present
+                    If inventoryByName.ContainsKey(prodBase) Then
+                        prodRow.Cells("AvailableQuantity").Value = inventoryByName(prodBase)
+                    End If
+                    With prodRow.Cells("EditQuantity").Style
+                        .BackColor = Color.LightGreen
+                        .SelectionBackColor = Color.LightGreen
+                        .ForeColor = Color.Black
+                        .SelectionForeColor = Color.Black
+                    End With
                 Next
             End If
 

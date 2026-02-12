@@ -447,11 +447,13 @@ ORDER BY MIN(d.ExpirationDate) ASC", conn)
 
             Dim expText As String = row("ExpirationDate").ToString().Trim()
 
+            ' ✅ If No Expiration → treat as VALID
             If String.IsNullOrEmpty(expText) _
-           OrElse expText = "No Expiration" _
-           OrElse expText = "0000-00-00" Then
+        OrElse expText = "No Expiration" _
+        OrElse expText = "0000-00-00" Then
 
-                nonExpiringCount += 1
+                nonExpiringCount += 1   ' optional kung gusto mo pa rin i-display
+                validCount += 1         ' automatic valid
                 Continue For
             End If
 
@@ -461,8 +463,8 @@ ORDER BY MIN(d.ExpirationDate) ASC", conn)
                 If expDate < today Then
                     expiredCount += 1
 
-                ElseIf expDate > today.AddDays(30) Then
-                    validCount += 1
+                Else
+                    validCount += 1     ' lahat ng hindi expired = valid
                 End If
 
             End If
@@ -474,6 +476,7 @@ ORDER BY MIN(d.ExpirationDate) ASC", conn)
         lblNonExpiring.Text = nonExpiringCount.ToString()
 
     End Sub
+
 
 
 

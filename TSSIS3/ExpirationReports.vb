@@ -98,6 +98,8 @@ Public Class ExpirationReports
 
 
 
+
+
     End Sub
 
     ' ===== CONDITIONAL ROW COLORING =====
@@ -262,8 +264,9 @@ Public Class ExpirationReports
         End Try
     End Sub
 
-
-
+    Private Sub formload1(sender As Object, e As EventArgs) Handles MyBase.Shown
+        CountStatusFromGrid()
+    End Sub
 
 
 
@@ -272,6 +275,8 @@ Public Class ExpirationReports
         Try
             Using conn As New MySqlConnection(connectionstring)
                 conn.Open()
+
+
 
                 ' ======== AUTO UPDATE EXPIRATION BASED ON product.Expiration ========
                 Dim autoUpdateQuery As String = "
@@ -284,7 +289,10 @@ SET
     END,
     d.ExpirationDate = CASE
         WHEN p.Expiration = 'No Expiration' THEN '0000-00-00'
-        WHEN p.Expiration = 'With Expiration' AND (d.ExpirationDate IS NULL OR d.ExpirationDate = '0000-00-00') AND d.OriginalExpirationDate IS NOT NULL THEN d.OriginalExpirationDate
+        WHEN p.Expiration = 'With Expiration' 
+             AND (d.ExpirationDate IS NULL OR d.ExpirationDate = '0000-00-00') 
+             AND d.OriginalExpirationDate IS NOT NULL 
+        THEN d.OriginalExpirationDate
         ELSE d.ExpirationDate
     END"
                 Using autoCmd As New MySqlCommand(autoUpdateQuery, conn)
@@ -320,13 +328,18 @@ WHERE 1=1"
                     End Select
                 End If
 
-                ' ===== Get total records =====
+                ' ===== Get total records (hide zero RemainingQty using HAVING) =====
                 Dim countQuery As String = "
 SELECT COUNT(*) 
 FROM (
-    SELECT d.BatchNumber, d.BarcodeID, d.ProductName, COALESCE(s.CompanyName, 'N/A') AS Supplier
+    SELECT d.BatchNumber, 
+           d.BarcodeID, 
+           d.ProductName, 
+           COALESCE(s.CompanyName, 'N/A') AS Supplier,
+           SUM(d.RemainingQty) AS RemainingQty
     " & queryBase & "
     GROUP BY d.BatchNumber, d.BarcodeID, d.ProductName, Supplier
+    HAVING SUM(d.RemainingQty) > 0
 ) AS grouped"
 
                 Dim countCmd As New MySqlCommand(countQuery, conn)
@@ -341,14 +354,17 @@ SELECT d.BatchNumber,
     COALESCE(s.CompanyName, 'N/A') AS Supplier,
     d.BarcodeID,
     d.ProductName,
-    SUM(d.RemainingQty) AS RemainingQty,  -- Only RemainingQty now
+    SUM(d.RemainingQty) AS RemainingQty,
     CASE 
-        WHEN d.ExpirationDate IS NULL OR d.ExpirationDate = '' OR d.ExpirationDate = '0000-00-00' 
+        WHEN d.ExpirationDate IS NULL 
+             OR d.ExpirationDate = '' 
+             OR d.ExpirationDate = '0000-00-00' 
         THEN 'No Expiration' 
         ELSE DATE_FORMAT(MIN(d.ExpirationDate), '%Y-%m-%d') 
     END AS ExpirationDate
 " & queryBase & "
 GROUP BY d.BatchNumber, d.BarcodeID, d.ProductName, Supplier
+HAVING SUM(d.RemainingQty) > 0
 ORDER BY MIN(d.ExpirationDate) ASC
 LIMIT @RowsPerPage OFFSET @Offset"
 
@@ -371,13 +387,17 @@ SELECT d.BatchNumber,
     d.ProductName,
     SUM(d.RemainingQty) AS RemainingQty,
     CASE 
-        WHEN d.ExpirationDate IS NULL OR d.ExpirationDate = '' OR d.ExpirationDate = '0000-00-00'
+        WHEN d.ExpirationDate IS NULL 
+             OR d.ExpirationDate = '' 
+             OR d.ExpirationDate = '0000-00-00'
         THEN 'No Expiration'
         ELSE DATE_FORMAT(MIN(d.ExpirationDate), '%Y/%m/%d')
     END AS ExpirationDate
 " & queryBase & "
 GROUP BY d.BatchNumber, d.BarcodeID, d.ProductName, Supplier
+HAVING SUM(d.RemainingQty) > 0
 ORDER BY MIN(d.ExpirationDate) ASC", conn)
+
                 fullCmd.Parameters.AddRange(cmd.Parameters.Cast(Of MySqlParameter).ToArray())
 
                 Dim dtFull As New DataTable()
@@ -398,6 +418,7 @@ ORDER BY MIN(d.ExpirationDate) ASC", conn)
                 dgvExpiration.ClearSelection()
                 ApplyRowColors()
 
+
             End Using
 
         Catch ex As Exception
@@ -406,6 +427,60 @@ ORDER BY MIN(d.ExpirationDate) ASC", conn)
             End If
         End Try
     End Sub
+
+    Private Sub CountStatusFromGrid()
+
+        Dim expiredCount As Integer = 0
+        Dim validCount As Integer = 0
+        Dim nonExpiringCount As Integer = 0
+
+        Dim today As Date = Date.Today
+
+        Dim dt As DataTable = TryCast(dgvExpiration.DataSource, DataTable)
+        If dt Is Nothing Then Exit Sub
+
+        For Each row As DataRow In dt.Rows
+
+            Dim remainingQty As Decimal = 0D
+            If Not Decimal.TryParse(row("RemainingQty").ToString(), remainingQty) Then Continue For
+            If remainingQty <= 0 Then Continue For
+
+            Dim expText As String = row("ExpirationDate").ToString().Trim()
+
+            If String.IsNullOrEmpty(expText) _
+           OrElse expText = "No Expiration" _
+           OrElse expText = "0000-00-00" Then
+
+                nonExpiringCount += 1
+                Continue For
+            End If
+
+            Dim expDate As Date
+            If Date.TryParse(expText, expDate) Then
+
+                If expDate < today Then
+                    expiredCount += 1
+
+                ElseIf expDate > today.AddDays(30) Then
+                    validCount += 1
+                End If
+
+            End If
+
+        Next
+
+        lblExpired.Text = expiredCount.ToString()
+        lblValid.Text = validCount.ToString()
+        lblNonExpiring.Text = nonExpiringCount.ToString()
+
+    End Sub
+
+
+
+
+
+
+
 
 
     ' ====== HELPER METHOD ======

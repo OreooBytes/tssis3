@@ -220,6 +220,10 @@ Public Class POS
         Me.KeyPreview = True
 
 
+        '=== panelquantity Visible ===
+        panelquantity.Visible = False
+
+
     End Sub
 
     'Private Sub StartFocusTimer(intervalValue As Integer)
@@ -515,44 +519,6 @@ Public Class POS
 
     ' ================= SCAN BARCODE ===================
 
-    ' --- Barcode Scan KeyDown ---
-    Private Sub txtBarcode_KeyDown(sender As Object, e As KeyEventArgs) Handles txtBarcode.KeyDown
-        If e.KeyCode = Keys.Enter Then
-            Dim barcode As String = txtBarcode.Text.Trim()
-            If Not String.IsNullOrEmpty(barcode) Then
-                AddItemToCartDynamic(barcode)
-            End If
-            e.Handled = True
-            e.SuppressKeyPress = True
-        End If
-    End Sub
-
-    Private Sub txtQuantity_KeyDown(sender As Object, e As KeyEventArgs) Handles txtQuantity.KeyDown
-        If e.KeyCode = Keys.Enter Then
-
-            Dim barcode As String = txtBarcode.Text.Trim()
-            Dim qty As Integer = 1
-
-            If Not Integer.TryParse(txtQuantity.Text, qty) OrElse qty <= 0 Then
-                MessageBox.Show("Invalid quantity.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                Return
-            End If
-
-            ' Tawagin ang AddItem multiple times base sa quantity
-            For i As Integer = 1 To qty
-                AddItemToCartDynamic(barcode)
-            Next
-
-            panelquantity.Visible = False
-            txtQuantity.Clear()
-            txtBarcode.Clear()
-            txtBarcode.Focus()
-
-            e.Handled = True
-            e.SuppressKeyPress = True
-        End If
-    End Sub
-
 
 
     ' ================= COMPUTE CART TOTAL WITH DISCOUNT AND VAT ===================
@@ -564,104 +530,217 @@ Public Class POS
     End Sub
 
 
-    '================ ADD ITEM IN CART ==================
-    'Private Sub AddItemToCartDynamic(barcode As String)
-    '    Try
-    '        Using conn As New MySqlConnection(connectionstring)
-    '            conn.Open()
+    ' ===== Current product tracking =====
+    Private currentProductBarcode As String = ""
+    Private currentBaseName As String = ""
+    Private currentStockQty As Integer = 0
+    Private currentRetailPrice As Decimal = 0D
+    Private currentWholesalePrice As Decimal = 0D
 
-    '            ' === Get Product Info + Retail Price + Wholesale Price + Stock Quantity + Product Description ===
-    '            Dim sql As String = "
-    'SELECT p.ProductName, p.Description, p.RetailPrice, p.WholesalePrice, i.Quantity
-    'FROM product p
-    'LEFT JOIN inventory i ON p.BarcodeID = i.BarcodeID
-    'WHERE p.BarcodeID = @barcode
-    '"
+    ' --- Barcode Scan KeyDown ---
+    Private Sub txtBarcode_KeyDown(sender As Object, e As KeyEventArgs) Handles txtBarcode.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Dim barcode As String = txtBarcode.Text.Trim()
+            If Not String.IsNullOrEmpty(barcode) Then
+                ' Fetch product info and show quantity input
+                PrepareProductForQuantity(barcode)
+            End If
 
-    '            Using cmd As New MySqlCommand(sql, conn)
-    '                cmd.Parameters.AddWithValue("@barcode", barcode)
+            e.Handled = True
+            e.SuppressKeyPress = True
+        End If
+    End Sub
 
-    '                Using reader = cmd.ExecuteReader()
-    '                    If reader.Read() Then
-    '                        Dim productName As String = reader("ProductName").ToString()
-    '                        ' Use the Description column from the product table, ensuring we handle NULLs
-    '                        Dim sDescription As String = If(IsDBNull(reader("Description")), "No description available", reader("Description").ToString())
-    '                        Dim stockQty As Integer = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
-    '                        Dim retailPrice As Decimal = If(IsDBNull(reader("RetailPrice")), 0D, Convert.ToDecimal(reader("RetailPrice")))
-    '                        Dim wholesalePrice As Decimal = If(IsDBNull(reader("WholesalePrice")), 0D, Convert.ToDecimal(reader("WholesalePrice")))
+    ' --- Quantity Input KeyDown ---
+    Private Sub txtQuantity_KeyDown(sender As Object, e As KeyEventArgs) Handles txtQuantity.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            e.SuppressKeyPress = True
 
-    '                        If stockQty < 1 Then
-    '                            MessageBox.Show($"Product '{productName}' is out of stock!", "Stock Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '                            Return
-    '                        End If
-    '                        reader.Close()
+            Dim qty As Integer = 1
 
-    '                        ' === UPDATE CART ===
-    '                        Dim existingCartRow = dgvCart.Rows.Cast(Of DataGridViewRow)().
-    '                        FirstOrDefault(Function(r) r.Cells("Barcode").Value.ToString() = barcode)
+            ' Try parse input quantity
+            If Integer.TryParse(txtQuantity.Text, qty) Then
+                ' Minimum quantity = 1
+                If qty < 1 Then qty = 1
 
-    '                        Dim cartRow As DataGridViewRow
+                ' Cap quantity to available stock
+                If qty > currentStockQty Then
+                    qty = currentStockQty
+                    MessageBox.Show($"Maximum available stock for '{currentBaseName}' is {currentStockQty}.", "Stock Limit", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
 
-    '                        If existingCartRow IsNot Nothing Then
-    '                            Dim currentQty As Integer = Convert.ToInt32(existingCartRow.Cells("Quantity").Value)
-    '                            If currentQty < stockQty Then
-    '                                currentQty += 1
-    '                                existingCartRow.Cells("Quantity").Value = currentQty
-    '                                existingCartRow.Cells("UnitPrice").Value = retailPrice
-    '                                existingCartRow.Cells("Total").Value = currentQty * retailPrice
-    '                                ' Set PriceType
-    '                                existingCartRow.Cells("PriceType").Value = If(currentQty > 50, "Wholesale", "Retail")
-    '                            Else
-    '                                MessageBox.Show($"Maximum stock reached for '{productName}'.", "Stock Limit", MessageBoxButtons.OK, MessageBoxIcon.Information)
-    '                            End If
-    '                            cartRow = existingCartRow
-    '                        Else
-    '                            ' Combine ProductName and Description in the Cart
-    '                            dgvCart.Rows.Add(barcode, $"{productName} {sDescription}", 1, retailPrice, retailPrice, "Retail")
-    '                            cartRow = dgvCart.Rows(dgvCart.Rows.Count - 1)
-    '                        End If
+                ' Add product to cart using the quantity entered
+                AddItemToCartWithQuantity(currentProductBarcode, currentBaseName, qty, currentRetailPrice, currentWholesalePrice, currentStockQty)
 
-    '                        ' === Highlight cart row temporarily ===
-    '                        HighlightCartRowTemporary(cartRow)
+                ' Reset input
+                panelquantity.Visible = False
+                txtQuantity.Clear()
+                txtBarcode.Clear()
+                txtBarcode.Focus()
+            End If
+        End If
+    End Sub
 
-    '                        ' === Recompute totals ===
-    '                        ComputeCartTotal()
+    ' --- Prepare product info for quantity input ---
+    Private Sub PrepareProductForQuantity(barcode As String)
+        Try
+            Using conn As New MySqlConnection(connectionstring)
+                conn.Open()
 
-    '                        ' === UPDATE PRODUCT LIST ===
-    '                        Dim existingPLRow = dgvProductList.Rows.Cast(Of DataGridViewRow)().
-    '                    FirstOrDefault(Function(r) r.Cells("ProductName").Value.ToString() = productName)
+                Dim sql As String = "
+                SELECT p.ProductName,
+                       p.Description,
+                       p.RetailPrice,
+                       p.WholesalePrice,
+                       i.Quantity
+                FROM product p
+                LEFT JOIN inventory i ON p.BarcodeID = i.BarcodeID
+                WHERE p.BarcodeID = @barcode
+            "
 
-    '                        Dim totalInCart As Integer = dgvCart.Rows.Cast(Of DataGridViewRow)().
-    '                    Where(Function(r) r.Cells("Barcode").Value.ToString() = barcode).
-    '                    Sum(Function(r) Convert.ToInt32(r.Cells("Quantity").Value))
+                Using cmd As New MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@barcode", barcode)
 
-    '                        If existingPLRow IsNot Nothing Then
-    '                            existingPLRow.Cells("EditQuantity").Value = totalInCart
-    '                            existingPLRow.Cells("AvailableQuantity").Value = stockQty
-    '                        Else
-    '                            Dim newPLRowIndex : Integer = dgvProductList.Rows.Add(productName, totalInCart, stockQty)
-    '                            Dim plRow = dgvProductList.Rows(newPLRowIndex)
-    '                            With plRow.Cells("EditQuantity").Style
-    '                                .BackColor = Color.LightGreen
-    '                                .SelectionBackColor = Color.LightGreen
-    '                                .ForeColor = Color.Black
-    '                                .SelectionForeColor = Color.Black
-    '                            End With
-    '                        End If
+                    Using reader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            currentBaseName = reader("ProductName").ToString()
+                            Dim description As String = If(IsDBNull(reader("Description")), "", reader("Description").ToString())
+                            currentRetailPrice = If(IsDBNull(reader("RetailPrice")), 0D, Convert.ToDecimal(reader("RetailPrice")))
+                            currentWholesalePrice = If(IsDBNull(reader("WholesalePrice")), 0D, Convert.ToDecimal(reader("WholesalePrice")))
+                            currentStockQty = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
+                            currentProductBarcode = barcode
 
-    '                    Else
-    '                        MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-    '                    End If
-    '                End Using
-    '            End Using
-    '        End Using
-    '    Catch ex As Exception
-    '        MessageBox.Show("Error loading product data: " & ex.Message)
-    '    Finally
-    '        txtBarcode.Clear()
-    '        txtBarcode.Focus()
-    '    End Try
-    'End Sub
+                            If currentStockQty < 1 Then
+                                MessageBox.Show($"Product '{currentBaseName}' is out of stock!", "Stock Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                txtBarcode.Clear()
+                                txtBarcode.Focus()
+                                Return
+                            End If
+
+                            ' Show quantity input panel for user
+                            panelquantity.Visible = True
+                            txtQuantity.Clear()
+                            txtQuantity.Focus()
+
+                        Else
+                            MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                            txtBarcode.Clear()
+                            txtBarcode.Focus()
+                        End If
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Error loading product data: " & ex.Message)
+        End Try
+    End Sub
+
+    ' --- Add product to cart with specific quantity ---
+    Private Sub AddItemToCartWithQuantity(barcode As String, baseProductName As String, inputQty As Integer, retailPrice As Decimal, wholesalePrice As Decimal, stockQty As Integer)
+        Try
+            Using conn As New MySqlConnection(connectionstring)
+                conn.Open()
+
+                ' === Get Product Info + Description + Prices + Stock ===
+                Dim sql As String = "
+                SELECT p.ProductName,
+                       p.Description,
+                       p.RetailPrice,
+                       p.WholesalePrice,
+                       i.Quantity
+                FROM product p
+                LEFT JOIN inventory i ON p.BarcodeID = i.BarcodeID
+                WHERE p.BarcodeID = @barcode
+            "
+
+                Using cmd As New MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@barcode", barcode)
+
+                    Using reader = cmd.ExecuteReader()
+                        If reader.Read() Then
+
+                            Dim description As String = If(IsDBNull(reader("Description")), "", reader("Description").ToString())
+                            Dim productName As String = If(String.IsNullOrWhiteSpace(description), baseProductName, baseProductName & " (" & description & ")")
+                            Dim currentStock As Integer = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
+
+                            reader.Close()
+
+                            ' === UPDATE CART ===
+                            Dim existingCartRow = dgvCart.Rows.Cast(Of DataGridViewRow)().
+                            FirstOrDefault(Function(r) r.Cells("Barcode").Value.ToString() = barcode)
+
+                            Dim cartRow As DataGridViewRow
+
+                            If existingCartRow IsNot Nothing Then
+                                Dim currentQty As Integer = Convert.ToInt32(existingCartRow.Cells("Quantity").Value)
+
+                                If currentQty + inputQty <= currentStock Then
+                                    currentQty += inputQty
+                                Else
+                                    currentQty = currentStock
+                                    MessageBox.Show($"Maximum stock reached for '{baseProductName}'.", "Stock Limit", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                End If
+
+                                Dim thresh As Integer = GetWholesaleThreshold(barcode, baseProductName)
+                                Dim finalPrice As Decimal = If(thresh > 0 AndAlso currentQty >= thresh, wholesalePrice, retailPrice)
+
+                                existingCartRow.Cells("Quantity").Value = currentQty
+                                existingCartRow.Cells("UnitPrice").Value = finalPrice
+                                existingCartRow.Cells("Total").Value = currentQty * finalPrice
+                                existingCartRow.Cells("PriceType").Value = If(thresh > 0 AndAlso currentQty >= thresh, "Wholesale", "Retail")
+                                existingCartRow.Cells("ProductName").Value = productName
+
+                                cartRow = existingCartRow
+
+                            Else
+                                ' New row
+                                If inputQty > currentStock Then inputQty = currentStock
+                                Dim initialThresh As Integer = GetWholesaleThreshold(barcode, baseProductName)
+                                Dim finalPrice As Decimal = If(initialThresh > 0 AndAlso inputQty >= initialThresh, wholesalePrice, retailPrice)
+                                Dim initialType As String = If(initialThresh > 0 AndAlso inputQty >= initialThresh, "Wholesale", "Retail")
+
+                                dgvCart.Rows.Add(barcode, productName, inputQty, finalPrice, inputQty * finalPrice, initialType)
+                                cartRow = dgvCart.Rows(dgvCart.Rows.Count - 1)
+                            End If
+
+                            ' === Highlight cart row temporarily ===
+                            HighlightCartRowTemporary(cartRow)
+
+                            ' === Recompute totals ===
+                            ComputeCartTotal()
+
+                            ' === UPDATE PRODUCT LIST ===
+                            Dim existingPLRow = dgvProductList.Rows.Cast(Of DataGridViewRow)().
+                            FirstOrDefault(Function(r) r.Cells("ProductName").Value.ToString() = baseProductName)
+
+                            Dim totalInCart As Integer = dgvCart.Rows.Cast(Of DataGridViewRow)().
+                            Where(Function(r) r.Cells("Barcode").Value.ToString() = barcode).
+                            Sum(Function(r) Convert.ToInt32(r.Cells("Quantity").Value))
+
+                            If existingPLRow IsNot Nothing Then
+                                existingPLRow.Cells("EditQuantity").Value = totalInCart
+                                existingPLRow.Cells("AvailableQuantity").Value = currentStock
+                            Else
+                                Dim newPLRowIndex As Integer = dgvProductList.Rows.Add(baseProductName, totalInCart, currentStock)
+                                Dim plRow = dgvProductList.Rows(newPLRowIndex)
+                                With plRow.Cells("EditQuantity").Style
+                                    .BackColor = Color.LightGreen
+                                    .SelectionBackColor = Color.LightGreen
+                                    .ForeColor = Color.Black
+                                    .SelectionForeColor = Color.Black
+                                End With
+                            End If
+
+                        Else
+                            MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        End If
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Error adding product to cart: " & ex.Message)
+        End Try
+    End Sub
 
     '===== ORGINAL =======
     Private Sub AddItemToCartDynamic(barcode As String)
@@ -2829,6 +2908,12 @@ Public Class POS
             If dgvProductList.Columns.Contains("EditQuantity") Then
                 For Each row As DataGridViewRow In dgvProductList.Rows
                     row.Cells("EditQuantity").Value = 0
+                    With row.Cells("EditQuantity").Style
+                        .BackColor = Color.White
+                        .SelectionBackColor = Color.White
+                        .ForeColor = Color.Black
+                        .SelectionForeColor = Color.Black
+                    End With
                 Next
             End If
 
@@ -2846,14 +2931,8 @@ Public Class POS
                             Dim pName As String = If(IsDBNull(reader("ProductName")), "", reader("ProductName").ToString().Trim())
                             Dim qty As Integer = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
 
-                            If Not String.IsNullOrEmpty(bc) AndAlso Not inventoryByBarcode.ContainsKey(bc) Then
-                                inventoryByBarcode(bc) = qty
-                            End If
-
-                            Dim keyName As String = pName.ToLower()
-                            If Not inventoryByName.ContainsKey(keyName) Then
-                                inventoryByName(keyName) = qty
-                            End If
+                            If Not String.IsNullOrEmpty(bc) Then inventoryByBarcode(bc) = qty
+                            If Not String.IsNullOrEmpty(pName) Then inventoryByName(pName.ToLower()) = qty
                         End While
                     End Using
                 End Using
@@ -2863,24 +2942,18 @@ Public Class POS
             Dim heldItemNames As New HashSet(Of String) ' track names for AvailableQuantity update
 
             For Each row As DataRow In items.Rows
-                Dim storedDisplay As String = row("ProductName").ToString().Trim()
-                Dim displayName As String = storedDisplay
+                Dim displayName As String = row("ProductName").ToString().Trim()
                 Dim baseName As String = BaseNameFromDisplay(displayName)
 
-                ' Robust parsing for quantity and unit price (strip currency & commas)
-                Dim qtyStr As String = If(row("Quantity") IsNot Nothing, row("Quantity").ToString(), "").Trim()
-                Dim unitStr As String = If(row("UnitPrice") IsNot Nothing, row("UnitPrice").ToString(), "").Trim()
-                Dim totalStr As String = If(row("Total") IsNot Nothing, row("Total").ToString(), "").Trim()
-
+                ' Parse quantity and prices safely
                 Dim quantity As Integer = 0
-                Integer.TryParse(qtyStr.Replace("₱", "").Replace(",", ""), quantity)
+                Integer.TryParse(row("Quantity").ToString().Replace("₱", "").Replace(",", ""), quantity)
 
                 Dim unitPrice As Decimal = 0D
-                Decimal.TryParse(unitStr.Replace("₱", "").Replace(",", ""), unitPrice)
+                Decimal.TryParse(row("UnitPrice").ToString().Replace("₱", "").Replace(",", ""), unitPrice)
 
-                ' Prefer stored total if valid, otherwise compute
                 Dim total As Decimal = 0D
-                If Not Decimal.TryParse(totalStr.Replace("₱", "").Replace(",", ""), total) Then
+                If Not Decimal.TryParse(row("Total").ToString().Replace("₱", "").Replace(",", ""), total) Then
                     total = unitPrice * quantity
                 End If
 
@@ -2888,47 +2961,43 @@ Public Class POS
 
                 heldItemNames.Add(baseName.ToLower())
 
-                ' Determine sale type based on product-specific threshold
+                ' Determine sale type
                 Dim thresh As Integer = GetWholesaleThreshold(barcode, baseName)
-
                 Dim saleType As String = If(thresh > 0 AndAlso quantity >= thresh, "Wholesale", "Retail")
 
-                ' Add row to cart using numeric values
+                ' --- Add to dgvCart ---
                 Dim cartRowIndex As Integer = dgvCart.Rows.Add(barcode, displayName, quantity, unitPrice, total)
                 If dgvCart.Columns.Contains("PriceType") Then
                     dgvCart.Rows(cartRowIndex).Cells("PriceType").Value = saleType
                 End If
 
-                ' Determine available quantity from inventory caches
+                ' --- Update product list ---
+                Dim productRow As DataGridViewRow = dgvProductList.Rows.Cast(Of DataGridViewRow)().
+                FirstOrDefault(Function(r)
+                                   If r.Cells("ProductName").Value Is Nothing Then Return False
+                                   Return BaseNameFromDisplay(r.Cells("ProductName").Value.ToString()).ToLower() = baseName.ToLower()
+                               End Function)
+
+                ' Determine available quantity
                 Dim availableQty As Integer = 0
                 If Not String.IsNullOrEmpty(barcode) AndAlso inventoryByBarcode.ContainsKey(barcode) Then
                     availableQty = inventoryByBarcode(barcode)
-                ElseIf Not String.IsNullOrEmpty(baseName) AndAlso inventoryByName.ContainsKey(baseName.ToLower()) Then
+                ElseIf inventoryByName.ContainsKey(baseName.ToLower()) Then
                     availableQty = inventoryByName(baseName.ToLower())
                 End If
 
-                ' Update product list: match using BaseNameFromDisplay for robustness and accumulate quantities
-                Dim existingRow As DataGridViewRow = dgvProductList.Rows.Cast(Of DataGridViewRow)().
-                FirstOrDefault(Function(r)
-                                   If r.Cells("ProductName").Value Is Nothing Then Return False
-                                   Dim plBase = BaseNameFromDisplay(r.Cells("ProductName").Value.ToString()).ToLower()
-                                   Return plBase = baseName.ToLower()
-                               End Function)
-
-                If existingRow IsNot Nothing Then
-                    If dgvProductList.Columns.Contains("EditQuantity") Then
-                        Dim prevQty As Integer = 0
-                        Integer.TryParse(existingRow.Cells("EditQuantity").Value?.ToString(), prevQty)
-                        existingRow.Cells("EditQuantity").Value = prevQty + quantity
-                    End If
-                    If dgvProductList.Columns.Contains("AvailableQuantity") Then existingRow.Cells("AvailableQuantity").Value = availableQty
-                    With existingRow.Cells("EditQuantity").Style
+                If productRow IsNot Nothing Then
+                    ' Directly set EditQuantity to held quantity (no accumulation)
+                    If dgvProductList.Columns.Contains("EditQuantity") Then productRow.Cells("EditQuantity").Value = quantity
+                    If dgvProductList.Columns.Contains("AvailableQuantity") Then productRow.Cells("AvailableQuantity").Value = availableQty
+                    With productRow.Cells("EditQuantity").Style
                         .BackColor = Color.LightGreen
                         .SelectionBackColor = Color.LightGreen
                         .ForeColor = Color.Black
                         .SelectionForeColor = Color.Black
                     End With
                 Else
+                    ' Add new row if not exists
                     Dim newRowIndex As Integer = dgvProductList.Rows.Add(baseName, quantity, availableQty)
                     Dim newRow As DataGridViewRow = dgvProductList.Rows(newRowIndex)
                     If dgvProductList.Columns.Contains("EditQuantity") Then
@@ -2952,38 +3021,6 @@ Public Class POS
                 Next
             End If
 
-            ' === Ensure EditQuantity in product list matches total quantities in dgvCart ===
-            If dgvProductList.Columns.Contains("ProductName") AndAlso dgvProductList.Columns.Contains("EditQuantity") Then
-                For Each prodRow As DataGridViewRow In dgvProductList.Rows
-                    Dim prodBase As String = BaseNameFromDisplay(If(prodRow.Cells("ProductName").Value, "").ToString()).ToLower()
-                    Dim sumQty As Integer = 0
-
-                    For Each cartRow As DataGridViewRow In dgvCart.Rows
-                        If cartRow.IsNewRow Then Continue For
-                        Dim cartBase As String = BaseNameFromDisplay(If(cartRow.Cells("ProductName").Value, "").ToString()).ToLower()
-                        If String.Compare(cartBase, prodBase, StringComparison.OrdinalIgnoreCase) = 0 Then
-                            Dim q As Integer = 0
-                            Integer.TryParse(If(cartRow.Cells("Quantity").Value, "0").ToString(), q)
-                            sumQty += q
-                        End If
-                    Next
-
-                    ' Update EditQuantity to reflect cart totals
-                    prodRow.Cells("EditQuantity").Value = sumQty
-
-                    ' Also refresh AvailableQuantity from inventory cache if present
-                    If inventoryByName.ContainsKey(prodBase) Then
-                        prodRow.Cells("AvailableQuantity").Value = inventoryByName(prodBase)
-                    End If
-                    With prodRow.Cells("EditQuantity").Style
-                        .BackColor = Color.LightGreen
-                        .SelectionBackColor = Color.LightGreen
-                        .ForeColor = Color.Black
-                        .SelectionForeColor = Color.Black
-                    End With
-                Next
-            End If
-
             ' ================== 7️⃣ Restore Transaction Number ==================
             lblTransactionNo.Text = "Transaction Number : " & transactionNo
             currentTransactionNo = transactionNo
@@ -3003,6 +3040,7 @@ Public Class POS
             MessageBox.Show("Error loading held items: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
 
 
 

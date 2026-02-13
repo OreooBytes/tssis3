@@ -341,25 +341,35 @@ Public Class Deliveries
 
         Dim cost As Decimal
         Dim unit As Decimal
+        Dim wholesale As Decimal
 
-        ' Validate only when both are valid decimals
+        ' Always validate, regardless of other controls' Enabled state
         If Decimal.TryParse(txtCostprice.Text, cost) AndAlso
-       Decimal.TryParse(txtUnitPrice.Text, unit) Then
+       Decimal.TryParse(txtUnitPrice.Text, unit) AndAlso
+       Decimal.TryParse(txtWholesaleprice.Text, wholesale) Then
 
-            ' Cost must not exceed Unit Price
-            If cost > unit Then
-                MessageBox.Show("Cost Price cannot be higher than Unit Price.",
+            ' Determine the maximum allowed cost (the lower of Unit and Wholesale)
+            Dim maxAllowed As Decimal = Math.Min(unit, wholesale)
+
+            ' Cost must not exceed maxAllowed — ALWAYS show warning, regardless of expiration date
+            If cost > maxAllowed Then
+                MessageBox.Show($"Cost Price cannot be higher than the lower of Unit Price and Wholesale Price ({maxAllowed:F2}).",
                             "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 
-                txtCostprice.Text = unit.ToString("F2")
+                txtCostprice.Text = maxAllowed.ToString("F2")
                 txtCostprice.SelectionStart = txtCostprice.Text.Length
                 Exit Sub
             End If
         End If
 
-        ' 👉 Recompute total cost kapag valid na ang input
+        ' 👉 Recompute total cost even if dtpExpirationDate is disabled
         UpdateTotalCostLabel()
     End Sub
+
+
+
+
+
 
     '' === TIMER TICK (FORMAT ONLY) ===
     'Private Sub costTimer_Tick(sender As Object, e As EventArgs) Handles costTimer.Tick

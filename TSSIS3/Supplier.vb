@@ -141,84 +141,7 @@ Public Class Supplier
     '=============================
     '       ADD SUPPLIER
     '=============================
-    Private Sub addbtn_Click(sender As Object, e As EventArgs) Handles addbtn.Click
-        ' --- Validate input fields ---
-        If Not ValidateInputs() Then Return
 
-        Using conn As MySqlConnection = Module1.Openconnection()
-            If conn Is Nothing Then Return
-
-            Try
-                ' ===== Duplication check =====
-                Dim dupCmd As New MySqlCommand("
-                SELECT 
-                    SUM(CASE WHEN SupplierName = @SupplierName THEN 1 ELSE 0 END) AS NameExists,
-                    SUM(CASE WHEN ContactNo = @ContactNo THEN 1 ELSE 0 END) AS ContactExists,
-                    SUM(CASE WHEN Email = @Email THEN 1 ELSE 0 END) AS EmailExists,
-                    SUM(CASE WHEN Address = @Address THEN 1 ELSE 0 END) AS AddressExists
-                FROM supplier", conn)
-
-                dupCmd.Parameters.AddWithValue("@SupplierName", sname.Text.Trim())
-                dupCmd.Parameters.AddWithValue("@ContactNo", cno.Text.Trim())
-                dupCmd.Parameters.AddWithValue("@Email", eml.Text.Trim())
-                dupCmd.Parameters.AddWithValue("@Address", adrss.Text.Trim())
-
-                Using reader As MySqlDataReader = dupCmd.ExecuteReader()
-                    If reader.Read() Then
-                        Dim nameExists As Boolean = If(IsDBNull(reader("NameExists")), False, Convert.ToInt32(reader("NameExists")) > 0)
-                        Dim contactExists As Boolean = If(IsDBNull(reader("ContactExists")), False, Convert.ToInt32(reader("ContactExists")) > 0)
-                        Dim emailExists As Boolean = If(IsDBNull(reader("EmailExists")), False, Convert.ToInt32(reader("EmailExists")) > 0)
-                        Dim addressExists As Boolean = If(IsDBNull(reader("AddressExists")), False, Convert.ToInt32(reader("AddressExists")) > 0)
-
-                        ' ===== Build duplicate message =====
-                        Dim dupMessage As String = ""
-                        If nameExists Then dupMessage &= "Supplier Name already exists." & vbCrLf
-                        If contactExists Then dupMessage &= "Contact Number already exists." & vbCrLf
-                        If emailExists Then dupMessage &= "Email already exists." & vbCrLf
-                        If addressExists Then dupMessage &= "Address already exists." & vbCrLf
-
-                        If dupMessage <> "" Then
-                            MessageBox.Show(dupMessage.Trim(), "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-
-                            ' Set focus to the first duplicate field
-                            If nameExists Then sname.Focus()
-                            If contactExists Then cno.Focus()
-                            If emailExists Then eml.Focus()
-                            If addressExists Then adrss.Focus()
-                            Return
-                        End If
-                    End If
-                End Using
-
-                ' ===== Insert supplier =====
-                Using insertCmd As New MySqlCommand("
-                INSERT INTO supplier (CompanyName, SupplierName, ContactNo, Email, Address)
-                VALUES (@CompanyName, @SupplierName, @ContactNo, @Email, @Address)", conn)
-
-                    insertCmd.Parameters.AddWithValue("@CompanyName", cname.Text.Trim())
-                    insertCmd.Parameters.AddWithValue("@SupplierName", sname.Text.Trim())
-                    insertCmd.Parameters.AddWithValue("@ContactNo", cno.Text.Trim())
-                    insertCmd.Parameters.AddWithValue("@Email", eml.Text.Trim())
-                    insertCmd.Parameters.AddWithValue("@Address", adrss.Text.Trim())
-
-                    insertCmd.ExecuteNonQuery()
-                End Using
-
-                ' ===== Audit log =====
-                LogAuditTrail(SessionData.role, SessionData.fullName, $"Added Supplier: {sname.Text.Trim()}")
-
-                MessageBox.Show("Supplier successfully added!", "Add Supplier", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                clear()
-                LoadData()
-                Guna2ShadowPanel1.Visible = False
-
-            Catch ex As MySqlException
-                MessageBox.Show("Error adding supplier: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Finally
-                Module1.ConnectionClose(conn)
-            End Try
-        End Using
-    End Sub
 
 
 
@@ -376,6 +299,7 @@ Public Class Supplier
                     clear()
                     addbtn.Enabled = True
                     Guna2ShadowPanel1.Visible = False
+
                 End If
             Catch ex As MySqlException
                 MessageBox.Show("Error deleting supplier: " & ex.Message)
@@ -384,6 +308,8 @@ Public Class Supplier
             End Try
         End Using
     End Sub
+
+
 
     '=============================
     '       AUDIT TRAIL
@@ -770,10 +696,14 @@ Public Class Supplier
     '=============================
     Private Sub btnAddnew_Click(sender As Object, e As EventArgs) Handles btnAddnew.Click
         Guna2ShadowPanel1.Visible = True
+        addbtn.Visible = True
     End Sub
 
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
         Guna2ShadowPanel1.Visible = False
+        clear()
+        btnupdate.Visible = False
+        addbtn.Visible = True
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click

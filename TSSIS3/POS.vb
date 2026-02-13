@@ -1139,6 +1139,10 @@ Public Class POS
         dgvCart.AllowUserToAddRows = False
         dgvCart.AllowUserToResizeRows = False
 
+        ' Assuming your DataGridView is named dgvExample
+        dgvCart.ReadOnly = True
+
+
         ' === Columns ===
         dgvCart.Columns.Add("Barcode", "Barcode") ' Column Name = "Barcode"
         dgvCart.Columns.Add("ProductName", "Product Name") ' Column Name = "ProductName"

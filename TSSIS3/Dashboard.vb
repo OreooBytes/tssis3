@@ -327,10 +327,10 @@ Public Class Dashboard
 
     End Sub
 
-    Private Sub ApplySuperAdminPermissions()
+    ' Dashboard Form
+    Public Sub ApplySuperAdminPermissions()
         Dim superAdminExists As Boolean = False
 
-        ' 🔹 Check database kung may SuperAdmin
         Using conn As MySqlConnection = Module1.Openconnection()
             If conn IsNot Nothing Then
                 Try
@@ -344,9 +344,7 @@ Public Class Dashboard
             End If
         End Using
 
-        ' 🔹 Enable or disable buttons depende sa SuperAdmin existence
-        ' Palitan ang mga button names sa actual buttons mo
-        'btnDashboard.Enabled = superAdminExists
+        ' Enable/disable buttons
         btnDashboard.Enabled = True
         btnUsers.Enabled = True
         btnSupplier.Enabled = superAdminExists
@@ -359,9 +357,10 @@ Public Class Dashboard
         btnmembership.Enabled = superAdminExists
         btnUtilities.Enabled = superAdminExists
         btnReports.Enabled = superAdminExists
-
         btnLogout.Enabled = True
     End Sub
+
+
 
 
 

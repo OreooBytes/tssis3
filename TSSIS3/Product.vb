@@ -380,16 +380,28 @@ Public Class Product
             If conn Is Nothing Then Return
 
             Try
-                ' ===== Check for duplicate BarcodeID ONLY =====
-                Dim dupCmd As New MySqlCommand("
+                ' ===== Check duplicate BarcodeID =====
+                Dim dupBarcode As New MySqlCommand("
                 SELECT COUNT(*) FROM product WHERE BarcodeID=@bid", conn)
 
-                dupCmd.Parameters.AddWithValue("@bid", bid.Text.Trim())
+                dupBarcode.Parameters.AddWithValue("@bid", bid.Text.Trim())
 
-                Dim barcodeExists As Integer = Convert.ToInt32(dupCmd.ExecuteScalar())
-
-                If barcodeExists > 0 Then
+                If Convert.ToInt32(dupBarcode.ExecuteScalar()) > 0 Then
                     MessageBox.Show("The Barcode ID already exists.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Return
+                End If
+
+                ' ===== Check duplicate ProductName + Description =====
+                Dim dupProduct As New MySqlCommand("
+                SELECT COUNT(*) FROM product 
+                WHERE ProductName=@pname AND Description=@desc", conn)
+
+                dupProduct.Parameters.AddWithValue("@pname", pname.Text.Trim())
+                dupProduct.Parameters.AddWithValue("@desc", desp.Text.Trim())
+
+                If Convert.ToInt32(dupProduct.ExecuteScalar()) > 0 Then
+                    MessageBox.Show("A product with the same Product Name and Description already exists.",
+                                "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Return
                 End If
 
@@ -402,7 +414,6 @@ Public Class Product
                     cmd.Parameters.AddWithValue("@BarcodeID", bid.Text)
                     cmd.Parameters.AddWithValue("@ProductName", pname.Text)
 
-                    ' ===== Category handling =====
                     Dim categoryID As Object = DBNull.Value
                     If Catname.SelectedValue IsNot Nothing Then
                         categoryID = Catname.SelectedValue
@@ -416,8 +427,8 @@ Public Class Product
                             End If
                         End Using
                     End If
-                    cmd.Parameters.AddWithValue("@CategoryID", categoryID)
 
+                    cmd.Parameters.AddWithValue("@CategoryID", categoryID)
                     cmd.Parameters.AddWithValue("@Description", desp.Text)
                     cmd.Parameters.AddWithValue("@Expiration", expirationValue)
                     cmd.Parameters.AddWithValue("@WholesalePrice", wholesalePrice)
@@ -430,12 +441,14 @@ Public Class Product
                 End Using
 
                 ' ===== Audit Trail =====
-                LogAuditTrail(SessionData.role, SessionData.fullName, $"Added product: {pname.Text} (BarcodeID: {bid.Text})")
+                LogAuditTrail(SessionData.role, SessionData.fullName,
+                          $"Added product: {pname.Text} (BarcodeID: {bid.Text})")
 
                 ' ===== UI refresh =====
                 LoadData()
                 ClearFields()
                 Guna2ShadowPanel1.Visible = False
+
                 MessageBox.Show("Product added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
             Catch ex As Exception
@@ -445,6 +458,7 @@ Public Class Product
             End Try
         End Using
     End Sub
+
 
 
 
@@ -492,20 +506,35 @@ Public Class Product
                 Dim selectedRow As DataGridViewRow = Guna2DataGridView1.SelectedRows(0)
                 Dim originalBarcodeID As String = selectedRow.Cells("BarcodeID").Value.ToString()
                 Dim newBarcodeID As String = bid.Text.Trim()
+                Dim newProductName As String = pname.Text.Trim()
+                Dim newDescription As String = desp.Text.Trim()
 
                 ' ===== Duplicate check (Barcode ONLY) =====
                 Dim dupCheck As New MySqlCommand("
                 SELECT COUNT(*) FROM product 
                 WHERE BarcodeID=@bid AND BarcodeID<>@original", conn)
-
                 dupCheck.Parameters.AddWithValue("@bid", newBarcodeID)
                 dupCheck.Parameters.AddWithValue("@original", originalBarcodeID)
 
                 Dim barcodeExists As Integer = Convert.ToInt32(dupCheck.ExecuteScalar())
-
                 If barcodeExists > 0 Then
                     MessageBox.Show("The Barcode ID already exists.", "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     bid.Focus()
+                    Return
+                End If
+
+                ' ===== Duplicate check (ProductName + Description) =====
+                Dim dupProductCheck As New MySqlCommand("
+                SELECT COUNT(*) FROM product
+                WHERE ProductName=@pname AND Description=@desc AND BarcodeID<>@original", conn)
+                dupProductCheck.Parameters.AddWithValue("@pname", newProductName)
+                dupProductCheck.Parameters.AddWithValue("@desc", newDescription)
+                dupProductCheck.Parameters.AddWithValue("@original", originalBarcodeID)
+
+                If Convert.ToInt32(dupProductCheck.ExecuteScalar()) > 0 Then
+                    MessageBox.Show("A product with the same Product Name and Description already exists.",
+                                "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    pname.Focus()
                     Return
                 End If
 
@@ -522,20 +551,20 @@ Public Class Product
                     updatedFields.Add($"Barcode: {originalBarcodeID} → {newBarcodeID}")
                 End If
 
-                ' --- ProductName (now allowed to duplicate) ---
+                ' --- ProductName ---
                 Dim oldName As String = selectedRow.Cells("ProductName").Value.ToString()
-                If pname.Text.Trim() <> oldName Then
+                If newProductName <> oldName Then
                     updates.Add("ProductName=@ProductName")
-                    cmd.Parameters.AddWithValue("@ProductName", pname.Text.Trim())
-                    updatedFields.Add($"Product Name: {oldName} → {pname.Text.Trim()}")
+                    cmd.Parameters.AddWithValue("@ProductName", newProductName)
+                    updatedFields.Add($"Product Name: {oldName} → {newProductName}")
                 End If
 
                 ' --- Description ---
                 Dim oldDesc As String = selectedRow.Cells("Description").Value.ToString()
-                If desp.Text.Trim() <> oldDesc Then
+                If newDescription <> oldDesc Then
                     updates.Add("Description=@Description")
-                    cmd.Parameters.AddWithValue("@Description", desp.Text.Trim())
-                    updatedFields.Add($"Description: {oldDesc} → {desp.Text.Trim()}")
+                    cmd.Parameters.AddWithValue("@Description", newDescription)
+                    updatedFields.Add($"Description: {oldDesc} → {newDescription}")
                 End If
 
                 ' --- Category ---
@@ -606,7 +635,7 @@ Public Class Product
 
                 ' ===== Audit Trail =====
                 LogAuditTrail(SessionData.role, SessionData.fullName,
-                          $"Updated product: {pname.Text}" & vbCrLf &
+                          $"Updated product: {newProductName}" & vbCrLf &
                           String.Join(vbCrLf, updatedFields))
 
                 ' ===== UI Refresh =====
@@ -628,6 +657,7 @@ Public Class Product
             End Try
         End Using
     End Sub
+
 
 
 

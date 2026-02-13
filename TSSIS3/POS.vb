@@ -3205,6 +3205,14 @@ Public Class POS
         End If
     End Sub
 
+    Private Sub txtQuantity_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtQuantity.KeyPress
+        ' Allow only numbers and Backspace
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            e.Handled = True
+        End If
+    End Sub
+
+
     '' === txtPayment (numbers + decimal allowed) ===
     Private Sub txtPayment_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtPayment.KeyPress
         ' Allow digits, backspace, and one decimal point

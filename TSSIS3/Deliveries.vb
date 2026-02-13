@@ -490,8 +490,8 @@ Public Class Deliveries
 
 
             ' Reset controls
-            txtTransactionNo.Text = String.Empty
-            cmbSupplierName.SelectedIndex = -1
+            'txtTransactionNo.Text = String.Empty
+            'cmbSupplierName.SelectedIndex = -1
             lblTotalCost.Text = "Total Cost: ₱0.00"
             txtBarcodeID.Text = String.Empty
             txtProductname.Text = String.Empty

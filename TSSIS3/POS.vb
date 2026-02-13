@@ -61,6 +61,9 @@ Public Class POS
 
         GenerateNewNumbers()
 
+        CheckCartLimit()
+
+
         btnredeempoints.Visible = False
 
         LoadLoyaltySettings()
@@ -3388,6 +3391,32 @@ Public Class POS
 
         TriggerButton(btn)
     End Sub
+
+    Private Sub CheckCartLimit()
+        ' If gumagamit ka ng AllowUserToAddRows = True,
+        ' may extra blank row si DataGridView kaya minus 1
+        Dim itemCount As Integer = dgvCart.Rows.Count
+
+        If dgvCart.AllowUserToAddRows Then
+            itemCount -= 1
+        End If
+
+        If itemCount > 2 Then
+            btnNewTransaction.Enabled = False
+        Else
+            btnNewTransaction.Enabled = True
+        End If
+    End Sub
+
+    Private Sub dgvcart_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvCart.RowsAdded
+        CheckCartLimit()
+    End Sub
+
+    Private Sub dgvcart_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvCart.RowsRemoved
+        CheckCartLimit()
+    End Sub
+
+
 
 
 End Class

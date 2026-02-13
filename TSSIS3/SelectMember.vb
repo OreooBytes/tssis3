@@ -73,6 +73,9 @@ Public Class SelectMember
             .Columns.Clear()
             .Rows.Clear()
             .AutoGenerateColumns = False
+            ' Assuming your DataGridView is named dgvExample
+            DataGridView1.ReadOnly = True
+
 
             ' Add data columns
             .Columns.Add("ID", "ID")

@@ -887,7 +887,7 @@ Public Class Product
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
         Guna2ShadowPanel1.Visible = False
-
+        Guna2ShadowPanel1.Visible = False
         ClearFields()
 
     End Sub

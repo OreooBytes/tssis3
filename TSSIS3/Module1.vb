@@ -17,6 +17,8 @@ Module Module1
 
     Public connectionstring As String = "server=localhost;port=3306;user=root;password=;database=tssis"
 
+    'Public connectionstring As String = "server=localhost;port=3306;user=root;password=;database=tssis"
+
 
     ' Opens and returns an open MySQL connection
     Public Function Openconnection() As MySqlConnection

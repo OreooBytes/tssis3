@@ -560,6 +560,18 @@ Public Class User
                     Return
                 End If
 
+                ' --- Check Address duplication ---
+                Dim checkAddressCmd As New MySqlCommand("SELECT COUNT(*) FROM users WHERE Address = @Address", conn)
+                checkAddressCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim())
+                Dim addressExists As Integer = Convert.ToInt32(checkAddressCmd.ExecuteScalar())
+
+                If addressExists > 0 Then
+                    MessageBox.Show("Address already exists. Duplicate address is not allowed.",
+                    "Duplicate Detected", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    txtAddress.Focus()
+                    Return
+                End If
+
                 ' --- Insert New User ---
                 Dim cmd As New MySqlCommand("
                 INSERT INTO users 
@@ -620,55 +632,91 @@ Public Class User
             If conn Is Nothing Then Exit Sub
 
             Try
-                ' --- Check duplicate username (if changed) ---
-                If originalUsername.ToLower() <> uname.Text.Trim().ToLower() Then
-                    Dim checkUserCmd As New MySqlCommand("SELECT COUNT(*) FROM users WHERE LOWER(Username) = @Username", conn)
-                    checkUserCmd.Parameters.AddWithValue("@Username", uname.Text.Trim().ToLower())
-                    Dim userExists As Integer = Convert.ToInt32(checkUserCmd.ExecuteScalar())
+                Dim newUsername As String = uname.Text.Trim()
+                Dim newContact As String = cno.Text.Trim()
+                Dim newAddress As String = txtAddress.Text.Trim()
 
-                    If userExists > 0 Then
+                ' --- Check duplicate username (if changed) ---
+                If Not String.Equals(originalUsername.Trim(), newUsername, StringComparison.OrdinalIgnoreCase) Then
+
+                    Dim checkUserCmd As New MySqlCommand("
+                    SELECT COUNT(*) FROM users 
+                    WHERE LOWER(Username) = LOWER(@Username)", conn)
+
+                    checkUserCmd.Parameters.AddWithValue("@Username", newUsername)
+
+                    If Convert.ToInt32(checkUserCmd.ExecuteScalar()) > 0 Then
                         MessageBox.Show("The username already exists. Please enter a different one.",
                                     "Duplicate Username", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        uname.Clear()
                         uname.Focus()
                         Return
                     End If
                 End If
 
-                ' --- Check duplicate contact number (if changed) ---
-                If originalcontactno <> cno.Text.Trim() Then
-                    Dim checkCnoCmd As New MySqlCommand("SELECT COUNT(*) FROM users WHERE ContactNo = @ContactNo", conn)
-                    checkCnoCmd.Parameters.AddWithValue("@ContactNo", cno.Text.Trim())
-                    Dim CnoExists As Integer = Convert.ToInt32(checkCnoCmd.ExecuteScalar())
 
-                    If CnoExists > 0 Then
+                ' --- Check duplicate contact number (if changed) ---
+                If Not String.Equals(originalcontactno.Trim(), newContact, StringComparison.Ordinal) Then
+
+                    Dim checkCnoCmd As New MySqlCommand("
+                    SELECT COUNT(*) FROM users 
+                    WHERE ContactNo = @ContactNo 
+                    AND LOWER(Username) <> LOWER(@OriginalUsername)", conn)
+
+                    checkCnoCmd.Parameters.AddWithValue("@ContactNo", newContact)
+                    checkCnoCmd.Parameters.AddWithValue("@OriginalUsername", originalUsername.Trim())
+
+                    If Convert.ToInt32(checkCnoCmd.ExecuteScalar()) > 0 Then
                         MessageBox.Show("The contact number already exists. Please enter a different one.",
                                     "Duplicate Contact", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        cno.Clear()
                         cno.Focus()
                         Return
                     End If
                 End If
 
+
                 ' --- Get old values for audit trail ---
                 Dim oldValues As New Dictionary(Of String, String)
+
                 Dim getCurrentCmd As New MySqlCommand("
                 SELECT FirstName, MI, LastName, Address, ContactNo, Username, Password, UserType 
-                FROM users WHERE LOWER(Username)=LOWER(@OriginalUsername)", conn)
+                FROM users 
+                WHERE LOWER(Username)=LOWER(@OriginalUsername)", conn)
+
                 getCurrentCmd.Parameters.AddWithValue("@OriginalUsername", originalUsername.Trim())
 
                 Using reader = getCurrentCmd.ExecuteReader()
                     If reader.Read() Then
-                        oldValues("FirstName") = reader("FirstName").ToString()
-                        oldValues("MI") = If(IsDBNull(reader("MI")), "", reader("MI").ToString())
-                        oldValues("LastName") = reader("LastName").ToString()
-                        oldValues("Address") = reader("Address").ToString()
-                        oldValues("ContactNo") = reader("ContactNo").ToString()
-                        oldValues("Username") = reader("Username").ToString()
-                        oldValues("Password") = reader("Password").ToString()
-                        oldValues("UserType") = reader("UserType").ToString()
+                        oldValues("FirstName") = reader("FirstName").ToString().Trim()
+                        oldValues("MI") = If(IsDBNull(reader("MI")), "", reader("MI").ToString().Trim())
+                        oldValues("LastName") = reader("LastName").ToString().Trim()
+                        oldValues("Address") = reader("Address").ToString().Trim()
+                        oldValues("ContactNo") = reader("ContactNo").ToString().Trim()
+                        oldValues("Username") = reader("Username").ToString().Trim()
+                        oldValues("Password") = reader("Password").ToString().Trim()
+                        oldValues("UserType") = reader("UserType").ToString().Trim()
                     End If
                 End Using
+
+
+                ' --- Check duplicate address (if changed) ---
+                If Not String.Equals(oldValues("Address"), newAddress, StringComparison.OrdinalIgnoreCase) Then
+
+                    Dim checkAddressCmd As New MySqlCommand("
+                    SELECT COUNT(*) FROM users 
+                    WHERE LOWER(Address) = LOWER(@Address)
+                    AND LOWER(Username) <> LOWER(@OriginalUsername)", conn)
+
+                    checkAddressCmd.Parameters.AddWithValue("@Address", newAddress)
+                    checkAddressCmd.Parameters.AddWithValue("@OriginalUsername", originalUsername.Trim())
+
+                    If Convert.ToInt32(checkAddressCmd.ExecuteScalar()) > 0 Then
+                        MessageBox.Show("The address already exists. Duplicate address is not allowed.",
+                                    "Duplicate Address", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        txtAddress.Focus()
+                        Return
+                    End If
+                End If
+
 
                 ' --- Update record ---
                 Dim cmd As New MySqlCommand("
@@ -682,9 +730,9 @@ Public Class User
                 cmd.Parameters.AddWithValue("@FirstName", fname.Text.Trim())
                 cmd.Parameters.AddWithValue("@MI", If(String.IsNullOrWhiteSpace(minitial.Text), DBNull.Value, minitial.Text.Trim()))
                 cmd.Parameters.AddWithValue("@LastName", lname.Text.Trim())
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim())
-                cmd.Parameters.AddWithValue("@ContactNo", cno.Text.Trim())
-                cmd.Parameters.AddWithValue("@Username", uname.Text.Trim())
+                cmd.Parameters.AddWithValue("@Address", newAddress)
+                cmd.Parameters.AddWithValue("@ContactNo", newContact)
+                cmd.Parameters.AddWithValue("@Username", newUsername)
                 cmd.Parameters.AddWithValue("@Password", pword.Text.Trim())
                 cmd.Parameters.AddWithValue("@UserType", newRole)
                 cmd.Parameters.AddWithValue("@OriginalUsername", originalUsername.Trim())
@@ -692,18 +740,41 @@ Public Class User
                 Dim rowsAffected As Integer = cmd.ExecuteNonQuery()
 
                 If rowsAffected > 0 Then
+
                     ' --- Compare old vs new values for audit trail ---
                     Dim updatedFields As New List(Of String)
-                    If fname.Text.Trim() <> oldValues("FirstName") Then updatedFields.Add($"First Name: ""{oldValues("FirstName")}"" → ""{fname.Text.Trim()}""")
-                    If minitial.Text.Trim() <> oldValues("MI") Then updatedFields.Add($"MI: ""{oldValues("MI")}"" → ""{minitial.Text.Trim()}""")
-                    If lname.Text.Trim() <> oldValues("LastName") Then updatedFields.Add($"Last Name: ""{oldValues("LastName")}"" → ""{lname.Text.Trim()}""")
-                    If txtAddress.Text.Trim() <> oldValues("Address") Then updatedFields.Add($"Address: ""{oldValues("Address")}"" → ""{txtAddress.Text.Trim()}""")
-                    If cno.Text.Trim() <> oldValues("ContactNo") Then updatedFields.Add($"Contact No: ""{oldValues("ContactNo")}"" → ""{cno.Text.Trim()}""")
-                    If uname.Text.Trim() <> oldValues("Username") Then updatedFields.Add($"Username: ""{oldValues("Username")}"" → ""{uname.Text.Trim()}""")
-                    If newRole <> oldValues("UserType") Then updatedFields.Add($"Role: ""{oldValues("UserType")}"" → ""{newRole}""")
+
+                    If fname.Text.Trim() <> oldValues("FirstName") Then
+                        updatedFields.Add($"First Name: ""{oldValues("FirstName")}"" → ""{fname.Text.Trim()}""")
+                    End If
+
+                    If minitial.Text.Trim() <> oldValues("MI") Then
+                        updatedFields.Add($"MI: ""{oldValues("MI")}"" → ""{minitial.Text.Trim()}""")
+                    End If
+
+                    If lname.Text.Trim() <> oldValues("LastName") Then
+                        updatedFields.Add($"Last Name: ""{oldValues("LastName")}"" → ""{lname.Text.Trim()}""")
+                    End If
+
+                    If newAddress <> oldValues("Address") Then
+                        updatedFields.Add($"Address: ""{oldValues("Address")}"" → ""{newAddress}""")
+                    End If
+
+                    If newContact <> oldValues("ContactNo") Then
+                        updatedFields.Add($"Contact No: ""{oldValues("ContactNo")}"" → ""{newContact}""")
+                    End If
+
+                    If newUsername <> oldValues("Username") Then
+                        updatedFields.Add($"Username: ""{oldValues("Username")}"" → ""{newUsername}""")
+                    End If
+
+                    If newRole <> oldValues("UserType") Then
+                        updatedFields.Add($"Role: ""{oldValues("UserType")}"" → ""{newRole}""")
+                    End If
 
                     If updatedFields.Count > 0 Then
-                        Dim actionDescription As String = "Updated User Details:" & vbCrLf & String.Join(vbCrLf, updatedFields)
+                        Dim actionDescription As String = "Updated User Details:" &
+                                                      vbCrLf & String.Join(vbCrLf, updatedFields)
 
                         Dim actorRole As String = If(String.IsNullOrWhiteSpace(SessionData.role), "System", SessionData.role)
                         Dim actorName As String = If(String.IsNullOrWhiteSpace(SessionData.fullName), "System", SessionData.fullName)
@@ -711,7 +782,6 @@ Public Class User
                         LogAuditTrail(actorRole, actorName, actionDescription)
                     End If
 
-                    ' --- Success feedback ---
                     SystemSounds.Exclamation.Play()
                     MessageBox.Show("Successfully updated!", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
@@ -729,6 +799,8 @@ Public Class User
             End Try
         End Using
     End Sub
+
+
 
 
 

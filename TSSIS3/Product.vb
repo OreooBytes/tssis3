@@ -312,10 +312,10 @@ Public Class Product
             Return
         End If
 
-        If String.IsNullOrWhiteSpace(pname.Text) Then
-            MessageBox.Show("Product Name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
-        End If
+        'If String.IsNullOrWhiteSpace(pname.Text) Then
+        '    MessageBox.Show("Product Name is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        '    Return
+        'End If
 
         If String.IsNullOrWhiteSpace(desp.Text) Then
             MessageBox.Show("Description is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -400,7 +400,7 @@ Public Class Product
                 dupProduct.Parameters.AddWithValue("@desc", desp.Text.Trim())
 
                 If Convert.ToInt32(dupProduct.ExecuteScalar()) > 0 Then
-                    MessageBox.Show("A product with the same Product Name and Description already exists.",
+                    MessageBox.Show("A product with the same Description already exists.",
                                 "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Return
                 End If
@@ -532,7 +532,7 @@ Public Class Product
                 dupProductCheck.Parameters.AddWithValue("@original", originalBarcodeID)
 
                 If Convert.ToInt32(dupProductCheck.ExecuteScalar()) > 0 Then
-                    MessageBox.Show("A product with the same Product Name and Description already exists.",
+                    MessageBox.Show("A product with the same Description already exists.",
                                 "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     pname.Focus()
                     Return

@@ -44,14 +44,10 @@ Public Class Deliveries
         txtrecievedby.Text = LoggedInFullName
         txtrecievedby.Enabled = False
 
-        ' --- Configure inputs ---
+        ' --- Enable input fields for next entry ---
         txtProductname.Enabled = False
-        txtBarcodeID.Enabled = True
         txtUnitPrice.Enabled = False
         txtWholesaleprice.Enabled = False
-
-
-
 
 
         ' --- Style panels ---
@@ -496,22 +492,42 @@ Public Class Deliveries
             wholesalePrice.ToString("N2"),
             expirationDisplay
         )
+
+            ' --- Show confirmation ---
             MessageBox.Show("Item successfully added to pending list!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
 
-            ' Reset controls
-            'txtTransactionNo.Text = String.Empty
-            'cmbSupplierName.SelectedIndex = -1
-            lblTotalCost.Text = "Total Cost: ₱0.00"
-            txtBarcodeID.Text = String.Empty
+            ' Temporarily enable fields for instant clearing
+            txtProductname.Enabled = True
+            txtUnitPrice.Enabled = True
+            txtWholesaleprice.Enabled = True
+
             txtProductname.Text = String.Empty
             txtCostprice.Text = String.Empty
             txtUnitPrice.Text = String.Empty
             txtWholesaleprice.Text = String.Empty
-            numQuantity.Value = 0
-            dtpExpirationDate.Value = Date.Today
+            txtBarcodeID.Text = String.Empty
+
+
+            ' Disable again if needed
+            txtProductname.Enabled = False
+            txtUnitPrice.Enabled = False
+            txtWholesaleprice.Enabled = False
+
+            ' Set focus back to barcode
+            txtBarcodeID.Focus()
+
+
+            ' Reset label
+            lblTotalCost.Text = "Total Cost: ₱0.00"
+
             txtBarcodeID.Enabled = True
             txtBarcodeID.Focus()
+
+            ' Reset numeric and date controls
+            numQuantity.Value = 0  ' or 1, depending on your default quantity
+            dtpExpirationDate.Value = Date.Today  ' resets to today's date
+
         End If
 
         ' Preserve persistent fields
@@ -519,7 +535,7 @@ Public Class Deliveries
         Dim currentReceivedBy As String = txtrecievedby.Text
 
         ' Clear only product input fields
-        ClearInputs()
+
 
         ' Restore persistent fields
         lblBatchNo.Text = currentBatchNo
@@ -1008,6 +1024,11 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
     Private Sub txtBarcodeID_TextChanged(sender As Object, e As EventArgs) Handles txtBarcodeID.TextChanged
 
         If txtBarcodeID.Text.Trim() = "" Then
+            ' Clear all fields when barcode is empty
+            txtProductname.Clear()
+            txtUnitPrice.Clear()
+            txtWholesaleprice.Clear()
+            dtpExpirationDate.Enabled = False
             Exit Sub
         End If
 
@@ -1015,7 +1036,7 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
             Try
                 conn.Open()
                 Using cmd As New MySqlCommand("
-                SELECT ProductName, RetailPrice, WholesalePrice, Expiration 
+                SELECT ProductName, Description, RetailPrice, WholesalePrice, Expiration 
                 FROM product 
                 WHERE BarcodeID = @Barcode", conn)
 
@@ -1023,27 +1044,21 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
 
                     Using reader As MySqlDataReader = cmd.ExecuteReader()
                         If reader.Read() Then
-
-                            ' ✅ Product Name
-                            txtProductname.Text = reader("ProductName").ToString()
+                            ' ✅ Combine ProductName + Description
+                            Dim name As String = If(reader("ProductName") IsNot DBNull.Value, reader("ProductName").ToString().Trim(), "")
+                            Dim desc As String = If(reader("Description") IsNot DBNull.Value, reader("Description").ToString().Trim(), "")
+                            txtProductname.Text = If(String.IsNullOrEmpty(desc), name, $"{name} ({desc})")
 
                             ' ✅ Unit Retail Price
-                            Dim retailPrice As Decimal = 0
-                            If Not IsDBNull(reader("RetailPrice")) Then
-                                retailPrice = Convert.ToDecimal(reader("RetailPrice"))
-                            End If
+                            Dim retailPrice As Decimal = If(Not IsDBNull(reader("RetailPrice")), Convert.ToDecimal(reader("RetailPrice")), 0D)
                             txtUnitPrice.Text = retailPrice.ToString("F2")
 
                             ' ✅ Wholesale Price (reference only)
-                            Dim wholesalePrice As Decimal = 0
-                            If Not IsDBNull(reader("WholesalePrice")) Then
-                                wholesalePrice = Convert.ToDecimal(reader("WholesalePrice"))
-                            End If
-                            txtWholesalePrice.Text = wholesalePrice.ToString("F2")
+                            Dim wholesalePrice As Decimal = If(Not IsDBNull(reader("WholesalePrice")), Convert.ToDecimal(reader("WholesalePrice")), 0D)
+                            txtWholesaleprice.Text = wholesalePrice.ToString("F2")
 
                             ' ✅ Expiration Handling
-                            Dim expirationStatus As String = reader("Expiration").ToString().Trim().ToLower()
-
+                            Dim expirationStatus As String = If(reader("Expiration") IsNot DBNull.Value, reader("Expiration").ToString().Trim().ToLower(), "")
                             If expirationStatus = "no" OrElse expirationStatus = "no expiration" Then
                                 dtpExpirationDate.Enabled = False
                             Else
@@ -1052,18 +1067,21 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
                             End If
 
                         Else
-                            ' ❌ Barcode Not Found
+                            ' ❌ Barcode Not Found — clear all fields
                             txtProductname.Clear()
                             txtUnitPrice.Clear()
-                            txtWholesalePrice.Clear()
+                            txtWholesaleprice.Clear()
                             dtpExpirationDate.Enabled = False
+
+
+
                         End If
                     End Using
                 End Using
 
             Catch ex As Exception
                 MessageBox.Show("Error fetching product: " & ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End Using
 
@@ -1072,27 +1090,45 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
 
 
 
-    ' === Function to fetch product by barcode ===
+
+    ' === Function to fetch product by barcode safely ===
     Private Sub FetchProductByBarcode()
         txtProductname.Clear()
+
+        If String.IsNullOrWhiteSpace(txtBarcodeID.Text) Then Exit Sub
+
         Using conn As New MySqlConnection(connectionstring)
             Try
                 conn.Open()
-                Using cmd As New MySqlCommand("SELECT ProductName FROM Product WHERE BarcodeID=@Barcode", conn)
+
+                Using cmd As New MySqlCommand("SELECT ProductName, Description FROM Product WHERE BarcodeID=@Barcode", conn)
                     cmd.Parameters.AddWithValue("@Barcode", txtBarcodeID.Text.Trim())
-                    Dim result As Object = cmd.ExecuteScalar()
-                    If result IsNot Nothing Then
-                        txtProductname.Text = result.ToString()
-                    Else
-                        MessageBox.Show("Barcode not found in inventory.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    End If
+
+                    Using reader As MySqlDataReader = cmd.ExecuteReader()
+                        If reader.Read() Then
+                            Dim name As String = If(reader("ProductName") IsNot DBNull.Value, reader("ProductName").ToString().Trim(), "")
+                            Dim desc As String = If(reader("Description") IsNot DBNull.Value, reader("Description").ToString().Trim(), "")
+
+                            ' Combine ProductName and Description safely
+                            txtProductname.Text = If(String.IsNullOrEmpty(desc), name, $"{name} ({desc})")
+                        Else
+                            MessageBox.Show("Barcode not found in inventory.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        End If
+                    End Using
                 End Using
+
+
+
+
             Catch ex As Exception
                 MessageBox.Show("Error fetching product: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End Using
-
     End Sub
+
+
+
+
     ' === Product Name: letters only, allow space and backspace ===
     Private Sub txtProductname_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtProductname.KeyPress
         ' Allow letters, backspace, and space
@@ -1358,11 +1394,26 @@ Handles txtCostprice.KeyPress, txtUnitPrice.KeyPress, txtBarcodeID.KeyPress
         ''txtTransactionNo.Text = String.Empty
         ''cmbSupplierName.SelectedIndex = -1
 
-        txtBarcodeID.Text = String.Empty
+
+        ' Temporarily enable fields for instant clearing
+        txtProductname.Enabled = True
+        txtUnitPrice.Enabled = True
+        txtWholesaleprice.Enabled = True
+
         txtProductname.Text = String.Empty
         txtCostprice.Text = String.Empty
         txtUnitPrice.Text = String.Empty
         txtWholesaleprice.Text = String.Empty
+        txtBarcodeID.Text = String.Empty
+
+
+        ' Disable again if needed
+        txtProductname.Enabled = False
+        txtUnitPrice.Enabled = False
+        txtWholesaleprice.Enabled = False
+
+        ' Set focus back to barcode
+        txtBarcodeID.Focus()
 
         ' Reset label
         lblTotalCost.Text = "Total Cost: ₱0.00"

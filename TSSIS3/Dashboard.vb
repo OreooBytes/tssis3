@@ -55,8 +55,12 @@ Public Class Dashboard
 
         '=== Labels Fonts  ===
 
-        lblFileMaintenance.Font = New Font("Outfit", 10, FontStyle.Bold)
-        lblUtilities.Font = New Font("Outfit", 10, FontStyle.Bold)
+        lblFileMaintenance.Font = New Font("Outfit", 8, FontStyle.Bold)
+        lblReports.Font = New Font("Outfit", 8, FontStyle.Bold)
+        lblTransactions.Font = New Font("Outfit", 8, FontStyle.Bold)
+        lblSystemUtilities.Font = New Font("Outfit", 8, FontStyle.Bold)
+        lblReports.Font = New Font("Outfit", 8, FontStyle.Bold)
+
         lblName.Font = New Font("Outfit", 12, FontStyle.Bold)
         lblRole.Font = New Font("Outfit", 10, FontStyle.Bold)
         lblDate.Font = New Font("Outfit", 9, FontStyle.Bold)
@@ -572,7 +576,7 @@ Public Class Dashboard
     Private Sub btnPOS_Click(sender As Object, e As EventArgs) Handles btnPOS.Click
         SetActiveButton(btnPOS)
 
-        OpenChildForm(Of POS)(Sub(f) f.CashierName = fullName)
+        OpenChildForm(Of POS)(Sub(f) f.CashierName = FullName)
 
         '=== Panel Size
 
@@ -1404,15 +1408,15 @@ Public Class Dashboard
         Return MyBase.ProcessCmdKey(msg, keyData)
     End Function
 
-    Private Sub Guna2HtmlLabel1_Click(sender As Object, e As EventArgs) Handles Guna2HtmlLabel1.Click
+    Private Sub Guna2HtmlLabel1_Click(sender As Object, e As EventArgs) Handles lblSystemUtilities.Click
 
     End Sub
 
-    Private Sub lblUtilities_Click(sender As Object, e As EventArgs) Handles lblUtilities.Click
+    Private Sub lblUtilities_Click(sender As Object, e As EventArgs) Handles lblReports.Click
 
     End Sub
 
-    Private Sub Guna2HtmlLabel2_Click(sender As Object, e As EventArgs) Handles Guna2HtmlLabel2.Click
+    Private Sub Guna2HtmlLabel2_Click(sender As Object, e As EventArgs) Handles lblTransactions.Click
 
     End Sub
 End Class

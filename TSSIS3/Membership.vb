@@ -63,6 +63,7 @@ Public Class Membership
         deletebtn.Font = New Font("Outfit", 9, FontStyle.Bold)
         Addbtn.Font = New Font("Outfit", 9, FontStyle.Bold)
         btnAddnewUser.Font = New Font("Outfit", 9, FontStyle.Bold)
+        btnupdateloyalty.Font = New Font("Outfit", 9, FontStyle.Bold)
         btnupdate.Font = New Font("Outfit", 9, FontStyle.Bold)
 
 
@@ -254,39 +255,65 @@ Public Class Membership
     ' ADD MEMBER
     '========================
     Private Sub Addbtn_Click(sender As Object, e As EventArgs) Handles Addbtn.Click
-        If nametxt.Text = "" Or contactnotxt.Text = "" Then
+
+        ' === Basic Validation ===
+        If String.IsNullOrWhiteSpace(nametxt.Text) Or String.IsNullOrWhiteSpace(contactnotxt.Text) Then
             MessageBox.Show("Please fill in all fields.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
+            Exit Sub
+        End If
+
+        Dim nameValue As String = nametxt.Text.Trim()
+        Dim contactValue As String = contactnotxt.Text.Trim()
+
+        ' === Bawal pareho ang Name at Contact ===
+        If String.Equals(nameValue, contactValue, StringComparison.OrdinalIgnoreCase) Then
+            MessageBox.Show("Name and Contact Number cannot be the same.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            nametxt.Focus()
+            Exit Sub
         End If
 
         Using conn As MySqlConnection = Module1.Openconnection()
-            Try
-                ' Check duplicate contact no
-                Dim checkcmd As New MySqlCommand("SELECT COUNT(*) FROM membership WHERE ContactNo=@ContactNo", conn)
-                checkcmd.Parameters.AddWithValue("@ContactNo", contactnotxt.Text)
-                Dim count As Integer = Convert.ToInt32(checkcmd.ExecuteScalar())
+            If conn Is Nothing Then Exit Sub
 
-                If count > 0 Then
-                    MessageBox.Show("This Contact Number already exists.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    Return
+            Try
+                ' === STRICT DUPLICATE CHECK (Name OR Contact) ===
+                Dim checkCmd As New MySqlCommand("
+                SELECT COUNT(*) 
+                FROM membership 
+                WHERE LOWER(Name) = LOWER(@Name) 
+                   OR ContactNo = @ContactNo", conn)
+
+                checkCmd.Parameters.Add("@Name", MySqlDbType.VarChar).Value = nameValue
+                checkCmd.Parameters.Add("@ContactNo", MySqlDbType.VarChar).Value = contactValue
+
+                Dim existingCount As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
+
+                If existingCount > 0 Then
+                    MessageBox.Show("Duplicate Name or Contact Number detected. Saving not allowed.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Exit Sub
                 End If
 
+                ' === Insert ===
                 Dim randomBarcode As String = pbBarcode.Tag.ToString()
 
-                ' Insert
-                Dim cmd As New MySqlCommand("INSERT INTO membership (Name, ContactNo, Barcode, Points) VALUES (@Name, @ContactNo, @Barcode, @Points)", conn)
-                cmd.Parameters.AddWithValue("@Name", nametxt.Text)
-                cmd.Parameters.AddWithValue("@ContactNo", contactnotxt.Text)
-                cmd.Parameters.AddWithValue("@Barcode", randomBarcode)
-                cmd.Parameters.AddWithValue("@Points", 1)
-                cmd.ExecuteNonQuery()
+                Dim insertCmd As New MySqlCommand("
+                INSERT INTO membership (Name, ContactNo, Barcode, Points) 
+                VALUES (@Name, @ContactNo, @Barcode, @Points)", conn)
 
-                LogAuditTrail(SessionData.role, SessionData.fullName, "Added new member: " & nametxt.Text)
+                insertCmd.Parameters.Add("@Name", MySqlDbType.VarChar).Value = nameValue
+                insertCmd.Parameters.Add("@ContactNo", MySqlDbType.VarChar).Value = contactValue
+                insertCmd.Parameters.Add("@Barcode", MySqlDbType.VarChar).Value = randomBarcode
+                insertCmd.Parameters.Add("@Points", MySqlDbType.Int32).Value = 1
+
+                insertCmd.ExecuteNonQuery()
+
+                LogAuditTrail(SessionData.role, SessionData.fullName, "Added new member: " & nameValue)
 
                 MessageBox.Show("Successfully added! Member receives 1 Welcome Point.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 LoadMembershipsFromDatabase()
                 clear()
+                Guna2ShadowPanel1.Visible = False
 
             Catch ex As MySqlException
                 MessageBox.Show("Database Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -295,27 +322,35 @@ Public Class Membership
             End Try
         End Using
 
-
-
-
-        ' --- Hide panels ---
-        Guna2ShadowPanel1.Visible = False
-
     End Sub
+
+
+
 
     '========================
     'UPDATE MEMBER
     '========================
     Private Sub btnupdate_Click(sender As Object, e As EventArgs) Handles btnupdate.Click
-        ' === Validation ===
-        If nametxt.Text.Trim() = "" Or contactnotxt.Text.Trim() = "" Then
+
+        ' === Basic Validation ===
+        If String.IsNullOrWhiteSpace(nametxt.Text) Or String.IsNullOrWhiteSpace(contactnotxt.Text) Then
             MessageBox.Show("Please fill in all fields.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
+            Exit Sub
         End If
 
         If Guna2DataGridView1.SelectedRows.Count = 0 Then
             MessageBox.Show("Please select a member to update.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            Return
+            Exit Sub
+        End If
+
+        Dim nameValue As String = nametxt.Text.Trim()
+        Dim contactValue As String = contactnotxt.Text.Trim()
+
+        ' === Validation: Name and Contact cannot be the same ===
+        If String.Equals(nameValue, contactValue, StringComparison.OrdinalIgnoreCase) Then
+            MessageBox.Show("Name and Contact Number cannot be the same.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            nametxt.Focus()
+            Exit Sub
         End If
 
         Dim selectedRow As DataGridViewRow = Guna2DataGridView1.SelectedRows(0)
@@ -325,23 +360,28 @@ Public Class Membership
             If conn Is Nothing Then Exit Sub
 
             Try
-                ' === Check for duplicate contact number (if changed) ===
-                If contactnotxt.Text.Trim() <> originalContactNo Then
-                    Dim checkCmd As New MySqlCommand("SELECT COUNT(*) FROM membership WHERE ContactNo = @ContactNo", conn)
-                    checkCmd.Parameters.AddWithValue("@ContactNo", contactnotxt.Text.Trim())
-                    If Convert.ToInt32(checkCmd.ExecuteScalar()) > 0 Then
-                        MsgBox("Contact number already exists.")
-                        contactnotxt.Clear()
-                        Return
-                    End If
+                ' === STRICT DUPLICATE CHECK FOR NAME OR CONTACT (case-insensitive for name) ===
+                Dim checkDuplicateCmd As New MySqlCommand("
+                SELECT COUNT(*) FROM membership
+                WHERE (LOWER(Name) = LOWER(@Name) OR ContactNo = @ContactNo)
+                  AND ContactNo <> @OriginalContactNo
+            ", conn)
+                checkDuplicateCmd.Parameters.AddWithValue("@Name", nameValue)
+                checkDuplicateCmd.Parameters.AddWithValue("@ContactNo", contactValue)
+                checkDuplicateCmd.Parameters.AddWithValue("@OriginalContactNo", originalContactNo)
+
+                If Convert.ToInt32(checkDuplicateCmd.ExecuteScalar()) > 0 Then
+                    MessageBox.Show("A member with the same Name or Contact Number already exists.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Exit Sub
                 End If
 
-                ' === Get current data for audit trail ===
+                ' === Get old values for audit ===
                 Dim oldValues As New Dictionary(Of String, String)
                 Dim getCmd As New MySqlCommand("
                 SELECT Name, Points, ContactNo 
                 FROM membership 
-                WHERE ContactNo=@ContactNo", conn)
+                WHERE ContactNo=@ContactNo
+            ", conn)
                 getCmd.Parameters.AddWithValue("@ContactNo", originalContactNo)
 
                 Using reader = getCmd.ExecuteReader()
@@ -353,46 +393,46 @@ Public Class Membership
                 End Using
 
                 ' === Perform Update ===
-                Dim cmd As New MySqlCommand("
+                Dim updateCmd As New MySqlCommand("
                 UPDATE membership 
                 SET Name=@Name, Points=@Points, ContactNo=@NewContactNo 
-                WHERE ContactNo=@OriginalContactNo", conn)
+                WHERE ContactNo=@OriginalContactNo
+            ", conn)
+                updateCmd.Parameters.AddWithValue("@Name", nameValue)
+                updateCmd.Parameters.AddWithValue("@Points", 1)
+                updateCmd.Parameters.AddWithValue("@NewContactNo", contactValue)
+                updateCmd.Parameters.AddWithValue("@OriginalContactNo", originalContactNo)
 
-                cmd.Parameters.AddWithValue("@Name", nametxt.Text.Trim())
-                cmd.Parameters.AddWithValue("@Points", 1)
-                cmd.Parameters.AddWithValue("@NewContactNo", contactnotxt.Text.Trim())
-                cmd.Parameters.AddWithValue("@OriginalContactNo", originalContactNo)
-
-                Dim rowsAffected As Integer = cmd.ExecuteNonQuery()
+                Dim rowsAffected As Integer = updateCmd.ExecuteNonQuery()
 
                 If rowsAffected > 0 Then
-                    ' === Compare changes for audit trail ===
+                    ' === Audit Trail ===
                     Dim updatedFields As New List(Of String)
-                    If nametxt.Text.Trim() <> oldValues("Name") Then updatedFields.Add($"Name: ""{oldValues("Name")}"" → ""{nametxt.Text.Trim()}""")
-                    If contactnotxt.Text.Trim() <> oldValues("ContactNo") Then updatedFields.Add($"Contact No: ""{oldValues("ContactNo")}"" → ""{contactnotxt.Text.Trim()}""")
-                    ' (Optional: include points change if you want)
-                    ' If oldValues("Points") <> "1" Then updatedFields.Add($"Points: ""{oldValues("Points")}"" → ""1""")
+                    If Not String.Equals(nameValue, oldValues("Name"), StringComparison.OrdinalIgnoreCase) Then
+                        updatedFields.Add($"Name: ""{oldValues("Name")}"" → ""{nameValue}""")
+                    End If
+                    If Not String.Equals(contactValue, oldValues("ContactNo"), StringComparison.OrdinalIgnoreCase) Then
+                        updatedFields.Add($"Contact No: ""{oldValues("ContactNo")}"" → ""{contactValue}""")
+                    End If
 
                     If updatedFields.Count > 0 Then
-                        Dim actionDescription As String = "Updated Membership Details:" & vbCrLf & String.Join(vbCrLf, updatedFields)
+                        Dim actionDescription As String =
+                        "Updated Membership Details:" & vbCrLf &
+                        String.Join(vbCrLf, updatedFields)
 
-                        ' === Get current user info for audit trail ===
                         Dim actorRole As String = If(String.IsNullOrWhiteSpace(SessionData.role), "System", SessionData.role)
                         Dim actorName As String = If(String.IsNullOrWhiteSpace(SessionData.fullName), "System", SessionData.fullName)
 
                         LogAuditTrail(actorRole, actorName, actionDescription)
                     End If
 
-                    ' === Show success message ===
                     MessageBox.Show("Successfully updated!", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     SystemSounds.Exclamation.Play()
 
-                    ' === Refresh UI ===
                     LoadMembershipsFromDatabase()
                     Addbtn.Visible = True
                     btnupdate.Visible = False
                     Guna2ShadowPanel1.Visible = False
-
                     clear()
                 Else
                     MessageBox.Show("No record was updated.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -404,7 +444,13 @@ Public Class Membership
                 Module1.ConnectionClose(conn)
             End Try
         End Using
+
     End Sub
+
+
+
+
+
 
 
 
@@ -418,6 +464,7 @@ Public Class Membership
             MessageBox.Show("You don't have permission to delete a member.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
         End If
+
         ' --- Check if any row is selected ---
         If Guna2DataGridView1.SelectedRows.Count = 0 Then
             MessageBox.Show("Please select a member to delete.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -433,8 +480,8 @@ Public Class Membership
         Dim memberInfo As String = $"{memberName} (ID: {id})"
 
         ' --- Confirm deletion ---
-        Dim result As DialogResult = MessageBox.Show($"Are you sure you want to delete member ?",
-                                                 "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        Dim result As DialogResult = MessageBox.Show($"Are you sure you want to delete this member?",
+                                             "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
         If result = DialogResult.Yes Then
             Using conn As MySqlConnection = Module1.Openconnection()
@@ -450,7 +497,7 @@ Public Class Membership
                     LogAuditTrail(SessionData.role, SessionData.fullName, $"Deleted member: {memberInfo}")
 
                     ' --- Success message ---
-                    MessageBox.Show($"Member '{memberInfo}' successfully deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show($"Member successfully deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                 Catch ex As MySqlException
                     MessageBox.Show("Database error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -656,9 +703,9 @@ End Sub
         btnAddnewUser.ForeColor = Color.White
         btnAddnewUser.Image = My.Resources.icons8_add_30_normal ' normal icon
 
-        'btnSort.FillColor = ColorTranslator.FromHtml("#1D3A70")
-        'btnSort.ForeColor = Color.White
-        'btnSort.Image = My.Resources.icons8_alphabetical_sorting_normal ' normal icon
+        btnupdateloyalty.FillColor = ColorTranslator.FromHtml("#1D3A70")
+        btnupdateloyalty.ForeColor = Color.White
+        btnupdateloyalty.Image = My.Resources.icons8_update_normal ' normal icon
 
 
         ' === HOVER EFFECTS FOR btnAddnewUsar ===
@@ -674,19 +721,18 @@ End Sub
                                                  btnAddnewUser.Image = My.Resources.icons8_add_30_normal ' back to normal
                                              End Sub
 
+        ' === HOVER EFFECTS FOR btnSort ===
+        AddHandler btnupdateloyalty.MouseEnter, Sub()
+                                                    btnupdateloyalty.FillColor = ColorTranslator.FromHtml("#FFD93D")
+                                                    btnupdateloyalty.ForeColor = ColorTranslator.FromHtml("#0B2447")
+                                                    btnupdateloyalty.Image = My.Resources.icons8_update_hindi ' hover icon
+                                                End Sub
 
-        '' === HOVER EFFECTS FOR btnSort ===
-        'AddHandler btnSort.MouseEnter, Sub()
-        '                                   btnSort.FillColor = ColorTranslator.FromHtml("#FFD93D")
-        '                                   btnSort.ForeColor = ColorTranslator.FromHtml("#0B2447")
-        '                                   btnSort.Image = My.Resources.icons8_alphabetical_sorting_30_hindi ' hover icon
-        '                               End Sub
-
-        'AddHandler btnSort.MouseLeave, Sub()
-        '                                   btnSort.FillColor = ColorTranslator.FromHtml("#1D3A70")
-        '                                   btnSort.ForeColor = Color.White
-        '                                   btnSort.Image = My.Resources.icons8_alphabetical_sorting_normal ' normal icon
-        '                               End Sub
+        AddHandler btnupdateloyalty.MouseLeave, Sub()
+                                                    btnupdateloyalty.FillColor = ColorTranslator.FromHtml("#1D3A70")
+                                                    btnupdateloyalty.ForeColor = Color.White
+                                                    btnupdateloyalty.Image = My.Resources.icons8_update_normal  ' normal icon
+                                                End Sub
 
 
         ' === OPTIONAL: CENTER THE FORM ON SCREEN ===
@@ -720,4 +766,9 @@ End Sub
         End If
         Return MyBase.ProcessCmdKey(msg, keyData)
     End Function
+
+    Private Sub btnupdateloyalty_Click(sender As Object, e As EventArgs) Handles btnupdateloyalty.Click
+        Dim loyalty As New LoyaltyDiscount
+        LoyaltyDiscount.ShowDialog()
+    End Sub
 End Class

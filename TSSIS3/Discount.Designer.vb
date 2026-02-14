@@ -301,6 +301,7 @@ Partial Class Discount
         Me.btnupdateloyalty.Size = New System.Drawing.Size(217, 36)
         Me.btnupdateloyalty.TabIndex = 65
         Me.btnupdateloyalty.Text = "         Update Loyalty Discount"
+        Me.btnupdateloyalty.Visible = False
         '
         'btnAddnewDiscount
         '

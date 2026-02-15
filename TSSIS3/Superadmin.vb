@@ -155,6 +155,25 @@ Public Class Superadmin
             Try
                 conn.Open()
 
+                Dim newUsername As String = uname.Text.Trim()
+
+                ' --- Get current Superadmin username ---
+                Dim getCurrentUsernameCmd As New MySqlCommand("
+                SELECT Username FROM users 
+                WHERE UserType='Superadmin' LIMIT 1
+            ", conn)
+
+                Dim currentUsernameObj As Object = getCurrentUsernameCmd.ExecuteScalar()
+                Dim currentUsername As String = If(currentUsernameObj IsNot Nothing, currentUsernameObj.ToString(), "")
+
+                ' --- Prevent using reserved username "SuperAdmin" if it's not the current username ---
+                If newUsername.Equals("SuperAdmin", StringComparison.OrdinalIgnoreCase) AndAlso Not newUsername.Equals(currentUsername, StringComparison.OrdinalIgnoreCase) Then
+                    MessageBox.Show("The username 'SuperAdmin' is reserved and cannot be used.", "Restricted Username", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    uname.Focus()
+                    Return
+                End If
+
+                ' ===== Perform Update =====
                 Dim sql As String = "
                 UPDATE users
                 SET FirstName=@fname,
@@ -168,14 +187,13 @@ Public Class Superadmin
             "
 
                 Using cmd As New MySqlCommand(sql, conn)
-                    ' Optional fields default to empty string
                     cmd.Parameters.AddWithValue("@fname", fname.Text.Trim())
                     cmd.Parameters.AddWithValue("@mi", If(String.IsNullOrWhiteSpace(minitial.Text), "", minitial.Text.Trim()))
                     cmd.Parameters.AddWithValue("@lname", lname.Text.Trim())
                     cmd.Parameters.AddWithValue("@address", If(String.IsNullOrWhiteSpace(txtAddress.Text), "", txtAddress.Text.Trim()))
                     cmd.Parameters.AddWithValue("@cno", If(String.IsNullOrWhiteSpace(cno.Text), "", cno.Text.Trim()))
                     cmd.Parameters.AddWithValue("@pword", pword.Text)
-                    cmd.Parameters.AddWithValue("@uname", uname.Text.Trim())
+                    cmd.Parameters.AddWithValue("@uname", newUsername)
 
                     Dim rowsAffected As Integer = cmd.ExecuteNonQuery()
                     If rowsAffected > 0 Then
@@ -189,8 +207,11 @@ Public Class Superadmin
                 MessageBox.Show("Error updating superadmin: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End Using
+
         Me.Close()
     End Sub
+
+
 
 
 

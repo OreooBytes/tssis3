@@ -233,7 +233,8 @@ Public Class User
 
                                 userTable.Rows.Add(firstName, mi, lastName, address, contact, username, password, userType)
 
-                                If userType.ToLower() <> "superadmin" Then
+                                ' Only add to DataGridView if not SuperAdmin AND not defult
+                                If userType.ToLower() <> "superadmin" AndAlso userType.ToLower() <> "defult" Then
                                     Dim index As Integer = Guna2DataGridView1.Rows.Add(firstName, mi, lastName, address, contact, username, userType)
                                     Guna2DataGridView1.Rows(index).Cells("Edit").Value = My.Resources.icons8_edit_mains
                                     Guna2DataGridView1.Rows(index).Cells("Delete").Value = My.Resources.icons8_delete_mains
@@ -560,17 +561,27 @@ Public Class User
                     Return
                 End If
 
-                ' --- Check Address duplication ---
-                Dim checkAddressCmd As New MySqlCommand("SELECT COUNT(*) FROM users WHERE Address = @Address", conn)
-                checkAddressCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim())
-                Dim addressExists As Integer = Convert.ToInt32(checkAddressCmd.ExecuteScalar())
-
-                If addressExists > 0 Then
-                    MessageBox.Show("Address already exists. Duplicate address is not allowed.",
-                    "Duplicate Detected", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    txtAddress.Focus()
+                ' --- Prevent using reserved username "SuperAdmin" ---
+                If uname.Text.Trim().Equals("SuperAdmin", StringComparison.OrdinalIgnoreCase) Then
+                    MessageBox.Show("The username 'SuperAdmin' is reserved and cannot be used.",
+                "Restricted Username", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    uname.Clear()
+                    uname.Focus()
                     Return
                 End If
+
+
+                '' --- Check Address duplication ---
+                'Dim checkAddressCmd As New MySqlCommand("SELECT COUNT(*) FROM users WHERE Address = @Address", conn)
+                'checkAddressCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim())
+                'Dim addressExists As Integer = Convert.ToInt32(checkAddressCmd.ExecuteScalar())
+
+                'If addressExists > 0 Then
+                '    MessageBox.Show("Address already exists. Duplicate address is not allowed.",
+                '    "Duplicate Detected", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                '    txtAddress.Focus()
+                '    Return
+                'End If
 
                 ' --- Insert New User ---
                 Dim cmd As New MySqlCommand("
@@ -636,51 +647,59 @@ Public Class User
                 Dim newContact As String = cno.Text.Trim()
                 Dim newAddress As String = txtAddress.Text.Trim()
 
+                ' --- Prevent using reserved username "SuperAdmin" ---
+                If newUsername.Equals("SuperAdmin", StringComparison.OrdinalIgnoreCase) AndAlso
+               Not originalUsername.Equals("SuperAdmin", StringComparison.OrdinalIgnoreCase) Then
+
+                    MessageBox.Show("The username 'SuperAdmin' is reserved and cannot be used.",
+                            "Restricted Username", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    uname.Focus()
+                    Return
+                End If
+
                 ' --- Check duplicate username (if changed) ---
                 If Not String.Equals(originalUsername.Trim(), newUsername, StringComparison.OrdinalIgnoreCase) Then
 
                     Dim checkUserCmd As New MySqlCommand("
-                    SELECT COUNT(*) FROM users 
-                    WHERE LOWER(Username) = LOWER(@Username)", conn)
+                SELECT COUNT(*) FROM users 
+                WHERE LOWER(Username) = LOWER(@Username)", conn)
 
                     checkUserCmd.Parameters.AddWithValue("@Username", newUsername)
 
                     If Convert.ToInt32(checkUserCmd.ExecuteScalar()) > 0 Then
                         MessageBox.Show("The username already exists. Please enter a different one.",
-                                    "Duplicate Username", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                "Duplicate Username", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         uname.Focus()
                         Return
                     End If
                 End If
 
-
                 ' --- Check duplicate contact number (if changed) ---
                 If Not String.Equals(originalcontactno.Trim(), newContact, StringComparison.Ordinal) Then
 
                     Dim checkCnoCmd As New MySqlCommand("
-                    SELECT COUNT(*) FROM users 
-                    WHERE ContactNo = @ContactNo 
-                    AND LOWER(Username) <> LOWER(@OriginalUsername)", conn)
+                SELECT COUNT(*) FROM users 
+                WHERE ContactNo = @ContactNo 
+                AND LOWER(Username) <> LOWER(@OriginalUsername)", conn)
 
                     checkCnoCmd.Parameters.AddWithValue("@ContactNo", newContact)
                     checkCnoCmd.Parameters.AddWithValue("@OriginalUsername", originalUsername.Trim())
 
                     If Convert.ToInt32(checkCnoCmd.ExecuteScalar()) > 0 Then
                         MessageBox.Show("The contact number already exists. Please enter a different one.",
-                                    "Duplicate Contact", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                                "Duplicate Contact", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         cno.Focus()
                         Return
                     End If
                 End If
 
-
                 ' --- Get old values for audit trail ---
                 Dim oldValues As New Dictionary(Of String, String)
 
                 Dim getCurrentCmd As New MySqlCommand("
-                SELECT FirstName, MI, LastName, Address, ContactNo, Username, Password, UserType 
-                FROM users 
-                WHERE LOWER(Username)=LOWER(@OriginalUsername)", conn)
+            SELECT FirstName, MI, LastName, Address, ContactNo, Username, Password, UserType 
+            FROM users 
+            WHERE LOWER(Username)=LOWER(@OriginalUsername)", conn)
 
                 getCurrentCmd.Parameters.AddWithValue("@OriginalUsername", originalUsername.Trim())
 
@@ -697,33 +716,15 @@ Public Class User
                     End If
                 End Using
 
-
-                ' --- Check duplicate address (if changed) ---
-                If Not String.Equals(oldValues("Address"), newAddress, StringComparison.OrdinalIgnoreCase) Then
-
-                    Dim checkAddressCmd As New MySqlCommand("
-                    SELECT COUNT(*) FROM users 
-                    WHERE LOWER(Address) = LOWER(@Address)
-                    AND LOWER(Username) <> LOWER(@OriginalUsername)", conn)
-
-                    checkAddressCmd.Parameters.AddWithValue("@Address", newAddress)
-                    checkAddressCmd.Parameters.AddWithValue("@OriginalUsername", originalUsername.Trim())
-
-                    If Convert.ToInt32(checkAddressCmd.ExecuteScalar()) > 0 Then
-                        MessageBox.Show("The address already exists. Duplicate address is not allowed.",
-                                    "Duplicate Address", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        txtAddress.Focus()
-                        Return
-                    End If
-                End If
-
+                ' 🔥 ADDRESS DUPLICATE CHECK REMOVED
+                ' (Now same address is allowed)
 
                 ' --- Update record ---
                 Dim cmd As New MySqlCommand("
-                UPDATE users SET
-                    FirstName=@FirstName, MI=@MI, LastName=@LastName, Address=@Address,
-                    ContactNo=@ContactNo, Username=@Username, Password=@Password, UserType=@UserType
-                WHERE LOWER(Username)=LOWER(@OriginalUsername)", conn)
+            UPDATE users SET
+                FirstName=@FirstName, MI=@MI, LastName=@LastName, Address=@Address,
+                ContactNo=@ContactNo, Username=@Username, Password=@Password, UserType=@UserType
+            WHERE LOWER(Username)=LOWER(@OriginalUsername)", conn)
 
                 Dim newRole As String = If(utype.SelectedItem IsNot Nothing, utype.SelectedItem.ToString(), "")
 
@@ -774,7 +775,7 @@ Public Class User
 
                     If updatedFields.Count > 0 Then
                         Dim actionDescription As String = "Updated User Details:" &
-                                                      vbCrLf & String.Join(vbCrLf, updatedFields)
+                                                  vbCrLf & String.Join(vbCrLf, updatedFields)
 
                         Dim actorRole As String = If(String.IsNullOrWhiteSpace(SessionData.role), "System", SessionData.role)
                         Dim actorName As String = If(String.IsNullOrWhiteSpace(SessionData.fullName), "System", SessionData.fullName)
@@ -799,6 +800,7 @@ Public Class User
             End Try
         End Using
     End Sub
+
 
 
 

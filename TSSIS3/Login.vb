@@ -27,11 +27,11 @@ Public Class Login
     Private Sub Login_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         ApplyRoundedCorners()
-
-
+        ' ===== Automatic Default Superadmin =====
         Using conn As New MySqlConnection(connectionstring)
             conn.Open()
         End Using
+
         ' UI Setup
 
         loginbtn.FillColor = ColorTranslator.FromHtml("#0B2447")
@@ -48,11 +48,55 @@ Public Class Login
 
 
         PictureBox2.SendToBack()
-
+        EnsureDefaultSuperAdmin()
     End Sub
 
+    Public Sub EnsureDefaultSuperAdmin()
+        Using conn As MySqlConnection = Module1.Openconnection()
+            If conn IsNot Nothing Then
+                Try
+                    ' Check if default SuperAdmin already exists
+                    Dim checkCmd As New MySqlCommand("SELECT COUNT(*) FROM users WHERE Username='superadmin'", conn)
+                    Dim existsCount As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
+
+                    If existsCount = 0 Then
+                        ' Insert default SuperAdmin only once
+                        Dim insertCmd As New MySqlCommand("
+                        INSERT INTO users 
+                        (ContactNo, FirstName, LastName, MI, Address, Username, Password, UserType)
+                        VALUES 
+                        (@ContactNo, @FirstName, @LastName, @MI, @Address, @Username, @Password, @UserType)
+                    ", conn)
+
+                        insertCmd.Parameters.AddWithValue("@ContactNo", "09123456789")
+                        insertCmd.Parameters.AddWithValue("@FirstName", "Super")
+                        insertCmd.Parameters.AddWithValue("@LastName", "Admin")
+                        insertCmd.Parameters.AddWithValue("@MI", "")
+                        insertCmd.Parameters.AddWithValue("@Address", "Taller Store")
+                        insertCmd.Parameters.AddWithValue("@Username", "superadmin")
+                        insertCmd.Parameters.AddWithValue("@Password", "123456") ' hash later
+                        insertCmd.Parameters.AddWithValue("@UserType", "defult") ' hidden account
+
+                        insertCmd.ExecuteNonQuery()
+
+                        MessageBox.Show("Default SuperAdmin account created." & vbCrLf &
+                                    "Username: superadmin" & vbCrLf &
+                                    "Password: 123456",
+                                    "Default Account Created", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    End If
+                Catch ex As MySqlException
+                    MessageBox.Show("Database error: " & ex.Message)
+                Finally
+                    Module1.ConnectionClose(conn)
+                End Try
+            End If
+        End Using
+    End Sub
+
+
+
     ' Shared instance
-   
+
 
     Private Function LoadSessionData(username As String) As Boolean
         Using conn As New MySqlConnection(connectionstring)
@@ -158,31 +202,31 @@ Public Class Login
             End If
         End Using
 
-        ' === 3️⃣ Default SuperAdmin login (optional, keep original) ===
-        If username = "superadmin" And password = "superadmin" Then
-            If superAdminExists Then
-                MsgBox("Default SuperAdmin account is disabled because a SuperAdmin already exists in the database.", MsgBoxStyle.Exclamation, "Login Disabled")
-                Return
-            End If
+        '' === 3️⃣ Default SuperAdmin login (optional, keep original) ===
+        'If username = "superadmin" And password = "superadmin" Then
+        '    If superAdminExists Then
+        '        MsgBox("Default SuperAdmin account is disabled because a SuperAdmin already exists in the database.", MsgBoxStyle.Exclamation, "Login Disabled")
+        '        Return
+        '    End If
 
-            ' --- Set session ---
-            SessionData.fullName = "Super Admin"
-            SessionData.role = "SuperAdmin"
+        '    ' --- Set session ---
+        '    SessionData.fullName = "Super Admin"
+        '    SessionData.role = "SuperAdmin"
 
-            ' ✅ Show login success message
-            MsgBox("Login successful. Welcome SuperAdmin!", MsgBoxStyle.Information, "Login Status")
+        '    ' ✅ Show login success message
+        '    MsgBox("Login successful. Welcome SuperAdmin!", MsgBoxStyle.Information, "Login Status")
 
-            ' ✅ Log the login action using default values if SessionData is empty
-            Dim actorRole As String = If(String.IsNullOrWhiteSpace(SessionData.role), "Default", SessionData.role)
-            Dim actorName As String = If(String.IsNullOrWhiteSpace(SessionData.fullName), "Default", SessionData.fullName)
-            LogHistory.LogAction(actorRole, actorName, "Logged in")
+        '    ' ✅ Log the login action using default values if SessionData is empty
+        '    Dim actorRole As String = If(String.IsNullOrWhiteSpace(SessionData.role), "Default", SessionData.role)
+        '    Dim actorName As String = If(String.IsNullOrWhiteSpace(SessionData.fullName), "Default", SessionData.fullName)
+        '    LogHistory.LogAction(actorRole, actorName, "Logged in")
 
 
-            Dim dashboard As New Dashboard
-            dashboard.Show()
-            Me.Hide()
-            Return
-        End If
+        '    Dim dashboard As New Dashboard
+        '    dashboard.Show()
+        '    Me.Hide()
+        '    Return
+        'End If
 
         ' === 4️⃣ Normal user login (including SuperAdmin from DB) ===
         Using conn As MySqlConnection = Module1.Openconnection()

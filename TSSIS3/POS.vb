@@ -2490,6 +2490,10 @@ Public Class POS
 
         UpdateChange()
         cmbDiscount.Enabled = False
+        cmbDiscount.SelectedIndex = -1
+        lblDiscount.Text = "₱ 0.00"
+
+
     End Sub
 
 

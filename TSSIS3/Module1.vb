@@ -13,11 +13,9 @@ Module Module1
 
     Public LoggedInUserType As String
 
-    'Public connectionstring As String = "server=192.168.100.69;port=3306;user=tssis;password=;database=tssis"
+    'Public connectionstring As String = "server=10.63.49.16;port=3306;user=root;password=;database=tssis"
 
     Public connectionstring As String = "server=localhost;port=3306;user=root;password=;database=tssis"
-
-    'Public connectionstring As String = "server=localhost;port=3306;user=root;password=;database=tssis"
 
 
     ' Opens and returns an open MySQL connection

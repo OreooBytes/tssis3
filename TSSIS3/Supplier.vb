@@ -150,35 +150,10 @@ Public Class Supplier
             If conn Is Nothing Then Return
 
             Try
-                ' ===== Duplication check (EMAIL ONLY) =====
-                Dim dupCmd As New MySqlCommand("
-                SELECT 
-                    SUM(CASE WHEN Email = @Email THEN 1 ELSE 0 END) AS EmailExists
-                FROM supplier", conn)
-
-                dupCmd.Parameters.AddWithValue("@Email", eml.Text.Trim())
-
-                Using reader As MySqlDataReader = dupCmd.ExecuteReader()
-                    If reader.Read() Then
-                        Dim emailExists As Boolean = If(IsDBNull(reader("EmailExists")), False, Convert.ToInt32(reader("EmailExists")) > 0)
-
-                        ' ===== Build duplicate message =====
-                        If emailExists Then
-                            MessageBox.Show("Email already exists.",
-                                        "Duplicate Entry",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Warning)
-
-                            eml.Focus()
-                            Return
-                        End If
-                    End If
-                End Using
-
-                ' ===== Insert supplier =====
+                ' ===== Insert supplier (Email can now be duplicated) =====
                 Using insertCmd As New MySqlCommand("
-                INSERT INTO supplier (CompanyName, SupplierName, ContactNo, Email, Address)
-                VALUES (@CompanyName, @SupplierName, @ContactNo, @Email, @Address)", conn)
+            INSERT INTO supplier (CompanyName, SupplierName, ContactNo, Email, Address)
+            VALUES (@CompanyName, @SupplierName, @ContactNo, @Email, @Address)", conn)
 
                     insertCmd.Parameters.AddWithValue("@CompanyName", cname.Text.Trim())
                     insertCmd.Parameters.AddWithValue("@SupplierName", sname.Text.Trim())
@@ -193,9 +168,9 @@ Public Class Supplier
                 LogAuditTrail(SessionData.role, SessionData.fullName, $"Added Supplier: {sname.Text.Trim()}")
 
                 MessageBox.Show("Supplier successfully added!",
-                            "Add Supplier",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information)
+                        "Add Supplier",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information)
 
                 clear()
                 LoadData()
@@ -203,9 +178,9 @@ Public Class Supplier
 
             Catch ex As MySqlException
                 MessageBox.Show("Error adding supplier: " & ex.Message,
-                            "Database Error",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error)
+                        "Database Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error)
             Finally
                 Module1.ConnectionClose(conn)
             End Try
@@ -231,48 +206,6 @@ Public Class Supplier
             If conn Is Nothing Then Return
 
             Try
-                ' ===== Duplication check (exclude current supplier) =====
-                Dim dupCmd As New MySqlCommand("
-                SELECT 
-                    SUM(CASE WHEN SupplierName = @SupplierName AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS NameExists,
-                    SUM(CASE WHEN ContactNo = @ContactNo AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS ContactExists,
-                    SUM(CASE WHEN Email = @Email AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS EmailExists,
-                    SUM(CASE WHEN Address = @Address AND SupplierID <> @SupplierID THEN 1 ELSE 0 END) AS AddressExists
-                FROM supplier", conn)
-
-                dupCmd.Parameters.AddWithValue("@SupplierName", sname.Text.Trim())
-                dupCmd.Parameters.AddWithValue("@ContactNo", cno.Text.Trim())
-                dupCmd.Parameters.AddWithValue("@Email", eml.Text.Trim())
-                dupCmd.Parameters.AddWithValue("@Address", adrss.Text.Trim())
-                dupCmd.Parameters.AddWithValue("@SupplierID", currentSupplierID)
-
-                Using reader As MySqlDataReader = dupCmd.ExecuteReader()
-                    If reader.Read() Then
-                        Dim nameExists As Boolean = If(IsDBNull(reader("NameExists")), False, Convert.ToInt32(reader("NameExists")) > 0)
-                        Dim contactExists As Boolean = If(IsDBNull(reader("ContactExists")), False, Convert.ToInt32(reader("ContactExists")) > 0)
-                        Dim emailExists As Boolean = If(IsDBNull(reader("EmailExists")), False, Convert.ToInt32(reader("EmailExists")) > 0)
-                        Dim addressExists As Boolean = If(IsDBNull(reader("AddressExists")), False, Convert.ToInt32(reader("AddressExists")) > 0)
-
-                        ' ===== Build duplicate message =====
-                        Dim dupMessage As String = ""
-                        If nameExists Then dupMessage &= "Supplier Name already exists." & vbCrLf
-                        If contactExists Then dupMessage &= "Contact Number already exists." & vbCrLf
-                        If emailExists Then dupMessage &= "Email already exists." & vbCrLf
-                        If addressExists Then dupMessage &= "Address already exists." & vbCrLf
-
-                        If dupMessage <> "" Then
-                            MessageBox.Show(dupMessage.Trim(), "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-
-                            ' Focus the first duplicate field
-                            If nameExists Then sname.Focus()
-                            If contactExists Then cno.Focus()
-                            If emailExists Then eml.Focus()
-                            If addressExists Then adrss.Focus()
-                            Return
-                        End If
-                    End If
-                End Using
-
                 ' ===== Get original data =====
                 Dim updatedFields As New List(Of String)
                 Dim origName As String = "", origCompany As String = "", origContact As String = "", origEmail As String = "", origAddress As String = ""
@@ -299,10 +232,10 @@ Public Class Supplier
 
                 ' ===== Perform update =====
                 Using updateCmd As New MySqlCommand("
-                UPDATE supplier 
-                SET SupplierName=@SupplierName, CompanyName=@CompanyName, ContactNo=@ContactNo, 
-                    Email=@Email, Address=@Address 
-                WHERE SupplierID=@SupplierID", conn)
+            UPDATE supplier 
+            SET SupplierName=@SupplierName, CompanyName=@CompanyName, ContactNo=@ContactNo, 
+                Email=@Email, Address=@Address 
+            WHERE SupplierID=@SupplierID", conn)
 
                     updateCmd.Parameters.AddWithValue("@SupplierName", sname.Text.Trim())
                     updateCmd.Parameters.AddWithValue("@CompanyName", cname.Text.Trim())
@@ -310,6 +243,7 @@ Public Class Supplier
                     updateCmd.Parameters.AddWithValue("@Email", eml.Text.Trim())
                     updateCmd.Parameters.AddWithValue("@Address", adrss.Text.Trim())
                     updateCmd.Parameters.AddWithValue("@SupplierID", currentSupplierID)
+
                     updateCmd.ExecuteNonQuery()
                 End Using
 
@@ -319,6 +253,7 @@ Public Class Supplier
                 End If
 
                 MessageBox.Show("Supplier successfully updated!", "Update Supplier", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
                 clear()
                 LoadData()
                 addbtn.Enabled = True

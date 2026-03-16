@@ -135,8 +135,15 @@ Partial Class POS
         Me.Guna2TextBox1 = New Guna.UI2.WinForms.Guna2TextBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.panelquantity = New Guna.UI2.WinForms.Guna2ShadowPanel()
+<<<<<<< HEAD
         Me.Guna2Panel1 = New Guna.UI2.WinForms.Guna2Panel()
         Me.Label16 = New System.Windows.Forms.Label()
+=======
+        Me.Guna2ShadowPanel2 = New Guna.UI2.WinForms.Guna2ShadowPanel()
+        Me.lblprice = New System.Windows.Forms.Label()
+        Me.lblavailablequantity = New System.Windows.Forms.Label()
+        Me.lblproductqty = New System.Windows.Forms.Label()
+>>>>>>> 09da33925e6d83d38d50d27399fc5191c71b10a1
         Me.txtQuantity = New Guna.UI2.WinForms.Guna2TextBox()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.Label22 = New System.Windows.Forms.Label()
@@ -1152,6 +1159,7 @@ Partial Class POS
         'Checkoutshadowpanel
         '
         Me.Checkoutshadowpanel.BackColor = System.Drawing.Color.Transparent
+        Me.Checkoutshadowpanel.Controls.Add(Me.panelquantity)
         Me.Checkoutshadowpanel.Controls.Add(Me.lblPayment)
         Me.Checkoutshadowpanel.Controls.Add(Me.PictureBox1)
         Me.Checkoutshadowpanel.Controls.Add(Me.Guna2ShadowPanel3)
@@ -1645,14 +1653,22 @@ Partial Class POS
         'panelquantity
         '
         Me.panelquantity.BackColor = System.Drawing.Color.Transparent
+<<<<<<< HEAD
         Me.panelquantity.Controls.Add(Me.Label20)
         Me.panelquantity.Controls.Add(Me.Guna2Panel1)
         Me.panelquantity.Controls.Add(Me.Label16)
+=======
+        Me.panelquantity.Controls.Add(Me.Guna2ShadowPanel2)
+        Me.panelquantity.Controls.Add(Me.lblprice)
+        Me.panelquantity.Controls.Add(Me.lblavailablequantity)
+        Me.panelquantity.Controls.Add(Me.lblproductqty)
+>>>>>>> 09da33925e6d83d38d50d27399fc5191c71b10a1
         Me.panelquantity.Controls.Add(Me.txtQuantity)
         Me.panelquantity.Controls.Add(Me.Label17)
         Me.panelquantity.Controls.Add(Me.Label22)
         Me.panelquantity.Controls.Add(Me.Label19)
         Me.panelquantity.FillColor = System.Drawing.Color.White
+<<<<<<< HEAD
         Me.panelquantity.Location = New System.Drawing.Point(146, 192)
         Me.panelquantity.Name = "panelquantity"
         Me.panelquantity.Radius = 5
@@ -1678,6 +1694,57 @@ Partial Class POS
         Me.Label16.Size = New System.Drawing.Size(106, 15)
         Me.Label16.TabIndex = 81
         Me.Label16.Text = "Product Name :"
+=======
+        Me.panelquantity.Location = New System.Drawing.Point(124, 117)
+        Me.panelquantity.Name = "panelquantity"
+        Me.panelquantity.Radius = 5
+        Me.panelquantity.ShadowColor = System.Drawing.Color.Black
+        Me.panelquantity.Size = New System.Drawing.Size(349, 220)
+        Me.panelquantity.TabIndex = 90
+        Me.panelquantity.Visible = False
+        '
+        'Guna2ShadowPanel2
+        '
+        Me.Guna2ShadowPanel2.BackColor = System.Drawing.Color.Transparent
+        Me.Guna2ShadowPanel2.FillColor = System.Drawing.Color.Gray
+        Me.Guna2ShadowPanel2.Location = New System.Drawing.Point(14, 108)
+        Me.Guna2ShadowPanel2.Name = "Guna2ShadowPanel2"
+        Me.Guna2ShadowPanel2.Radius = 5
+        Me.Guna2ShadowPanel2.ShadowColor = System.Drawing.Color.Black
+        Me.Guna2ShadowPanel2.Size = New System.Drawing.Size(320, 2)
+        Me.Guna2ShadowPanel2.TabIndex = 93
+        Me.Guna2ShadowPanel2.Visible = False
+        '
+        'lblprice
+        '
+        Me.lblprice.AutoSize = True
+        Me.lblprice.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblprice.Location = New System.Drawing.Point(24, 50)
+        Me.lblprice.Name = "lblprice"
+        Me.lblprice.Size = New System.Drawing.Size(48, 15)
+        Me.lblprice.TabIndex = 92
+        Me.lblprice.Text = "Price :"
+        '
+        'lblavailablequantity
+        '
+        Me.lblavailablequantity.AutoSize = True
+        Me.lblavailablequantity.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblavailablequantity.Location = New System.Drawing.Point(24, 79)
+        Me.lblavailablequantity.Name = "lblavailablequantity"
+        Me.lblavailablequantity.Size = New System.Drawing.Size(129, 15)
+        Me.lblavailablequantity.TabIndex = 91
+        Me.lblavailablequantity.Text = "Available Quantity :"
+        '
+        'lblproductqty
+        '
+        Me.lblproductqty.AutoSize = True
+        Me.lblproductqty.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblproductqty.Location = New System.Drawing.Point(24, 19)
+        Me.lblproductqty.Name = "lblproductqty"
+        Me.lblproductqty.Size = New System.Drawing.Size(64, 15)
+        Me.lblproductqty.TabIndex = 79
+        Me.lblproductqty.Text = "Product :"
+>>>>>>> 09da33925e6d83d38d50d27399fc5191c71b10a1
         '
         'txtQuantity
         '
@@ -1691,7 +1758,11 @@ Partial Class POS
         Me.txtQuantity.FocusedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.txtQuantity.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtQuantity.HoverState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
+<<<<<<< HEAD
         Me.txtQuantity.Location = New System.Drawing.Point(21, 206)
+=======
+        Me.txtQuantity.Location = New System.Drawing.Point(20, 149)
+>>>>>>> 09da33925e6d83d38d50d27399fc5191c71b10a1
         Me.txtQuantity.Margin = New System.Windows.Forms.Padding(4)
         Me.txtQuantity.Name = "txtQuantity"
         Me.txtQuantity.PlaceholderForeColor = System.Drawing.Color.LightGray
@@ -1715,8 +1786,13 @@ Partial Class POS
         Me.Label22.AutoSize = True
         Me.Label22.BackColor = System.Drawing.Color.Transparent
         Me.Label22.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+<<<<<<< HEAD
         Me.Label22.ForeColor = System.Drawing.Color.Red
         Me.Label22.Location = New System.Drawing.Point(18, 177)
+=======
+        Me.Label22.ForeColor = System.Drawing.Color.Black
+        Me.Label22.Location = New System.Drawing.Point(15, 121)
+>>>>>>> 09da33925e6d83d38d50d27399fc5191c71b10a1
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(70, 18)
         Me.Label22.TabIndex = 67
@@ -1750,7 +1826,6 @@ Partial Class POS
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(1130, 778)
-        Me.Controls.Add(Me.panelquantity)
         Me.Controls.Add(Me.Checkoutshadowpanel)
         Me.Controls.Add(Me.btnLogout)
         Me.Controls.Add(Me.btnSelectProduct)
@@ -1898,9 +1973,16 @@ Partial Class POS
     Friend WithEvents panelquantity As Guna.UI2.WinForms.Guna2ShadowPanel
     Friend WithEvents Label22 As Label
     Friend WithEvents txtQuantity As Guna.UI2.WinForms.Guna2TextBox
+<<<<<<< HEAD
     Friend WithEvents Guna2Panel1 As Guna.UI2.WinForms.Guna2Panel
     Friend WithEvents Label16 As Label
     Friend WithEvents Label17 As Label
     Friend WithEvents Label19 As Label
     Friend WithEvents Label20 As Label
+=======
+    Friend WithEvents Guna2ShadowPanel2 As Guna.UI2.WinForms.Guna2ShadowPanel
+    Friend WithEvents lblprice As Label
+    Friend WithEvents lblavailablequantity As Label
+    Friend WithEvents lblproductqty As Label
+>>>>>>> 09da33925e6d83d38d50d27399fc5191c71b10a1
 End Class

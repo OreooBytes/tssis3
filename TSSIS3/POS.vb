@@ -686,10 +686,17 @@ Public Class POS
                             currentStockQty = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
                             currentProductBarcode = barcode
 
+<<<<<<< HEAD
                             Dim productDisplayName As String = If(String.IsNullOrWhiteSpace(description), currentBaseName, currentBaseName & " (" & description & ")")
 
                             ' <-- Update the three labels (Label16, Label19, Label17) safely
                             ShowScannedProductDetailsToLabels(productDisplayName, currentRetailPrice, currentStockQty)
+=======
+                            ' === DISPLAY PRODUCT INFO TO LABELS ===
+                            lblprice.Text = currentRetailPrice.ToString("₱#,##0.00")
+                            lblavailablequantity.Text = currentStockQty.ToString()
+                            lblproductqty.Text = currentBaseName
+>>>>>>> 09da33925e6d83d38d50d27399fc5191c71b10a1
 
                             If currentStockQty < 1 Then
                                 MessageBox.Show($"Product '{currentBaseName}' is out of stock!", "Stock Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -3501,8 +3508,8 @@ Public Class POS
         CheckCartLimit()
     End Sub
 
+    Private Sub lblprice_Click(sender As Object, e As EventArgs) Handles lblprice.Click
 
-
-
+    End Sub
 End Class
 

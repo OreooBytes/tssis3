@@ -584,6 +584,79 @@ Public Class POS
         End If
     End Sub
 
+    ' Safe helpers — update specific labels (Label16, Label19, Label17) if they exist.
+    Private Sub UpdateLabelIfExists(name As String, text As String)
+        Try
+            Dim ctrl = Me.Controls.Find(name, True).FirstOrDefault()
+            If ctrl IsNot Nothing AndAlso TypeOf ctrl Is Label Then
+                CType(ctrl, Label).Text = text
+            End If
+        Catch
+            ' Silent fail — UI update must not break flow
+        End Try
+    End Sub
+
+    ' Enhanced safe helper — updates Label16/Label19/Label17 and other matching labels (no logic changes)
+    Private Sub ShowScannedProductDetailsToLabels(productDisplayName As String, unitPrice As Decimal, availableQty As Integer)
+        Try
+            ' Explicit primary targets
+            Dim lblName = Me.Controls.Find("Label16", True).FirstOrDefault()
+            If lblName IsNot Nothing AndAlso TypeOf lblName Is Label Then
+                CType(lblName, Label).Text = If(String.IsNullOrWhiteSpace(productDisplayName), String.Empty, "Product Name: " & productDisplayName)
+            End If
+
+            Dim lblPrice = Me.Controls.Find("Label19", True).FirstOrDefault()
+            If lblPrice IsNot Nothing AndAlso TypeOf lblPrice Is Label Then
+                CType(lblPrice, Label).Text = If(unitPrice > 0D, "Unit Price : ₱ " & unitPrice.ToString("N2"), String.Empty)
+            End If
+
+            Dim lblQty = Me.Controls.Find("Label17", True).FirstOrDefault()
+            If lblQty IsNot Nothing AndAlso TypeOf lblQty Is Label Then
+                CType(lblQty, Label).Text = If(availableQty >= 0, "Available Quantity : " & availableQty.ToString(), String.Empty)
+            End If
+
+            ' Conservative pattern-based update for other labels (case-insensitive)
+            Dim all As New List(Of Control)
+            Dim stack As New Stack(Of Control)
+            stack.Push(Me)
+            While stack.Count > 0
+                Dim c = stack.Pop()
+                For Each ch As Control In c.Controls
+                    all.Add(ch)
+                    If ch.HasChildren Then stack.Push(ch)
+                Next
+            End While
+
+            For Each ctrl As Control In all
+                If Not TypeOf ctrl Is Label Then Continue For
+                Dim n As String = ctrl.Name.ToLowerInvariant()
+
+                ' Skip the exact ones we already updated
+                If n = "label16" OrElse n = "label19" OrElse n = "label17" Then Continue For
+
+                ' Product name patterns
+                If n.Contains("product") OrElse n.Contains("prodname") OrElse (n.Contains("name") AndAlso n.Contains("product") = False) Then
+                    CType(ctrl, Label).Text = If(String.IsNullOrWhiteSpace(productDisplayName), CType(ctrl, Label).Text, "Product Name: " & productDisplayName)
+                    Continue For
+                End If
+
+                ' Price patterns
+                If n.Contains("unitprice") OrElse n.Contains("price") OrElse n.Contains("cost") Then
+                    CType(ctrl, Label).Text = If(unitPrice > 0D, "₱ " & unitPrice.ToString("N2"), String.Empty)
+                    Continue For
+                End If
+
+                ' Quantity / available patterns
+                If n.Contains("available") OrElse n.Contains("qty") OrElse n.Contains("quantity") OrElse n.Contains("stock") Then
+                    CType(ctrl, Label).Text = If(availableQty >= 0, availableQty.ToString(), String.Empty)
+                    Continue For
+                End If
+            Next
+        Catch
+            ' Silent fail — UI update must not break POS flow
+        End Try
+    End Sub
+
     ' --- Prepare product info for quantity input ---
     Private Sub PrepareProductForQuantity(barcode As String)
         Try
@@ -613,6 +686,11 @@ Public Class POS
                             currentStockQty = If(IsDBNull(reader("Quantity")), 0, Convert.ToInt32(reader("Quantity")))
                             currentProductBarcode = barcode
 
+                            Dim productDisplayName As String = If(String.IsNullOrWhiteSpace(description), currentBaseName, currentBaseName & " (" & description & ")")
+
+                            ' <-- Update the three labels (Label16, Label19, Label17) safely
+                            ShowScannedProductDetailsToLabels(productDisplayName, currentRetailPrice, currentStockQty)
+
                             If currentStockQty < 1 Then
                                 MessageBox.Show($"Product '{currentBaseName}' is out of stock!", "Stock Alert", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                                 txtBarcode.Clear()
@@ -626,6 +704,8 @@ Public Class POS
                             txtQuantity.Focus()
 
                         Else
+                            ' Clear the product detail labels when not found
+                            ShowScannedProductDetailsToLabels("Product not found", 0D, 0)
                             MessageBox.Show("Product not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                             txtBarcode.Clear()
                             txtBarcode.Focus()
@@ -634,6 +714,7 @@ Public Class POS
                 End Using
             End Using
         Catch ex As Exception
+            ShowScannedProductDetailsToLabels("Error", 0D, 0)
             MessageBox.Show("Error loading product data: " & ex.Message)
         End Try
     End Sub
